@@ -52,7 +52,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
       - name: plex-media-server-pms
-        image: ghcr.io/home-operations/plex:1.42.2.10156@sha256:9ad8a3506e1d8ebda873a668603c1a2c10e6887969564561be669efd65ae8871
+        image: ghcr.io/home-operations/plex:1.43.0.10467@sha256:fa62165df48d04e9a418805951e903f831dec0e0601f4dc4245f9948d7fd719b
         imagePullPolicy: IfNotPresent
         command:
         - /bin/bash -c '/usr/bin/openssl pkcs12 -export -out /etc/ssl/certs/plex.p12 -in /etc/ssl/certs/plex/tls-combined.pem; /usr/bin/catatonit -- /entrypoint.sh'
