@@ -55,7 +55,10 @@ spec:
         image: ghcr.io/home-operations/plex:1.43.0.10467@sha256:fa62165df48d04e9a418805951e903f831dec0e0601f4dc4245f9948d7fd719b
         imagePullPolicy: IfNotPresent
         command:
-        - /bin/bash -c '/usr/bin/openssl pkcs12 -export -out /etc/ssl/certs/plex.p12 -in /etc/ssl/certs/plex/tls-combined.pem; /usr/bin/catatonit -- /entrypoint.sh'
+        - /bin/bash
+        - -c
+        - "/usr/bin/openssl pkcs12 -export -out /tmp/plex.p12 -passout pass: -in /etc/ssl/certs/plex/tls-combined.pem;
+          /usr/bin/catatonit -- /entrypoint.sh"
         ports:
         - containerPort: 32400
           name: pms
