@@ -11,9 +11,9 @@ metadata:
 spec:
   type: NodePort
   ports:
-  - port: 32400
+  - port: 30414
     targetPort: 32400
-    nodePort: 32400
+    nodePort: 30414
     protocol: TCP
     name: pms
   selector:
