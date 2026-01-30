@@ -16,3 +16,5 @@ spec:
   commonName: plex.swifthomelab.net
   dnsNames:
   - plex.swifthomelab.net
+  additionalOutputFormats:
+  - type: CombinedPEM

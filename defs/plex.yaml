@@ -10,7 +10,7 @@ metadata:
   - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: plex-media-server
+    namespace: cert-manager
     server: https://kubernetes.default.svc
   project: default
   source:

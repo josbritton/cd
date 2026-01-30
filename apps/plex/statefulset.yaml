@@ -8,7 +8,7 @@ metadata:
     app: plex-media-server
     app.kubernetes.io/name: plex-media-server
     app.kubernetes.io/instance: plex-media-server
-  namespace: plex-media-server
+  namespace: cert-manager
 spec:
   serviceName: plex-media-server
   selector:
@@ -46,11 +46,16 @@ spec:
         nfs:
           path: /mnt/artemis/data/media/special
           server: nas1.private.swifthomelab.net
+      - name: plex-public
+        secret:
+          secretName: plex-public
       terminationGracePeriodSeconds: 120
       containers:
       - name: plex-media-server-pms
         image: ghcr.io/home-operations/plex:1.42.2.10156@sha256:9ad8a3506e1d8ebda873a668603c1a2c10e6887969564561be669efd65ae8871
         imagePullPolicy: IfNotPresent
+        command:
+        - /bin/bash -c '/usr/bin/openssl pkcs12 -export -out /etc/ssl/certs/plex.p12 -in /etc/ssl/certs/plex/tls-combined.pem; /usr/bin/catatonit -- /entrypoint.sh'
         ports:
         - containerPort: 32400
           name: pms
@@ -87,6 +92,8 @@ spec:
           name: pms-logs
         - mountPath: /config/Library/Application Support/Plex Media Server/Cache
           name: pms-cache
+        - mountPath: /etc/ssl/certs/plex
+          name: plex-public
   volumeClaimTemplates:
   - metadata:
       name: pms-config

@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/service-v1.json
+apiVersion: v1
+kind: Service
+metadata:
+  name: plex-media-server
+  labels:
+    app: plex-media-server
+    app.kubernetes.io/name: plex-media-server
+    app.kubernetes.io/instance: plex-media-server
+  namespace: cert-manager
+spec:
+  type: NodePort
+  ports:
+  - port: 32400
+    targetPort: 32400
+    nodePort: 32400
+    protocol: TCP
+    name: pms
+  selector:
+    app.kubernetes.io/name: plex-media-server
+    app.kubernetes.io/instance: plex-media-server
