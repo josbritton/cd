@@ -82,7 +82,7 @@ ceph-csi-rbd:
     plugin:
       image:
         repository: quay.io/cephcsi/cephcsi
-        tag: v3.15.1
+        tag: v3.16.1
         pullPolicy: IfNotPresent
       resources: {}
 
