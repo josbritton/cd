@@ -15,5 +15,5 @@ appVersion: "1.0"
 
 dependencies:
 - name: ceph-csi-rbd
-  version: 3.16.0
+  version: 3.16.1
   repository: https://ceph.github.io/csi-charts
