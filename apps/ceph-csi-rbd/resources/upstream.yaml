@@ -406,7 +406,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: csi-rbdplugin
-          image: "quay.io/cephcsi/cephcsi:v3.15.1"
+          image: "quay.io/cephcsi/cephcsi:v3.16.1"
           imagePullPolicy: IfNotPresent
           args:
             - "--nodeid=$(NODE_ID)"
@@ -509,7 +509,7 @@ spec:
           securityContext:
             privileged: true
             allowPrivilegeEscalation: true
-          image: "quay.io/cephcsi/cephcsi:v3.15.1"
+          image: "quay.io/cephcsi/cephcsi:v3.16.1"
           imagePullPolicy: IfNotPresent
           args:
             - "--type=liveness"
@@ -641,7 +641,7 @@ spec:
       priorityClassName: system-cluster-critical
       containers:
         - name: csi-rbdplugin
-          image: "quay.io/cephcsi/cephcsi:v3.15.1"
+          image: "quay.io/cephcsi/cephcsi:v3.16.1"
           imagePullPolicy: IfNotPresent
           args:
             - "--nodeid=$(NODE_ID)"
@@ -782,7 +782,7 @@ spec:
           resources:
             {}
         - name: csi-rbdplugin-controller
-          image: "quay.io/cephcsi/cephcsi:v3.15.1"
+          image: "quay.io/cephcsi/cephcsi:v3.16.1"
           imagePullPolicy: IfNotPresent
           args:
             - "--type=controller"
@@ -807,7 +807,7 @@ spec:
           resources:
             {}
         - name: liveness-prometheus
-          image: "quay.io/cephcsi/cephcsi:v3.15.1"
+          image: "quay.io/cephcsi/cephcsi:v3.16.1"
           imagePullPolicy: IfNotPresent
           args:
             - "--type=liveness"
