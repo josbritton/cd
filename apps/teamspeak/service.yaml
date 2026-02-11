@@ -1,0 +1,72 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/service-v1.json
+apiVersion: v1
+kind: Service
+metadata:
+  name: file
+  labels:
+    app.kubernetes.io/name: teamspeak
+    app.kubernetes.io/instance: tsserver
+    app.kubernetes.io/version: beta6
+    app.kubernetes.io/component: server
+    app.kubernetes.io/part-of: teamspeak
+  namespace: teamspeak
+spec:
+  type: NodePort
+  ports:
+  - port: 30033
+    nodePort: 30033
+    targetPort: 30033
+    protocol: TCP
+    name: file  # server->client file transfer
+  selector:
+    app.kubernetes.io/name: teamspeak
+    app.kubernetes.io/instance: tsserver
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/service-v1.json
+apiVersion: v1
+kind: Service
+metadata:
+  name: voip
+  labels:
+    app.kubernetes.io/name: teamspeak
+    app.kubernetes.io/instance: tsserver
+    app.kubernetes.io/version: beta6
+    app.kubernetes.io/component: server
+    app.kubernetes.io/part-of: teamspeak
+  namespace: teamspeak
+spec:
+  type: NodePort
+  ports:
+  - port: 30987
+    nodePort: 30987
+    targetPort: 9987
+    protocol: UDP
+    name: voip
+  selector:
+    app.kubernetes.io/name: teamspeak
+    app.kubernetes.io/instance: tsserver
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/service-v1.json
+apiVersion: v1
+kind: Service
+metadata:
+  name: http
+  labels:
+    app.kubernetes.io/name: teamspeak
+    app.kubernetes.io/instance: tsserver
+    app.kubernetes.io/version: beta6
+    app.kubernetes.io/component: server
+    app.kubernetes.io/part-of: teamspeak
+  namespace: teamspeak
+spec:
+  type: ClusterIP
+  publishNotReadyAddresses: false
+  ports:
+  - port: 10080
+    targetPort: 10080
+    protocol: TCP
+    name: http
+  selector:
+    app.kubernetes.io/name: teamspeak
+    app.kubernetes.io/instance: tsserver
+    statefulset.kubernetes.io/pod-name: teamspeak-server-0

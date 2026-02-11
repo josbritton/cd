@@ -1,0 +1,11 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/projectcontour.io/tlscertificatedelegation_v1.json
+apiVersion: projectcontour.io/v1
+kind: TLSCertificateDelegation
+metadata:
+  name: teamspeak-public
+  namespace: cert-manager
+spec:
+  delegations:
+  - secretName: teamspeak-public
+    targetNamespaces:
+    - teamspeak

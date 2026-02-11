@@ -1,0 +1,87 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/statefulset.json
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: teamspeak-server
+  labels: &labels
+    app.kubernetes.io/name: teamspeak
+    app.kubernetes.io/instance: tsserver
+    app.kubernetes.io/version: beta6
+    app.kubernetes.io/component: server
+    app.kubernetes.io/part-of: teamspeak
+  namespace: teamspeak
+spec:
+  serviceName: teamspeak
+  selector:
+    matchLabels: *labels
+  revisionHistoryLimit: 3
+  template:
+    metadata:
+      labels: *labels
+    spec:
+      terminationGracePeriodSeconds: 120
+      securityContext:
+        fsGroup: 65534
+        fsGroupChangePolicy: OnRootMismatch
+        runAsGroup: 65534
+        runAsUser: 65534
+      containers:
+      - name: teamspeak-server
+        image: docker.io/teamspeaksystems/teamspeak6-server:v6.0.0-beta8@sha256:1bed4410f325602975bbf9841b282301d3e9ab158f7d905031f4c8cdc591539e
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: TSSERVER_LICENSE_ACCEPTED
+          value: accept
+        - name: TSSERVER_VOICE_IP
+          value: 0.0.0.0
+        - name: TSSERVER_DEFAULT_PORT
+          value: "9987"
+        - name: TSSERVER_FILE_TRANSFER_IP
+          value: 0.0.0.0
+        - name: TSSERVER_FILE_TRANSFER_PORT
+          value: "30033"
+        - name: TSSERVER_VOICE_UDP_THREADS
+          value: "5"  # INT 1-16
+        - name: TSSERVER_QUERY_HTTP_IP
+          value: 0.0.0.0
+        - name: TSSERVER_QUERY_HTTP_ENABLED
+          value: "true"
+        - name: TSSERVER_QUERY_HTTP_PORT
+          value: "10080"
+        ports:
+        - name: http
+          containerPort: 10080
+          protocol: TCP
+        - name: voip
+          containerPort: 9987
+          protocol: UDP
+        - name: file  # server->client file transfer
+          containerPort: 30033
+          protocol: TCP
+        # livenessProbe:
+        #   httpGet:
+        #     path: /alive
+        #     port: 80
+        # readinessProbe:
+        #   httpGet:
+        #     path: /alive
+        #     port: 80
+        volumeMounts:
+        - mountPath: /var/tsserver/
+          name: tsserver-data
+        # resources:
+        #   requests:
+        #     cpu: 10m
+        #     memory: 20Mi
+        #   limits:
+        #     cpu: 200m
+        #     memory: 200Mi
+  volumeClaimTemplates:
+  - metadata:
+      name: tsserver-data
+    spec:
+      accessModes: [ReadWriteOnce]
+      storageClassName: csi-rbd-sc
+      resources:
+        requests:
+          storage: 32Gi
