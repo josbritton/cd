@@ -32,7 +32,7 @@ spec:
       terminationGracePeriodSeconds: 90
       containers:
       - name: home-assistant
-        image: ghcr.io/home-operations/home-assistant:2026.1.3@sha256:9f094e0531e5784d1df9bcb817d95830d1da9d4a03c914f8fd1b3cc6168c4e65
+        image: ghcr.io/home-operations/home-assistant:2026.2.3@sha256:d73c9c53a8562e12211f24fd7303c422051220636972485df291dbec885d8a3d
         ports:
         - containerPort: 8123
           name: http
