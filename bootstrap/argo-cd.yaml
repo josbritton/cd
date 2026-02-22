@@ -23,6 +23,7 @@ spec:
   syncPolicy:
     syncOptions:
     - allowEmpty=true
+    - ServerSideApply=true  # REQUIRED
 status:
   health: {}
   summary: {}
