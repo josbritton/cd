@@ -47,7 +47,7 @@ spec:
       terminationGracePeriodSeconds: 90
       containers:
       - name: navidrome
-        image: deluan/navidrome:develop@sha256:62b9cecc97f9a3ff89846e0eb9ad93f9e051e749e24b23a86a092ec4f99dd910
+        image: deluan/navidrome:develop@sha256:4dc97874619737706e651ed96a300848776c77dfa17890daa8157f777727c21e
         ports:
         - containerPort: 4533
           name: http
