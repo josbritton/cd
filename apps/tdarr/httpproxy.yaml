@@ -13,3 +13,5 @@ spec:
   - services:
     - name: tdarr
       port: 8265
+    timeoutPolicy:
+      response: 60s  # if NULL, uses 15s (envoy default)

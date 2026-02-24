@@ -16,3 +16,5 @@ spec:
     - name: gitea-http
       port: 3000
     enableWebsockets: true
+    timeoutPolicy:
+      response: 60s  # if NULL, uses 15s (envoy default)

@@ -19,3 +19,5 @@ spec:
     - name: home-assistant
       port: 8123
     enableWebsockets: true
+    timeoutPolicy:
+      response: 60s  # if NULL, uses 15s (envoy default)

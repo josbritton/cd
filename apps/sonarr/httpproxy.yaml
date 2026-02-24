@@ -13,6 +13,8 @@ spec:
   - services:
     - name: sonarr
       port: 8989
+    timeoutPolicy:
+      response: 60s  # if NULL, uses 15s (envoy default)
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/projectcontour.io/httpproxy_v1.json
 apiVersion: projectcontour.io/v1
@@ -29,3 +31,5 @@ spec:
   - services:
     - name: sonalt
       port: 8989
+    timeoutPolicy:
+      response: 60s  # if NULL, uses 15s (envoy default)

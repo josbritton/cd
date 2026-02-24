@@ -14,3 +14,5 @@ spec:
     - name: vaultwarden
       port: 80
     enableWebsockets: true
+    timeoutPolicy:
+      response: 60s  # if NULL, uses 15s (envoy default)

@@ -19,3 +19,5 @@ spec:
     services:
     - name: prometheus-operator-grafana
       port: 80
+    timeoutPolicy:
+      response: 60s  # if NULL, uses 15s (envoy default)

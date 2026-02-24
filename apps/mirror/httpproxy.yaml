@@ -21,3 +21,5 @@ spec:
     requestRedirectPolicy:
       hostname: git.swifthomelab.net
       path: /
+    timeoutPolicy:
+      response: 60s  # if NULL, uses 15s (envoy default)

@@ -18,3 +18,5 @@ spec:
   - services:
     - name: navidrome
       port: 4533
+    timeoutPolicy:
+      response: 60s  # if NULL, uses 15s (envoy default)

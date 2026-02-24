@@ -13,3 +13,5 @@ spec:
   - services:
     - name: prowlarr
       port: 9696
+    timeoutPolicy:
+      response: 60s  # if NULL, uses 15s (envoy default)
