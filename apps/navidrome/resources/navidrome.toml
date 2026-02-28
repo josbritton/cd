@@ -6,6 +6,7 @@ AutoImportPlaylists = false
 CacheFolder = "/cache"
 CoverArtPriority = "cover.*"  # strict
 SessionTimeout = "6552h" # 9 months
+UISearchDebounceMs = 300
 
 [Backup]
 Path = "/backup"
