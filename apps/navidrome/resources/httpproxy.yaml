@@ -18,5 +18,24 @@ spec:
   - services:
     - name: navidrome
       port: 4533
+    conditions:
+    - prefix: /
     timeoutPolicy:
       response: 60s  # if NULL, uses 15s (envoy default)
+  - services:
+    - name: navidrome
+      port: 4533
+    conditions:
+    - prefix: /api/events
+    - header:
+        name: Accept
+        contains: text/event-stream
+    timeoutPolicy:
+      idle: 600s
+      idleConnection: 600s
+      # The following is required as-is for SSE to work properly:
+      #   * a value of either null or 0s will revert to the default 15s timeout
+      #   * route timeouts must be disabled for streaming responses or they will
+      #     always be closed after timeout regardless of keepalive
+      # See note on official docs: https://www.envoyproxy.io/docs/envoy/v1.37.0/faq/configuration/timeouts#route-timeouts
+      response: infinity
