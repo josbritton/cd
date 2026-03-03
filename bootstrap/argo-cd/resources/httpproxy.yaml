@@ -24,7 +24,7 @@ spec:
       port: 80
       protocol: h2c  # allows for unencrypted http2 connections
     timeoutPolicy:
-      response: 1h
+      response: infinity
       idle: 600s
       idleConnection: 600s
   - conditions:
