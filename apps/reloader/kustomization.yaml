@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: reloader
 resources:
 # yamllint disable-line rule:comments
-- github.com/stakater/Reloader/deployments/kubernetes?ref=f15812138b7ff8cea15b057a847bd75a3bddd5ff # tag=v1.4.13
+- github.com/stakater/Reloader/deployments/kubernetes?ref=cff4592fbdc942aba17d205860818e8ce45e6696 # tag=v1.4.14
 patches:
 - target:
     group: apps
