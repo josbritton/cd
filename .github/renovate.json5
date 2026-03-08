@@ -21,6 +21,7 @@
     "commitMessageTopic": "{{depName}}",
     "commitMessageExtra": "to {{newVersion}}",
     "commitMessageSuffix": "",
+    "minimumReleaseAge": "7 days",
     "packageRules": [
         // run post-upgrade build task for helm templates
         {
