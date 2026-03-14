@@ -8,7 +8,7 @@ metadata:
     app: sonarr
     app.kubernetes.io/name: sonarr
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app.kubernetes.io/name: sonarr

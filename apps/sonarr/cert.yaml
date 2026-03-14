@@ -27,3 +27,18 @@ spec:
   commonName: sonalt.swifthomelab.net
   dnsNames:
   - sonalt.swifthomelab.net
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: sonref-swifthomelab-net
+  namespace: cert-manager
+spec:
+  secretName: sonref-swifthomelab-net
+  issuerRef:
+    name: swifthomelab-net-issuer
+    kind: ClusterIssuer
+  commonName: sonref.swifthomelab.net
+  dnsNames:
+  - sonref.swifthomelab.net

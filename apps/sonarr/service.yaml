@@ -39,3 +39,24 @@ spec:
   selector:
     app.kubernetes.io/name: sonarr
     statefulset.kubernetes.io/pod-name: sonarr-1
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/service-v1.json
+apiVersion: v1
+kind: Service
+metadata:
+  name: sonref
+  namespace: sonarr
+  labels:
+    app: sonarr
+    app.kubernetes.io/name: sonarr
+spec:
+  type: ClusterIP
+  publishNotReadyAddresses: false
+  ports:
+  - name: http
+    port: 8989
+    protocol: TCP
+    targetPort: 8989
+  selector:
+    app.kubernetes.io/name: sonarr
+    statefulset.kubernetes.io/pod-name: sonarr-2
