@@ -10,5 +10,5 @@ rustfs:
     enabled: false
   storageclass:
     name: csi-rbd-sc
-    dataStorageSize: 256Mi
-    logStorageSize: 256Mi
+    dataStorageSize: 4096Mi
+    logStorageSize: 796Mi

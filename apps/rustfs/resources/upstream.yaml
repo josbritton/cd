@@ -46,7 +46,7 @@ spec:
   storageClassName: csi-rbd-sc
   resources:
     requests:
-      storage: 256Mi
+      storage: 4096Mi
 ---
 # Source: rustfs/charts/rustfs/templates/pvc.yaml
 apiVersion: v1
@@ -63,7 +63,7 @@ spec:
   storageClassName: csi-rbd-sc
   resources:
     requests:
-      storage: 256Mi
+      storage: 796Mi
 ---
 # Source: rustfs/charts/rustfs/templates/service.yaml
 apiVersion: v1
