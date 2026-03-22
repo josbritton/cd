@@ -63,7 +63,7 @@ spec:
   storageClassName: csi-rbd-sc
   resources:
     requests:
-      storage: 796Mi
+      storage: 2Gi
 ---
 # Source: rustfs/charts/rustfs/templates/service.yaml
 apiVersion: v1
