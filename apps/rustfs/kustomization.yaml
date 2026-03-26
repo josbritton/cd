@@ -1,8 +1,0 @@
-# yaml-language-server: $schema=https://json.schemastore.org/kustomization
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-- ./resources/upstream.yaml
-- ./resources/certificate.yaml
-- ./resources/delegation.yaml
-- ./resources/httpproxy.yaml
