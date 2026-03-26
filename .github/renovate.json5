@@ -177,6 +177,11 @@
             "matchPackageNames": ["registry.k8s.io/sig-storage/**"],
             "groupName": "all-sig-storage-csi"
         },
+        // ignore private/self-hosted
+        {
+            "matchPackageNames": ["git.swifthomelab.net/**"],
+            "enabled": false
+        }
     ],
     "customManagers": [
         {
