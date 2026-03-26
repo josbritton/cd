@@ -6,6 +6,7 @@ metadata:
   namespace: tdarr
 spec:
   schedule: 0 */6 * * *  # every 6 hours: 0, 6, 12, 18
+  suspend: false
   jobTemplate:
     spec:
       template:

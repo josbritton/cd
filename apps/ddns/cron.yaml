@@ -6,6 +6,7 @@ metadata:
   namespace: ddns
 spec:
   schedule: "*/5 * * * *"  # every 5 minutes
+  suspend: false
   jobTemplate:
     spec:
       template:
