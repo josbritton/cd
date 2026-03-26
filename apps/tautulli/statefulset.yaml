@@ -91,10 +91,10 @@ spec:
         resources:
           requests:
             memory: 100Mi
-            cpu: 10m
+            cpu: 200m
           limits:
-            memory: 300Mi
-            cpu: 150m
+            memory: 1200Mi
+            cpu: 1500m
         securityContext:
           capabilities:
             drop:
