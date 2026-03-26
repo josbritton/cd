@@ -42,3 +42,17 @@ spec:
                 kube_namespace_created * 0
             )
           )
+    - record: namespace:container_fs_writes_bytes:sum_rate5m
+      expr: >-
+        sum by (namespace) (
+          rate(
+            container_fs_writes_bytes_total{container!="",device=~"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)",job="kubelet",metrics_path="/metrics/cadvisor",namespace!=""}[5m]
+          )
+        )
+    - record: namespace:container_fs_reads_bytes:sum_rate5m
+      expr: >-
+        sum by (namespace) (
+          rate(
+            container_fs_reads_bytes_total{container!="",device=~"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)",job="kubelet",metrics_path="/metrics/cadvisor",namespace!=""}[5m]
+          )
+        )
