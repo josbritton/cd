@@ -27,3 +27,18 @@ spec:
                 kube_namespace_created * 0
             )
           )
+    - record: namespace:container_memory_working_set_bytes:sum
+      expr: >-
+        sum by (namespace) (container_memory_working_set_bytes{image!=""})
+        + on (namespace)
+          (
+            sum by (namespace) (
+                  windows_container_memory_usage_commit_bytes{container_id!=""}
+                * on (container_id) group_left (container, pod, namespace)
+                  max by (container, container_id, pod, namespace) (
+                    kube_pod_container_info{container_id!=""}
+                  )
+              or
+                kube_namespace_created * 0
+            )
+          )
