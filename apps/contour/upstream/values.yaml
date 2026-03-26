@@ -13,7 +13,6 @@ contour:
         ephemeral-storage: 50Mi
         memory: 1Gi
       limits:
-        cpu: 200m
         ephemeral-storage: 2Gi
         memory: 2500Mi
     shutdownManager:
@@ -25,7 +24,6 @@ contour:
         ephemeral-storage: 50Mi
         memory: 90Mi
       limits:
-        cpu: 80m
         ephemeral-storage: 2Gi
         memory: 180Mi
   defaultBackend:

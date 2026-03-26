@@ -120,7 +120,6 @@ spec:
             cpu: 360m
             memory: 562Mi
           limits:
-            cpu: 1500m
             memory: 875Mi
       volumes:
       - name: media

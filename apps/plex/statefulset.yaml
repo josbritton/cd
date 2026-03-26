@@ -82,7 +82,6 @@ spec:
             cpu: 4000m
             memory: 1500Mi
           limits:
-            cpu: 8500m
             memory: 5Gi
         volumeMounts:
         - name: pms-config

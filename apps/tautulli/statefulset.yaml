@@ -94,7 +94,6 @@ spec:
             cpu: 200m
           limits:
             memory: 1200Mi
-            cpu: 1500m
         securityContext:
           capabilities:
             drop:

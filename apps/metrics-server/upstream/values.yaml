@@ -115,7 +115,6 @@ metrics-server:
         cpu: 40m
         memory: 25Mi
       limits:
-        cpu: 40m
         memory: 25Mi
     nanny:
       cpu: 0m

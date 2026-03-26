@@ -9423,7 +9423,6 @@ spec:
             failureThreshold: 6
           resources:
             limits:
-              cpu: 200m
               ephemeral-storage: 2Gi
               memory: 2500Mi
             requests:
@@ -9605,7 +9604,6 @@ spec:
             failureThreshold: 3
           resources: 
             limits:
-              cpu: 80m
               ephemeral-storage: 2Gi
               memory: 180Mi
             requests:
@@ -9826,7 +9824,6 @@ spec:
               type: RuntimeDefault
           resources: 
             limits:
-              cpu: 80m
               ephemeral-storage: 2Gi
               memory: 180Mi
             requests:
