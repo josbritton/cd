@@ -13,6 +13,7 @@ resources:
 - ./resources/stork-agent-service-bind.yaml
 - ./resources/stork-agent-endpoints-bind.yaml
 - ./resources/stork-agent-servicemonitor-bind.yaml
+- ./resources/prometheusrule.yaml
 # yamllint disable-line rule:comments
 - github.com/dotdc/grafana-dashboards-kubernetes?ref=7f36d58d2f2804c3d6c6b03ee27ead939a47e3e7 # tag=v3.0.3
 generatorOptions:

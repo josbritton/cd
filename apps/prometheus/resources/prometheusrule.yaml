@@ -1,0 +1,29 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: provisioned-recording-rules-extra
+  namespace: prometheus-operator
+  labels:
+    release: prometheus-operator
+spec:
+  groups:
+  - name: extra-provisioned.rules
+    interval: 15s
+    rules:
+    - record: namespace:container_cpu_usage_seconds:sum_rate1m
+      labels: {}
+      expr: >-
+        sum by (namespace) (rate(container_cpu_usage_seconds_total{image!=""}[1m]))
+        + on (namespace)
+          (
+            sum by (namespace) (
+                  rate(windows_container_cpu_usage_seconds_total{container_id!=""}[1m])
+                * on (container_id) group_left (container, pod, namespace)
+                  max by (container, container_id, pod, namespace) (
+                    kube_pod_container_info{container_id!=""}
+                  )
+              or
+                kube_namespace_created * 0
+            )
+          )

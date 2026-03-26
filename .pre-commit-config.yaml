@@ -61,6 +61,14 @@ repos:
     files: "(apps|defs|bootstrap)/.+\\.ya?ml$"
     stages: [pre-commit]
 
+  - id: validate-prometheus-recording-rules
+    name: validate prometheus recording rules
+    language: script
+    entry: tests/validate-prometheus-rules.sh
+    pass_filenames: true
+    files: "prometheusrule\\.yaml$"
+    stages: [pre-commit]
+
 # - id: prepush
 #   name: pre-push actions
 #   language: system
