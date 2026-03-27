@@ -56,3 +56,15 @@ spec:
             container_fs_reads_bytes_total{container!="",device=~"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)",job="kubelet",metrics_path="/metrics/cadvisor",namespace!=""}[5m]
           )
         )
+    - record: instance:etcd_disk_wal_fsync_duration_seconds:histogram_quantile99_rate5m
+      expr: >-
+        histogram_quantile(
+          0.99,
+          sum by (instance, le) (rate(etcd_disk_wal_fsync_duration_seconds_bucket{job=~".*etcd.*"}[5m]))
+        )
+    - record: instance:etcd_disk_backend_commit_duration_seconds:histogram_quantile99_rate5m
+      expr: >-
+        histogram_quantile(
+          0.99,
+          sum by (instance, le) (rate(etcd_disk_backend_commit_duration_seconds_bucket{job=~".*etcd.*"}[5m]))
+        )
