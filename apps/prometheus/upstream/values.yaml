@@ -143,6 +143,8 @@ kube-prometheus-stack:
         scheme: http
         static_configs:
         - targets: [navidrome.navidrome.svc.cluster.local:4533]
+      externalLabels:
+        cluster: cluster.prod-1
   grafana:
     enabled: true
     defaultDashboardsEnabled: true

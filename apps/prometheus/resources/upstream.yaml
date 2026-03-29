@@ -77146,6 +77146,8 @@ spec:
   image: "quay.io/prometheus/prometheus:v3.10.0"
   imagePullPolicy: "IfNotPresent"
   version: v3.10.0
+  externalLabels:
+    cluster: cluster.prod-1
   externalUrl: http://prometheus-operator-kube-p-prometheus.prometheus-operator:9090
   paused: false
   replicas: 1
