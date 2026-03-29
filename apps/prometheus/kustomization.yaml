@@ -32,7 +32,6 @@ configMapGenerator:
 - name: airgradient-dashboard-cm
   files: [files/airgradient-dashboard.json]
 patches:
-- path: overlays/prometheus-operator-grafana-secret.yaml
 - path: overlays/prometheus-crds-annotations.yaml
   target:
     group: apiextensions.k8s.io

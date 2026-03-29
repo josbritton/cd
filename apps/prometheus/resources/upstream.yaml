@@ -74654,25 +74654,6 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     release: prometheus-operator
 ---
-# Source: prometheus-operator/charts/kube-prometheus-stack/charts/grafana/templates/secret.yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: prometheus-operator-grafana
-  namespace: prometheus-operator
-  labels:
-    helm.sh/chart: grafana-11.3.3
-    app.kubernetes.io/name: grafana
-    app.kubernetes.io/instance: prometheus-operator
-    app.kubernetes.io/version: "12.4.1"
-    app.kubernetes.io/component: admin-secret
-type: Opaque
-data:
-  
-  admin-user: "YWRtaW4="
-  admin-password: "T2hpZlBMaVFTa3BaNUl2OEJLcUFaNFlVTnFERDVTbUlmT3hTcGpBag=="
-  ldap-toml: ""
----
 # Source: prometheus-operator/charts/kube-prometheus-stack/templates/prometheus/additionalScrapeConfigs.yaml
 apiVersion: v1
 kind: Secret
@@ -76736,7 +76717,6 @@ spec:
         checksum/config: 0cf4c339aa538b79ebb2473e8cfd4de776f84aae8b9f1c014153970d664ac340
         checksum/dashboards-json-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
         checksum/sc-dashboard-provider-config: 9ce4726de667a5eb0eae56fe1bcee3be3a283df2edb677faed9dd08cca648834
-        checksum/secret: b355171f1a147649046298c6c08ccfcd2d7282ff1c9479db355e0b5c54973c25
         kubectl.kubernetes.io/default-container: grafana
     spec:
       
@@ -76955,6 +76935,108 @@ spec:
         requests:
           storage: 20Gi
 ---
+# Source: prometheus-operator/charts/kube-prometheus-stack/templates/prometheus-operator/admission-webhooks/mutatingWebhookConfiguration.yaml
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name:  prometheus-operator-kube-p-admission
+  annotations:
+    
+  labels:
+    app: kube-prometheus-stack-admission
+    
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: prometheus-operator
+    app.kubernetes.io/version: "82.13.1"
+    app.kubernetes.io/part-of: kube-prometheus-stack
+    chart: kube-prometheus-stack-82.13.1
+    release: "prometheus-operator"
+    heritage: "Helm"
+    app.kubernetes.io/name: kube-prometheus-stack-prometheus-operator
+    app.kubernetes.io/component: prometheus-operator-webhook
+webhooks:
+  - name: prometheusrulemutate.monitoring.coreos.com
+    failurePolicy: Ignore
+    rules:
+      - apiGroups:
+          - monitoring.coreos.com
+        apiVersions:
+          - "*"
+        resources:
+          - prometheusrules
+        operations:
+          - CREATE
+          - UPDATE
+    clientConfig:
+      service:
+        namespace: prometheus-operator
+        name: prometheus-operator-kube-p-operator
+        path: /admission-prometheusrules/mutate
+    timeoutSeconds: 10
+    admissionReviewVersions: ["v1", "v1beta1"]
+    sideEffects: None
+---
+# Source: prometheus-operator/charts/kube-prometheus-stack/templates/prometheus-operator/admission-webhooks/validatingWebhookConfiguration.yaml
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name:  prometheus-operator-kube-p-admission
+  annotations:
+    
+  labels:
+    app: kube-prometheus-stack-admission
+    
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: prometheus-operator
+    app.kubernetes.io/version: "82.13.1"
+    app.kubernetes.io/part-of: kube-prometheus-stack
+    chart: kube-prometheus-stack-82.13.1
+    release: "prometheus-operator"
+    heritage: "Helm"
+    app.kubernetes.io/name: kube-prometheus-stack-prometheus-operator
+    app.kubernetes.io/component: prometheus-operator-webhook
+webhooks:
+  - name: prometheusrulevalidate.monitoring.coreos.com
+    failurePolicy: Ignore
+    rules:
+      - apiGroups:
+          - monitoring.coreos.com
+        apiVersions:
+          - "*"
+        resources:
+          - prometheusrules
+        operations:
+          - CREATE
+          - UPDATE
+    clientConfig:
+      service:
+        namespace: prometheus-operator
+        name: prometheus-operator-kube-p-operator
+        path: /admission-prometheusrules/validate
+    timeoutSeconds: 10
+    admissionReviewVersions: ["v1", "v1beta1"]
+    sideEffects: None
+  - name: alertmanagerconfigsvalidate.monitoring.coreos.com
+    failurePolicy: Ignore
+    rules:
+      - apiGroups:
+          - monitoring.coreos.com
+        apiVersions:
+          - v1alpha1
+        resources:
+          - alertmanagerconfigs
+        operations:
+          - CREATE
+          - UPDATE
+    clientConfig:
+      service:
+        namespace: prometheus-operator
+        name: prometheus-operator-kube-p-operator
+        path: /admission-alertmanagerconfigs/validate
+    timeoutSeconds: 10
+    admissionReviewVersions: ["v1", "v1beta1"]
+    sideEffects: None
+---
 # Source: prometheus-operator/charts/kube-prometheus-stack/templates/alertmanager/alertmanager.yaml
 apiVersion: monitoring.coreos.com/v1
 kind: Alertmanager
@@ -77035,47 +77117,6 @@ subsets:
       - name: http-metrics
         port: 2381
         protocol: TCP
----
-# Source: prometheus-operator/charts/kube-prometheus-stack/templates/prometheus-operator/admission-webhooks/mutatingWebhookConfiguration.yaml
-apiVersion: admissionregistration.k8s.io/v1
-kind: MutatingWebhookConfiguration
-metadata:
-  name:  prometheus-operator-kube-p-admission
-  annotations:
-    
-  labels:
-    app: kube-prometheus-stack-admission
-    
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/instance: prometheus-operator
-    app.kubernetes.io/version: "82.13.1"
-    app.kubernetes.io/part-of: kube-prometheus-stack
-    chart: kube-prometheus-stack-82.13.1
-    release: "prometheus-operator"
-    heritage: "Helm"
-    app.kubernetes.io/name: kube-prometheus-stack-prometheus-operator
-    app.kubernetes.io/component: prometheus-operator-webhook
-webhooks:
-  - name: prometheusrulemutate.monitoring.coreos.com
-    failurePolicy: Ignore
-    rules:
-      - apiGroups:
-          - monitoring.coreos.com
-        apiVersions:
-          - "*"
-        resources:
-          - prometheusrules
-        operations:
-          - CREATE
-          - UPDATE
-    clientConfig:
-      service:
-        namespace: prometheus-operator
-        name: prometheus-operator-kube-p-operator
-        path: /admission-prometheusrules/mutate
-    timeoutSeconds: 10
-    admissionReviewVersions: ["v1", "v1beta1"]
-    sideEffects: None
 ---
 # Source: prometheus-operator/charts/kube-prometheus-stack/templates/prometheus/prometheus.yaml
 apiVersion: monitoring.coreos.com/v1
@@ -81180,67 +81221,6 @@ spec:
     path: "/metrics"
   - port: reloader-web
     path: "/metrics"
----
-# Source: prometheus-operator/charts/kube-prometheus-stack/templates/prometheus-operator/admission-webhooks/validatingWebhookConfiguration.yaml
-apiVersion: admissionregistration.k8s.io/v1
-kind: ValidatingWebhookConfiguration
-metadata:
-  name:  prometheus-operator-kube-p-admission
-  annotations:
-    
-  labels:
-    app: kube-prometheus-stack-admission
-    
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/instance: prometheus-operator
-    app.kubernetes.io/version: "82.13.1"
-    app.kubernetes.io/part-of: kube-prometheus-stack
-    chart: kube-prometheus-stack-82.13.1
-    release: "prometheus-operator"
-    heritage: "Helm"
-    app.kubernetes.io/name: kube-prometheus-stack-prometheus-operator
-    app.kubernetes.io/component: prometheus-operator-webhook
-webhooks:
-  - name: prometheusrulevalidate.monitoring.coreos.com
-    failurePolicy: Ignore
-    rules:
-      - apiGroups:
-          - monitoring.coreos.com
-        apiVersions:
-          - "*"
-        resources:
-          - prometheusrules
-        operations:
-          - CREATE
-          - UPDATE
-    clientConfig:
-      service:
-        namespace: prometheus-operator
-        name: prometheus-operator-kube-p-operator
-        path: /admission-prometheusrules/validate
-    timeoutSeconds: 10
-    admissionReviewVersions: ["v1", "v1beta1"]
-    sideEffects: None
-  - name: alertmanagerconfigsvalidate.monitoring.coreos.com
-    failurePolicy: Ignore
-    rules:
-      - apiGroups:
-          - monitoring.coreos.com
-        apiVersions:
-          - v1alpha1
-        resources:
-          - alertmanagerconfigs
-        operations:
-          - CREATE
-          - UPDATE
-    clientConfig:
-      service:
-        namespace: prometheus-operator
-        name: prometheus-operator-kube-p-operator
-        path: /admission-alertmanagerconfigs/validate
-    timeoutSeconds: 10
-    admissionReviewVersions: ["v1", "v1beta1"]
-    sideEffects: None
 ---
 # Source: prometheus-operator/charts/kube-prometheus-stack/templates/prometheus-operator/admission-webhooks/job-patch/serviceaccount.yaml
 apiVersion: v1

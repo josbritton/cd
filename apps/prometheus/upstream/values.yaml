@@ -155,6 +155,8 @@ kube-prometheus-stack:
       size: 20Gi
       finalizers:
       - kubernetes.io/pvc-protection
+    admin:
+      existingSecret: prometheus-operator-grafana
     sidecar:
       dashboards:
         enabled: true
