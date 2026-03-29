@@ -74670,7 +74670,7 @@ type: Opaque
 data:
   
   admin-user: "YWRtaW4="
-  admin-password: "T2hpZlBMaVFTa3BaNUl2OEJLcUFaNFlVTnFERDVTbUlmT3hTcGpBag=="
+  admin-password: "dFd4N01zcEY1eG5vNjkxeEV1cWRYNzk0UVlsTndyVmo2Z3ZHSWdhTQ=="
   ldap-toml: ""
 ---
 # Source: prometheus-operator/charts/kube-prometheus-stack/templates/prometheus/additionalScrapeConfigs.yaml
@@ -76736,7 +76736,7 @@ spec:
         checksum/config: 0cf4c339aa538b79ebb2473e8cfd4de776f84aae8b9f1c014153970d664ac340
         checksum/dashboards-json-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
         checksum/sc-dashboard-provider-config: 9ce4726de667a5eb0eae56fe1bcee3be3a283df2edb677faed9dd08cca648834
-        checksum/secret: b355171f1a147649046298c6c08ccfcd2d7282ff1c9479db355e0b5c54973c25
+        checksum/secret: e4a0703d68ca44fdef1830b595487f75f83e102754b0ce677a582189ff9e0482
         kubectl.kubernetes.io/default-container: grafana
     spec:
       
