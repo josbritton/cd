@@ -1,5 +1,0 @@
-#!/bin/sh
-set -e
-kubectl -n tdarr delete statefulsets.apps tdarr
-kubectl -n tdarr delete cronjobs.batch tdarr-nanny
-kubectl -n tdarr delete daemonsets.apps tdarr-node

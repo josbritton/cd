@@ -1,7 +1,0 @@
-#!/bin/sh
-set -e
-for m in apps/tdarr/*; do
-  if [ "$m" != "apps/tdarr/daemonset.yaml" ]; then
-    kubectl apply -f "$m"
-  fi
-done
