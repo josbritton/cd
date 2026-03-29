@@ -75,14 +75,12 @@ ceph-csi-rbd:
     registrar:
       image:
         repository: registry.k8s.io/sig-storage/csi-node-driver-registrar
-        tag: v2.16.0
         pullPolicy: IfNotPresent
       resources: {}
 
     plugin:
       image:
         repository: quay.io/cephcsi/cephcsi
-        tag: v3.16.1
         pullPolicy: IfNotPresent
       resources: {}
 
@@ -162,7 +160,6 @@ ceph-csi-rbd:
     provisioner:
       image:
         repository: registry.k8s.io/sig-storage/csi-provisioner
-        tag: v6.1.1
         pullPolicy: IfNotPresent
       resources: {}
       ## For further options, check
@@ -176,7 +173,6 @@ ceph-csi-rbd:
       enabled: true
       image:
         repository: registry.k8s.io/sig-storage/csi-attacher
-        tag: v4.11.0
         pullPolicy: IfNotPresent
       resources: {}
       ## For further options, check
@@ -188,7 +184,6 @@ ceph-csi-rbd:
       enabled: true
       image:
         repository: registry.k8s.io/sig-storage/csi-resizer
-        tag: v2.1.0
         pullPolicy: IfNotPresent
       resources: {}
       ## For further options, check
@@ -198,7 +193,6 @@ ceph-csi-rbd:
     snapshotter:
       image:
         repository: registry.k8s.io/sig-storage/csi-snapshotter
-        tag: v8.5.0
         pullPolicy: IfNotPresent
       resources: {}
       ## For further options, check
