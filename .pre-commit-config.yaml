@@ -37,6 +37,12 @@ repos:
     entry: make build
     stages: [pre-commit]
 
+  - id: make-rebuild
+    name: make rebuild all
+    language: system
+    entry: make build -B
+    stages: [pre-push]
+
   - id: render-charts
     name: render helm charts
     language: script
