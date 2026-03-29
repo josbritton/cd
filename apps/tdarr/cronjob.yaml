@@ -24,7 +24,7 @@ spec:
           - name: kubectl
             image: registry.k8s.io/kubectl:v1.33.5@sha256:126d8f5898d19973cf0e2f7b89f06bd5338eaa11cba9b8a8a95985058af6012f
             command:
-            - rollout -n tdarr restart statefulset tdarr
+            - kubectl rollout -n tdarr restart statefulset tdarr
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
