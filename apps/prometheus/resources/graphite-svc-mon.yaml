@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/monitoring.coreos.com/servicemonitor_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: graphite-exporter
+  namespace: prometheus-operator
+  labels:
+    release: prometheus-operator
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: graphite-exporter
+      app.kubernetes.io/instance: graphite-exporter
+  endpoints:
+  - port: metrics
+    interval: 10s

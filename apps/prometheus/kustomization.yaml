@@ -14,6 +14,9 @@ resources:
 - ./resources/stork-agent-endpoints-bind.yaml
 - ./resources/stork-agent-servicemonitor-bind.yaml
 - ./resources/prometheusrule.yaml
+- ./resources/graphite-exporter-deployment.yaml
+- ./resources/graphite-svc-mon.yaml
+- ./resources/graphite-svc.yaml
 # yamllint disable-line rule:comments
 - github.com/dotdc/grafana-dashboards-kubernetes?ref=a5ce3d43e0c970f464cada289ec1a691426c7eaf # tag=v3.0.6
 generatorOptions:
@@ -31,6 +34,8 @@ configMapGenerator:
   files: [files/overview-dashboard.json]
 - name: airgradient-dashboard-cm
   files: [files/airgradient-dashboard.json]
+- name: graphite-mapping-cm
+  files: [files/graphite_mapping.conf]
 patches:
 - path: overlays/prometheus-crds-annotations.yaml
   target:
