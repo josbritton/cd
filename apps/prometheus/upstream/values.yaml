@@ -143,6 +143,13 @@ kube-prometheus-stack:
         scheme: http
         static_configs:
         - targets: [navidrome.navidrome.svc.cluster.local:4533]
+      - job_name: netdata
+        scheme: http
+        metrics_path: /api/v1/allmetrics
+        params:
+          format: [prometheus]
+        static_configs:
+        - targets: [nas1.private.swifthomelab.net:19999]
       externalLabels:
         cluster: cluster.prod-1
   grafana:
