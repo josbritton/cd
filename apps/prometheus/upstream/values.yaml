@@ -149,6 +149,7 @@ kube-prometheus-stack:
         params:
           format: [prometheus]
           source: [sum]
+          help: ["yes"]
         static_configs:
         - targets: [nas1.private.swifthomelab.net:19999]
       - job_name: netdata-avg
@@ -157,6 +158,7 @@ kube-prometheus-stack:
         params:
           format: [prometheus]
           source: [average]
+          help: ["yes"]
         static_configs:
         - targets: [nas1.private.swifthomelab.net:19999]
       - job_name: netdata-raw
@@ -165,6 +167,7 @@ kube-prometheus-stack:
         params:
           format: [prometheus]
           source: [as-collected]
+          help: ["yes"]
         static_configs:
         - targets: [nas1.private.swifthomelab.net:19999]
       externalLabels:
