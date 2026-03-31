@@ -104,6 +104,8 @@ kube-prometheus-stack:
   prometheus:
     enabled: true
     prometheusSpec:
+      enableFeatures:
+      - promql-experimental-functions
       enableAdminAPI: false
       ruleSelectorNilUsesHelmValues: false
       serviceMonitorSelectorNilUsesHelmValues: false

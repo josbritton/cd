@@ -77157,6 +77157,8 @@ spec:
   listenLocal: false
   enableOTLPReceiver: false
   enableAdminAPI: false
+  enableFeatures:
+  - promql-experimental-functions
   retention: "10d"
   tsdb:
     outOfOrderTimeWindow: 0s
