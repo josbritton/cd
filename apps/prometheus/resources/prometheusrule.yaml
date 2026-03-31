@@ -13,8 +13,8 @@ spec:
     rules:
     - record: namespace:container_cpu_usage_seconds:sum_rate1m
       labels: {}
-      expr: >-
-        sum by (namespace) (rate(container_cpu_usage_seconds_total{image!=""}[1m]))
+      expr: |2
+          sum by (namespace) (rate(container_cpu_usage_seconds_total{image!=""}[1m]))
         + on (namespace)
           (
             sum by (namespace) (
@@ -28,8 +28,8 @@ spec:
             )
           )
     - record: namespace:container_memory_working_set_bytes:sum
-      expr: >-
-        sum by (namespace) (container_memory_working_set_bytes{image!=""})
+      expr: |2
+          sum by (namespace) (container_memory_working_set_bytes{image!=""})
         + on (namespace)
           (
             sum by (namespace) (
