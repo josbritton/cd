@@ -18,6 +18,8 @@ data:
     targetingKey = https://grafana.swifthomelab.net/
     [server]
     root_url = https://grafana.swifthomelab.net/
+    [feature_toggles]
+    dashboardNewLayouts=true
 kind: ConfigMap
 metadata:
   name: prometheus-operator-grafana
