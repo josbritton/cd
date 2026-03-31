@@ -82,3 +82,10 @@ spec:
           0.99,
           sum by (instance, le) (rate(etcd_disk_backend_commit_duration_seconds_bucket{job=~".*etcd.*"}[5m]))
         )
+    - record: dimension_family:netdata_disk_space_bytes:sum
+      expr: >-
+        sum by (dimension,family) (
+            (netdata_disk_space{family="/mnt/artemis/data"} * 16384)
+          or
+            (netdata_disk_space{family=~"/mnt/artemis(|/home|/pve)"} * 131072)
+        )
