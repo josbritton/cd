@@ -153,7 +153,7 @@ kube-prometheus-stack:
           source: [sum]
           help: ["yes"]
         static_configs:
-        - targets: [nas1.private.swifthomelab.net:19999]
+        - targets: [nas1.private.swifthomelab.net:6999]
       - job_name: netdata-avg
         scheme: http
         metrics_path: /api/v1/allmetrics
@@ -162,7 +162,7 @@ kube-prometheus-stack:
           source: [average]
           help: ["yes"]
         static_configs:
-        - targets: [nas1.private.swifthomelab.net:19999]
+        - targets: [nas1.private.swifthomelab.net:6999]
       - job_name: netdata-raw
         scheme: http
         metrics_path: /api/v1/allmetrics
@@ -171,7 +171,7 @@ kube-prometheus-stack:
           source: [as-collected]
           help: ["yes"]
         static_configs:
-        - targets: [nas1.private.swifthomelab.net:19999]
+        - targets: [nas1.private.swifthomelab.net:6999]
       externalLabels:
         cluster: cluster.prod-1
   grafana:
