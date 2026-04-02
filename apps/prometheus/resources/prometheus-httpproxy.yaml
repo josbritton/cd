@@ -26,6 +26,5 @@ spec:
     - name: prometheus-operated
       port: 9090
     timeoutPolicy:
-      idle: 600s
-      idleConnection: 600s
-      response: infinity
+      idle: infinity  # prometheus SSE does not emit keepalive events
+      response: infinity  # also needed
