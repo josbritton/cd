@@ -145,26 +145,6 @@ kube-prometheus-stack:
         scheme: http
         static_configs:
         - targets: [navidrome.navidrome.svc.cluster.local:4533]
-      - job_name: netdata-sum
-        scheme: http
-        metrics_path: /api/v1/allmetrics
-        params:
-          format: [prometheus]
-          source: [sum]
-          help: ["yes"]
-          types: ["yes"]
-        static_configs:
-        - targets: [nas1.private.swifthomelab.net:6999]
-      - job_name: netdata-avg
-        scheme: http
-        metrics_path: /api/v1/allmetrics
-        params:
-          format: [prometheus]
-          source: [average]
-          help: ["yes"]
-          types: ["yes"]
-        static_configs:
-        - targets: [nas1.private.swifthomelab.net:6999]
       - job_name: netdata-raw
         scheme: http
         metrics_path: /api/v1/allmetrics
