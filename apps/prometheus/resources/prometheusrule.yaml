@@ -89,3 +89,8 @@ spec:
           or
             (netdata_disk_space{family=~"/mnt/artemis(|/home|/pve)"} * 131072)
         )
+    - record: dimension:netdata_disk_space_bytes:max
+      expr: >-
+        max by (dimension) (
+          dimension_family:netdata_disk_space_bytes:sum{dimension="avail"}
+        )
