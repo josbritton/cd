@@ -94,3 +94,8 @@ spec:
         max by (dimension) (
           dimension_family:netdata_disk_space_bytes:sum{dimension="avail"}
         )
+    - record: instance_job_family:netdata_cpu_cpu:avg_sum_rate30s
+      expr: >-
+        avg by (instance, job, family) (
+          sum by (instance, job, chart, family) (rate(netdata_cpu_cpu_total{dimension!="idle"}[30s]))
+        )
