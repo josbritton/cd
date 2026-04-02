@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/projectcontour.io/httpproxy_v1.json
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: prometheus-proxy
+  namespace: prometheus-operator
+spec:
+  virtualhost:
+    fqdn: prometheus.swifthomelab.net
+    tls:
+      secretName: cert-manager/prometheus-swifthomelab-net
+  routes:
+  - conditions:
+    - prefix: /
+    services:
+    - name: prometheus-operated
+      port: 9090
+    timeoutPolicy:
+      response: 60s  # if NULL, uses 15s (envoy default)
+  - conditions:
+    - prefix: /api/v1/notifications/live
+    - header:
+        name: Accept
+        contains: text/event-stream
+    services:
+    - name: prometheus-operated
+      port: 9090
+    timeoutPolicy:
+      idle: 600s
+      idleConnection: 600s
+      response: infinity

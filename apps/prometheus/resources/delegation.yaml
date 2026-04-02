@@ -9,3 +9,6 @@ spec:
   - secretName: grafana-swifthomelab-net
     targetNamespaces:
     - prometheus-operator
+  - secretName: prometheus-swifthomelab-net
+    targetNamespaces:
+    - prometheus-operator

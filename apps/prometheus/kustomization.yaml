@@ -17,6 +17,8 @@ resources:
 - ./resources/graphite-exporter-deployment.yaml
 - ./resources/graphite-svc-mon.yaml
 - ./resources/graphite-svc.yaml
+- ./resources/prometheus-cert.yaml
+- ./resources/prometheus-httpproxy.yaml
 # yamllint disable-line rule:comments
 - github.com/dotdc/grafana-dashboards-kubernetes?ref=a5ce3d43e0c970f464cada289ec1a691426c7eaf # tag=v3.0.6
 generatorOptions:
