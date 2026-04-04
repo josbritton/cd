@@ -17,21 +17,24 @@ k8s3.private.swifthomelab.net   Ready    control-plane   3m3s    v1.28.6
 
 (ArgoCD-cli installation not necessary)
 
-1. Bootstrap ArgoCD and wait for it to come up
+1. Create the ArgoCD namespace
 ```bash
 kubectl create namespace argocd
-kubectl apply -n argocd -k bootstrap/install && kubectl -n argocd rollout status deployment argocd-server
 ```
-2. Install base applications (argo-cd, root, cluster-resources)
+2. Bootstrap ArgoCD and wait for it to come up
 ```bash
-kubectl apply -f bootstrap/
+kubectl apply -n argocd -k bootstrap/install --server-side && kubectl -n argocd rollout status deployment argocd-server
+```
+3. Install root application
+```bash
+kubectl apply -f defs/root.yaml
 ```
 Base application definition
 - `argo-cd` manages argo-cd installtion itself, reconciles ownership of resources after initial installation with step 1.
 - `root` manages applications in 'app-of-apps' pattern on `default` project
 - `cluster-resources` owns global cluster resources that should be preserved on application deletion (like the `argocd` namespace)
 
-3. Update ArgoCD user password
+4. Update ArgoCD user password
     1. Generate password hash using bcrypt ([Python implementation](https://pypi.org/project/bcrypt/))
     ```bash
     python3 -I
@@ -72,22 +75,25 @@ Base application definition
     argocd account update-password
     ```
 
-4. Forward ArgoCD server on loopback port 8443/HTTPS
+5. Forward ArgoCD server on loopback port 8443/HTTPS
+
+> http://service:443/ -> http://localhost:8443/
+
 ```bash
 kubectl port-forward svc/argocd-server -n argocd 8443:443
 ```
 
-5. Sign-in to ArgoCD via web UI using new password
+6. Sign-in to ArgoCD via web UI using new password
 
-6. Manually sync all applications
+7. Manually sync all applications
 <!-- <insert screenshot> -->
 
-7. Restart admin server to apply HTTPs patch
+8. Restart admin server to apply HTTPs patch
 ```bash
 kubectl -n argocd rollout restart deployment argocd-server && kubectl -n argocd rollout status deployment argocd-server
 ```
 
-8. ArgoCD is now available at ingress (done)
+9. ArgoCD is now available at ingress (done)
 
 <!-- 7. Patch ArgoCD to listen to HTTP and reject HTTPS -->
 <!-- ```bash -->
@@ -100,9 +106,9 @@ Note: `https://kubernetes.default.svc` is the default address for the local clus
 
 This repository follows the *app of apps* pattern described [here](https://argo-cd.readthedocs.io/en/stable/operator-manual/cluster-bootstrapping/#app-of-apps-pattern). Manual pinning of cluster version and strict access control is necesarry due to the inherent danger of auto-bootstrapping clusters.
 
-## Signing-in to Kubernetes dashboard
-
-```bash
-kubectl -n kubernetes-dashboard create token admin
-kubectl -n kubernetes-dashboard get secret admin -o jsonpath={".data.token"} | base64 -d
-```
+<!-- ## Signing-in to Kubernetes dashboard -->
+<!---->
+<!-- ```bash -->
+<!-- kubectl -n kubernetes-dashboard create token admin -->
+<!-- kubectl -n kubernetes-dashboard get secret admin -o jsonpath={".data.token"} | base64 -d -->
+<!-- ``` -->
