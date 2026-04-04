@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/monitoring.coreos.com/servicemonitor_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: ceph-mgr
+  namespace: prometheus-operator
+  labels:
+    release: prometheus-operator
+    app.kubernetes.io/instance: prometheus-operator
+    app.kubernetes.io/name: prometheus-operator-ceph-mgr
+spec:
+  endpoints:
+  - port: metrics
+    interval: 10s
+    honorLabels: true
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: prometheus-operator
+      app.kubernetes.io/name: prometheus-operator-ceph-mgr

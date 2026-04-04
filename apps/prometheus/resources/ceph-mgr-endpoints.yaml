@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/endpointslice-discovery-v1.json
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: ceph-mgr
+  namespace: prometheus-operator
+  labels:
+    kubernetes.io/service-name: ceph-mgr-svc  # required
+    app.kubernetes.io/instance: prometheus-operator
+    app.kubernetes.io/name: prometheus-operator-ceph-mgr
+ports:
+- name: metrics
+  port: 9283
+  protocol: TCP
+# addressType: FQDN
+# endpoints:
+# - addresses:
+#   - pve1.private.swifthomelab.net
+# - addresses:
+#   - pve2.private.swifthomelab.net
+# - addresses:
+#   - pve3.private.swifthomelab.net
+addressType: IPv4
+endpoints:
+- addresses:
+  - 10.0.8.20
+- addresses:
+  - 10.0.8.21
+- addresses:
+  - 10.0.8.22
