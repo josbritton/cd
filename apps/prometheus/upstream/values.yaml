@@ -156,6 +156,14 @@ kube-prometheus-stack:
           types: ["yes"]
         static_configs:
         - targets: [nas1.private.swifthomelab.net:6999]
+      - job_name: ceph-mgr
+        scrape_interval: 10s
+        honor_labels: true
+        scheme: http
+        static_configs:
+        - targets: [pve1.private.swifthomelab.net:9283]
+        - targets: [pve2.private.swifthomelab.net:9283]
+        - targets: [pve3.private.swifthomelab.net:9283]
       externalLabels:
         cluster: cluster.prod-1
   grafana:
