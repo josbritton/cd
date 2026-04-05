@@ -11,10 +11,11 @@ metadata:
   - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  source:
-    path: apps/prometheus
-    repoURL: https://github.com/JosBritton/cd.git
-    targetRevision: HEAD
+  sources:
+  - path: &path apps/prometheus
+    repoURL: https://github.com/josbritton/cd.git
+  - path: *path
+    repoURL: https://git.swifthomelab.net/josbritton/cd.git
   destination:
     server: https://kubernetes.default.svc
     namespace: prometheus-operator

@@ -19,9 +19,11 @@ spec:
     - /status
     kind: Application
   project: default
-  source:
-    path: defs
-    repoURL: https://github.com/JosBritton/cd.git
+  sources:
+  - path: &path defs
+    repoURL: https://github.com/josbritton/cd.git
+  - path: *path
+    repoURL: https://git.swifthomelab.net/josbritton/cd.git
   syncPolicy:
     syncOptions:
     - allowEmpty=true

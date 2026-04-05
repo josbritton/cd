@@ -18,9 +18,11 @@ spec:
     - /status
     kind: Application
   project: default
-  source:
-    path: bootstrap/cluster-resources/in-cluster
-    repoURL: https://github.com/JosBritton/cd.git
+  sources:
+  - path: &path bootstrap/cluster-resources/in-cluster
+    repoURL: https://github.com/josbritton/cd.git
+  - path: *path
+    repoURL: https://git.swifthomelab.net/josbritton/cd.git
 status:
   health: {}
   summary: {}

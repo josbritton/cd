@@ -13,10 +13,11 @@ spec:
     namespace: tdarr
     server: https://kubernetes.default.svc
   project: default
-  source:
-    path: apps/tdarr
-    repoURL: https://github.com/JosBritton/cd.git
-    targetRevision: HEAD
+  sources:
+  - path: &path apps/tdarr
+    repoURL: https://github.com/josbritton/cd.git
+  - path: *path
+    repoURL: https://git.swifthomelab.net/josbritton/cd.git
   syncPolicy:
     syncOptions:
     - CreateNamespace=true

@@ -19,10 +19,11 @@ spec:
     jsonPointers:
     - /spec/preserveUnknownFields
   project: default
-  source:
-    path: apps/contour
-    repoURL: https://github.com/JosBritton/cd.git
-    targetRevision: HEAD
+  sources:
+  - path: &path apps/contour
+    repoURL: https://github.com/josbritton/cd.git
+  - path: *path
+    repoURL: https://git.swifthomelab.net/josbritton/cd.git
   syncPolicy:
     syncOptions:
     - CreateNamespace=true
