@@ -16,7 +16,14 @@ contour:
         ephemeral-storage: 2Gi
         memory: 2500Mi
     shutdownManager:
-      resourcesPreset: small
+      resources:
+        limits:
+          ephemeral-storage: 2Gi
+          memory: 768Mi
+        requests:
+          cpu: 500m
+          ephemeral-storage: 50Mi
+          memory: 512Mi
   contour:
     resources:
       requests:

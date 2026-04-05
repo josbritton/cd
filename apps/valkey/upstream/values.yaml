@@ -5,3 +5,13 @@ valkey:
     defaultStorageClass: csi-rbd-sc
   replica:
     replicaCount: 1
+    resources: &resources
+      limits:
+        ephemeral-storage: 2Gi
+        memory: 192Mi
+      requests:
+        cpu: 100m
+        ephemeral-storage: 50Mi
+        memory: 128Mi
+  primary:
+    resources: *resources

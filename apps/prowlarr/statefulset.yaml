@@ -4,6 +4,8 @@ kind: StatefulSet
 metadata:
   name: prowlarr
   namespace: prowlarr
+  annotations:
+    argocd.argoproj.io/sync-options: ServerSideApply=true
   labels:
     app: prowlarr
     app.kubernetes.io/name: prowlarr
@@ -82,7 +84,9 @@ spec:
         - name: PROWLARR__PORT
           value: "9696"
   volumeClaimTemplates:
-  - metadata:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
       name: prowlarr
       labels:
         app.kubernetes.io/part-of: prowlarr

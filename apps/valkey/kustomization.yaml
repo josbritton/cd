@@ -3,3 +3,12 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
 - ./resources/upstream.yaml
+patches:
+- target:
+    name: .*
+    namespace: valkey
+    kind: StatefulSet
+  patch: |-
+    - op: add
+      path: /metadata/annotations/argocd.argoproj.io~1sync-options
+      value: ServerSideApply=true

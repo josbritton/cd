@@ -3,6 +3,8 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: vaultwarden
+  annotations:
+    argocd.argoproj.io/sync-options: ServerSideApply=true
   labels:
     name: vaultwarden
     app: vaultwarden
@@ -52,7 +54,9 @@ spec:
           limits:
             memory: 200Mi
   volumeClaimTemplates:
-  - metadata:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
       name: vaultwarden
     spec:
       accessModes: [ReadWriteOnce]

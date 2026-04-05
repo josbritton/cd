@@ -530,7 +530,6 @@ spec:
                 - /health/ping_readiness_local.sh 1
           resources:
             limits:
-              cpu: 150m
               ephemeral-storage: 2Gi
               memory: 192Mi
             requests:
@@ -733,7 +732,6 @@ spec:
                 - /health/ping_readiness_local_and_primary.sh 1
           resources:
             limits:
-              cpu: 150m
               ephemeral-storage: 2Gi
               memory: 192Mi
             requests:
