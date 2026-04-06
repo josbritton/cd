@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gitea-app-ini
+  namespace: gitea
+data:
+  cache: |-
+    ADAPTER=redis
+  database: |-
+    DB_TYPE=postgres
+    HOST=postgres-lb.cloudnative-pg.svc.cluster.local:5432
+    NAME=gitea
+    USER=postgres
+  indexer: |-
+    REPO_INDEXER_ENABLED=true
+    REPO_INDEXER_PATH=indexers/repos.bleve
+    MAX_FILE_SIZE=1048576
+    TYPE_BLEVE_MAX_FUZZINESS=2
+    REPO_INDEXER_INCLUDE=
+  metrics: |-
+    ENABLED=true
+  attachment: |-
+    MAX_SIZE=8192
+    MAX_FILES=10
+  queue: |-
+    TYPE=redis
+  repository: |-
+    DEFAULT_BRANCH=master
+    ROOT=/data/git/gitea-repositories
+    DEFAULT_PUSH_CREATE_PRIVATE=false
+    ENABLE_PUSH_CREATE_USER=true
+  repository.upload: |-
+    FILE_MAX_SIZE=500
+    MAX_FILES=50
+  ui: |-
+    DEFAULT_SHOW_FULL_NAME=true
+  security: |-
+    INSTALL_LOCK=true
+    REVERSE_PROXY_TRUSTED_PROXIES=127.0.0.0/8,::1/128,10.233.0.0/16,10.0.8.27,10.0.8.28
+  server: |-
+    APP_DATA_PATH=/data
+    DOMAIN=git.swifthomelab.net
+    ENABLE_PPROF=false
+    HTTP_PORT=3000
+    PROTOCOL=http
+    ROOT_URL=https://git.swifthomelab.net:443
+    SSH_DOMAIN=git.swifthomelab.net
+    SSH_LISTEN_PORT=2222
+    START_SSH_SERVER=true
+  session: |-
+    PROVIDER=redis
+  service: |-
+    ALLOW_ONLY_INTERNAL_REGISTRATION=true

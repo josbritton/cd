@@ -347,6 +347,7 @@ spec:
     - ReadWriteOnce
   volumeMode: Filesystem
   
+  storageClassName: "csi-rbd-sc"
   resources:
     requests:
       storage: 10Gi
@@ -444,10 +445,10 @@ spec:
     spec:
       
       securityContext:
-        fsGroup: 1000
+        fsGroup: 65534
       initContainers:
         - name: init-directories
-          image: "docker.io/gitea/gitea:1.23.8-rootless@sha256:331875f35bdcc3c1110fc8410a4e809e3103ebb091ef424fec2df53ac1b658fc"
+          image: "docker.io/gitea/gitea:latest-rootless@sha256:be0b89adf2fc8657df508303d919c3be33e6413605882919f702177d62960c9a"
           imagePullPolicy: IfNotPresent
           command:
             - "/usr/sbinx/init_directory_structure.sh"
@@ -469,14 +470,24 @@ spec:
               mountPath: /data
             
           securityContext:
-            {}
+            allowPrivilegeEscalation: false
+            capabilities:
+              add:
+              - SYS_CHROOT
+              drop:
+              - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+            runAsGroup: 65534
+            runAsNonRoot: true
+            runAsUser: 65534
           resources:
             limits: {}
             requests:
               cpu: 100m
               memory: 128Mi
         - name: init-app-ini
-          image: "docker.io/gitea/gitea:1.23.8-rootless@sha256:331875f35bdcc3c1110fc8410a4e809e3103ebb091ef424fec2df53ac1b658fc"
+          image: "docker.io/gitea/gitea:latest-rootless@sha256:be0b89adf2fc8657df508303d919c3be33e6413605882919f702177d62960c9a"
           imagePullPolicy: IfNotPresent
           command:
           - "/usr/sbinx/config_environment.sh"
@@ -502,21 +513,45 @@ spec:
               mountPath: /data
             - name: inline-config-sources
               mountPath: /env-to-ini-mounts/inlines/
+            - name: additional-config-sources-0
+              mountPath: "/env-to-ini-mounts/additionals/0/"
+            - name: additional-config-sources-1
+              mountPath: "/env-to-ini-mounts/additionals/1/"
             
           securityContext:
-            {}
+            allowPrivilegeEscalation: false
+            capabilities:
+              add:
+              - SYS_CHROOT
+              drop:
+              - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+            runAsGroup: 65534
+            runAsNonRoot: true
+            runAsUser: 65534
           resources:
             limits: {}
             requests:
               cpu: 100m
               memory: 128Mi
         - name: configure-gitea
-          image: "docker.io/gitea/gitea:1.23.8-rootless@sha256:331875f35bdcc3c1110fc8410a4e809e3103ebb091ef424fec2df53ac1b658fc"
+          image: "docker.io/gitea/gitea:latest-rootless@sha256:be0b89adf2fc8657df508303d919c3be33e6413605882919f702177d62960c9a"
           command:
           - "/usr/sbinx/configure_gitea.sh"
           imagePullPolicy: IfNotPresent
           securityContext:
-            runAsUser: 1000
+            allowPrivilegeEscalation: false
+            capabilities:
+              add:
+              - SYS_CHROOT
+              drop:
+              - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+            runAsGroup: 65534
+            runAsNonRoot: true
+            runAsUser: 65534
           env:
             - name: GITEA_APP_INI
               value: /data/gitea/conf/app.ini
@@ -529,9 +564,15 @@ spec:
             - name: HOME
               value: /data/gitea/git
             - name: GITEA_ADMIN_USERNAME
-              value: "gitea_admin"
+              valueFrom:
+                secretKeyRef:
+                  key:  username
+                  name: gitea-admin-secret
             - name: GITEA_ADMIN_PASSWORD
-              value: "r8sA8CPHD9!bt6d"
+              valueFrom:
+                secretKeyRef:
+                  key:  password
+                  name: gitea-admin-secret
             - name: GITEA_ADMIN_PASSWORD_MODE
               value: keepUpdated
           volumeMounts:
@@ -550,7 +591,7 @@ spec:
       terminationGracePeriodSeconds: 60
       containers:
         - name: gitea
-          image: "docker.io/gitea/gitea:1.23.8-rootless@sha256:331875f35bdcc3c1110fc8410a4e809e3103ebb091ef424fec2df53ac1b658fc"
+          image: "docker.io/gitea/gitea:latest-rootless@sha256:be0b89adf2fc8657df508303d919c3be33e6413605882919f702177d62960c9a"
           imagePullPolicy: IfNotPresent
           env:
             # SSH Port values have to be set here as well for openssh configuration
@@ -594,13 +635,24 @@ spec:
           resources:
             {}
           securityContext:
-            {}
+            allowPrivilegeEscalation: false
+            capabilities:
+              add:
+              - SYS_CHROOT
+              drop:
+              - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+            runAsGroup: 65534
+            runAsNonRoot: true
+            runAsUser: 65534
           volumeMounts:
             - name: temp
               mountPath: /tmp
             - name: data
               mountPath: /data
-            
+            - mountPath: /data/gitea/robots-txt
+              name: robots-txt
       volumes:
         - name: init
           secret:
@@ -610,9 +662,18 @@ spec:
           secret:
             secretName: gitea
             defaultMode: 110
+        - configMap:
+            name: robots-txt
+          name: robots-txt
         - name: inline-config-sources
           secret:
             secretName: gitea-inline-config
+        - name: additional-config-sources-0
+          secret:
+            secretName: gitea-app-ini-secret
+        - name: additional-config-sources-1
+          configMap:
+            name: gitea-app-ini
         - name: temp
           emptyDir: {}
         - name: data

@@ -6,12 +6,8 @@ resources:
 - ./resources/cert.yaml
 - ./resources/delegation.yaml
 - ./resources/httpproxy.yaml
-configMapGenerator:
-- name: public
-  files:
-  - ./resources/robots.txt
-generatorOptions:
-  disableNameSuffixHash: true
+- ./resources/gitea-app-ini.yaml
+- ./resources/robots-txt.yaml
 patches:
 - target:
     group: apps
@@ -23,39 +19,3 @@ patches:
     - op: replace
       path: /spec/revisionHistoryLimit
       value: 2
-    - op: add
-      path: /spec/template/spec/volumes
-      value:
-      - name: init
-        secret:
-          secretName: gitea-init
-          defaultMode: 110
-      - name: config
-        secret:
-          secretName: gitea
-          defaultMode: 110
-      - name: inline-config-sources
-        secret:
-          secretName: gitea-inline-config
-      - name: temp
-        emptyDir: {}
-      - name: data
-        persistentVolumeClaim:
-          claimName: gitea-shared-storage
-      - name: public
-        configMap:
-          name: public
-    - op: add
-      path: /spec/template/spec/containers/0/volumeMounts
-      value:
-      - name: temp
-        mountPath: /tmp
-      - name: data
-        mountPath: /data
-      - name: public
-        mountPath: /data/gitea/public
-
-# delete gitea secret
-- path: overlays/gitea.yaml
-- path: overlays/gitea-init.yaml
-- path: overlays/gitea-inline-config.yaml
