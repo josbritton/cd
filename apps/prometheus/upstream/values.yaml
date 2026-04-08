@@ -146,7 +146,7 @@ kube-prometheus-stack:
         static_configs:
         - targets: [navidrome.navidrome.svc.cluster.local:4533]
       - job_name: netdata-raw
-        scrape_interval: 5s
+        scrape_interval: 10s
         scheme: http
         metrics_path: /api/v1/allmetrics
         params:

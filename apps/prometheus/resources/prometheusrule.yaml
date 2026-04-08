@@ -9,7 +9,7 @@ metadata:
 spec:
   groups:
   - name: extra-provisioned.rules
-    interval: 15s
+    interval: 10s
     rules:
     - record: namespace:container_cpu_usage_seconds:sum_rate1m
       labels: {}
