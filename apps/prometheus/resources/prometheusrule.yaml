@@ -99,3 +99,6 @@ spec:
         avg by (instance, job, family) (
           sum by (instance, job, chart, family) (rate(netdata_cpu_cpu_total{dimension!="idle"}[30s]))
         )
+    - record: family_dimension:netdata_disk_io:sum_rate20s
+      expr: >-
+        sum by(family, dimension) (rate(netdata_disk_io_total[20s]))
