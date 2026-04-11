@@ -1,0 +1,9 @@
+# yaml-language-server: $schema=https://json.schemastore.org/chart.json
+apiVersion: v2
+name: fluent-bit
+version: 0.1.0
+
+dependencies:
+- name: fluent-bit
+  version: 0.57.2
+  repository: oci://ghcr.io/fluent/helm-charts
