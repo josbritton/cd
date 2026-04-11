@@ -1,0 +1,16 @@
+victoria-logs-single:
+  fullnameOverride: victoria-logs
+  server:
+    persistentVolume:
+      enabled: true
+      storageClassName: csi-rbd-sc
+      size: 20Gi
+    retentionPeriod: 14d
+    serviceMonitor:
+      enabled: true
+      extraLabels:
+        release: prometheus-operator
+  dashboards:
+    enabled: true
+    labels:
+      grafana_dashboard: "1"
