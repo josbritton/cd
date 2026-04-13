@@ -29,6 +29,9 @@ data:
   RUSTFS_OBS_LOGGER_LEVEL: "info"
   RUSTFS_OBS_ENVIRONMENT: "development"
   RUSTFS_REGION: "us-east-1"
+  RUSTFS_OBS_LOG_ROTATION_SIZE_MB: "20"
+  RUSTFS_OBS_LOG_ROTATION_TIME: "hour"
+  RUSTFS_OBS_LOG_KEEP_FILES: "10"
   RUSTFS_VOLUMES: "/data"
 ---
 # Source: rustfs/charts/rustfs/templates/pvc.yaml
@@ -63,7 +66,7 @@ spec:
   storageClassName: csi-rbd-sc
   resources:
     requests:
-      storage: 2Gi
+      storage: 512Mi
 ---
 # Source: rustfs/charts/rustfs/templates/service.yaml
 apiVersion: v1

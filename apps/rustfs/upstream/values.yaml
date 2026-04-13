@@ -11,4 +11,10 @@ rustfs:
   storageclass:
     name: csi-rbd-sc
     dataStorageSize: 4096Mi
-    logStorageSize: 2Gi
+    logStorageSize: 512Mi
+  config:
+    rustfs:
+      log_rotation:
+        size: 20
+        time: hour
+        keep_files: 10
