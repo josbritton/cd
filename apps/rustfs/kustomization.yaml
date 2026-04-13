@@ -6,3 +6,6 @@ resources:
 - ./resources/certificate.yaml
 - ./resources/delegation.yaml
 - ./resources/httpproxy.yaml
+patches:
+- path: overlays/image.yaml
+- path: overlays/test-image.yaml

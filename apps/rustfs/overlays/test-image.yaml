@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: rustfs-test-connection
+  namespace: rustfs
+  annotations:
+    helm.sh/hook: test
+  labels:
+    app.kubernetes.io/name: rustfs
+    app.kubernetes.io/instance: rustfs
+    app.kubernetes.io/managed-by: Helm
+spec:
+  containers:
+  - name: wget
+    image: busybox:stable@sha256:73aaf090f3d85aa34ee199857f03fa3a95c8ede2ffd4cc2cdb5b94e566b11662

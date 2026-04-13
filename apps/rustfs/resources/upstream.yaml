@@ -6,10 +6,10 @@ metadata:
   name: rustfs
   namespace: rustfs
   labels:
-    helm.sh/chart: rustfs-0.0.86
+    helm.sh/chart: rustfs-0.0.93
     app.kubernetes.io/name: rustfs
     app.kubernetes.io/instance: rustfs
-    app.kubernetes.io/version: "1.0.0-alpha.86"
+    app.kubernetes.io/version: "1.0.0-alpha.93"
     app.kubernetes.io/managed-by: Helm
 automountServiceAccountToken: true
 ---
@@ -72,10 +72,10 @@ metadata:
   name: rustfs-svc
   namespace: rustfs
   labels:
-    helm.sh/chart: rustfs-0.0.86
+    helm.sh/chart: rustfs-0.0.93
     app.kubernetes.io/name: rustfs
     app.kubernetes.io/instance: rustfs
-    app.kubernetes.io/version: "1.0.0-alpha.86"
+    app.kubernetes.io/version: "1.0.0-alpha.93"
     app.kubernetes.io/managed-by: Helm
 spec:
   type: ClusterIP
@@ -97,10 +97,10 @@ metadata:
   name: rustfs
   namespace: rustfs
   labels:
-    helm.sh/chart: rustfs-0.0.86
+    helm.sh/chart: rustfs-0.0.93
     app.kubernetes.io/name: rustfs
     app.kubernetes.io/instance: rustfs
-    app.kubernetes.io/version: "1.0.0-alpha.86"
+    app.kubernetes.io/version: "1.0.0-alpha.93"
     app.kubernetes.io/managed-by: Helm
 spec:
   replicas: 1
@@ -150,7 +150,7 @@ spec:
               mountPath: /mnt/rustfs
       containers:
         - name: rustfs
-          image: "rustfs/rustfs:1.0.0-alpha.86"
+          image: "rustfs/rustfs:1.0.0-alpha.93"
           command: ["/usr/bin/rustfs"]
           imagePullPolicy: IfNotPresent
           securityContext:
@@ -211,10 +211,10 @@ metadata:
   name: "rustfs-test-connection"
   namespace: rustfs
   labels:
-    helm.sh/chart: rustfs-0.0.86
+    helm.sh/chart: rustfs-0.0.93
     app.kubernetes.io/name: rustfs
     app.kubernetes.io/instance: rustfs
-    app.kubernetes.io/version: "1.0.0-alpha.86"
+    app.kubernetes.io/version: "1.0.0-alpha.93"
     app.kubernetes.io/managed-by: Helm
   annotations:
     "helm.sh/hook": test
