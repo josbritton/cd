@@ -1,0 +1,72 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/statefulset.json
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: memos
+  annotations:
+    argocd.argoproj.io/sync-options: ServerSideApply=true
+  labels:
+    app.kubernetes.io/name: memos
+    app.kubernetes.io/instance: memos
+  namespace: memos
+spec:
+  serviceName: memos
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: memos
+      app.kubernetes.io/instance: memos
+  revisionHistoryLimit: 3
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: memos
+        app.kubernetes.io/instance: memos
+    spec:
+      terminationGracePeriodSeconds: 120
+      containers:
+      - name: memos
+        image: neosmemo/memos:stable@sha256:3eefcc231141369accbd2f42bdc1a4c1e3b291fb6e288ff0deb60afa1b5d4727
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MEMOS_PORT
+          value: "5230"
+        - name: MEMOS_DRIVER
+          value: postgres
+        - name: MEMOS_INSTANCE_URL
+          value: https://memos.swifthomelab.net
+        - name: MEMOS_DSN
+          valueFrom:
+            secretKeyRef:
+              name: memos-dsn
+              key: connection-string
+        ports:
+        - name: http
+          containerPort: 5230
+        # livenessProbe:
+        #   httpGet:
+        #     path: /alive
+        #     port: 80
+        # readinessProbe:
+        #   httpGet:
+        #     path: /alive
+        #     port: 80
+        volumeMounts:
+        - mountPath: /var/opt/memos
+          name: memos
+        # resources:
+        #   requests:
+        #     cpu: 10m
+        #     memory: 20Mi
+        #   limits:
+        #     memory: 200Mi
+  volumeClaimTemplates:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: memos
+    spec:
+      accessModes: [ReadWriteOnce]
+      storageClassName: csi-rbd-sc
+      resources:
+        requests:
+          storage: 4Gi

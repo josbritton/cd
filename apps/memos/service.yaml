@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/service-v1.json
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: memos
+    app.kubernetes.io/instance: memos
+  name: memos
+  namespace: memos
+spec:
+  ports:
+  - name: http
+    port: 5230
+    targetPort: 5230
+  selector:
+    app.kubernetes.io/name: memos
+    app.kubernetes.io/instance: memos
+    statefulset.kubernetes.io/pod-name: memos-0
