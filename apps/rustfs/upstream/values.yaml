@@ -1,0 +1,14 @@
+rustfs:
+  secret:
+    existingSecret: rustfs-secret
+  mode:
+    standalone:
+      enabled: true
+    distributed:
+      enabled: false
+  ingress:
+    enabled: false
+  storageclass:
+    name: csi-rbd-sc
+    dataStorageSize: 4096Mi
+    logStorageSize: 2Gi

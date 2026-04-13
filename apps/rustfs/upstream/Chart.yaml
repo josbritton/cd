@@ -1,0 +1,9 @@
+# yaml-language-server: $schema=https://json.schemastore.org/chart.json
+apiVersion: v2
+name: rustfs
+version: 0.1.0
+
+dependencies:
+- name: rustfs
+  version: 0.0.86
+  repository: https://charts.rustfs.com
