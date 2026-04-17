@@ -96,7 +96,9 @@ spec:
           path: /mnt/artemis/data/media
           server: nas1.private.swifthomelab.net
   volumeClaimTemplates:
-  - metadata:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
       name: config
       labels:
         app.kubernetes.io/name: autobrr
