@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/projectcontour.io/tlscertificatedelegation_v1.json
+apiVersion: projectcontour.io/v1
+kind: TLSCertificateDelegation
+metadata:
+  name: autobrr-swifthomelab-net
+  namespace: cert-manager
+  labels:
+    app.kubernetes.io/name: autobrr
+    app.kubernetes.io/instance: autobrr
+    app.kubernetes.io/part-of: autobrr
+spec:
+  delegations:
+  - secretName: autobrr-swifthomelab-net
+    targetNamespaces:
+    - autobrr

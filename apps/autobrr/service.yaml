@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/service-v1.json
+apiVersion: v1
+kind: Service
+metadata:
+  name: autobrr
+  namespace: autobrr
+  labels:
+    app.kubernetes.io/name: autobrr
+    app.kubernetes.io/instance: autobrr
+    app.kubernetes.io/part-of: autobrr
+spec:
+  type: ClusterIP
+  publishNotReadyAddresses: false
+  ports:
+  - name: http
+    port: 7474
+    protocol: TCP
+    targetPort: 7474
+  selector:
+    app.kubernetes.io/name: autobrr
+    app.kubernetes.io/instance: autobrr
+    app.kubernetes.io/part-of: autobrr
+    statefulset.kubernetes.io/pod-name: autobrr-0

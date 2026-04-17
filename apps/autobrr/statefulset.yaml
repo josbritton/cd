@@ -1,0 +1,101 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/statefulset.json
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: autobrr
+  namespace: autobrr
+  labels:
+    app.kubernetes.io/name: autobrr
+    app.kubernetes.io/instance: autobrr
+    app.kubernetes.io/part-of: autobrr
+spec:
+  revisionHistoryLimit: 3
+  serviceName: autobrr
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: autobrr
+      app.kubernetes.io/instance: autobrr
+  replicas: 1
+  podManagementPolicy: Parallel
+  template:
+    spec:
+      restartPolicy: Always
+      resources:
+        requests:
+          cpu: 150m
+          memory: 75Mi
+        # limits:
+        #   memory: nil
+      securityContext:
+        fsGroup: 65534
+        fsGroupChangePolicy: OnRootMismatch
+        runAsGroup: 65534
+        runAsUser: 65534
+        runAsNonRoot: true
+      containers:
+      - name: autobrr
+        image: ghcr.io/autobrr/autobrr:latest@sha256:f0f4d73fcd77700b1c98233562cd94a78b9bf685a7594a0aac4f8a9436b5044d
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsGroup: 65534
+          runAsUser: 65534
+          runAsNonRoot: true
+        ports:
+        - name: http
+          containerPort: 7474
+          protocol: TCP
+        - name: metrics
+          containerPort: 9074
+          protocol: TCP
+        env:
+        - name: TZ
+          value: America/Vancouver
+        - name: AUTOBRR__PORT
+          value: "7474"
+        - name: AUTOBRR__LOG_LEVEL
+          value: INFO
+        - name: AUTOBRR__DATABASE_TYPE
+          value: postgres
+        - name: AUTOBRR__DATABASE_DSN
+          valueFrom:
+            secretKeyRef:
+              name: autobrr-dsn
+              key: connection-string
+              optional: false
+        - name: AUTOBRR__METRICS_ENABLED
+          value: "true"
+        - name: AUTOBRR__METRICS_HOST
+          value: 0.0.0.0
+        - name: AUTOBRR__METRICS_PORT
+          value: "9074"
+        volumeMounts:
+        - mountPath: /config
+          name: config
+        - mountPath: /mnt/media
+          name: media
+        livenessProbe: &probe
+          httpGet:
+            port: 7474
+            path: /
+        readinessProbe: *probe
+        startupProbe: *probe
+      volumes:
+      - name: media
+        nfs:
+          path: /mnt/artemis/data/media
+          server: nas1.private.swifthomelab.net
+  volumeClaimTemplates:
+  - metadata:
+      name: config
+      labels:
+        app.kubernetes.io/name: autobrr
+        app.kubernetes.io/part-of: autobrr
+      namespace: autobrr
+    spec:
+      storageClassName: csi-rbd-sc
+      accessModes: [ReadWriteOncePod]
+      resources:
+        requests:
+          storage: 2048Mi

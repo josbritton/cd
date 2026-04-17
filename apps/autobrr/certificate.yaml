@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: autobrr-swifthomelab-net
+  namespace: cert-manager
+  labels:
+    app.kubernetes.io/name: autobrr
+    app.kubernetes.io/instance: autobrr
+    app.kubernetes.io/part-of: autobrr
+spec:
+  secretName: autobrr-swifthomelab-net
+  issuerRef:
+    name: swifthomelab-net-issuer
+    kind: ClusterIssuer
+  commonName: autobrr.swifthomelab.net
+  dnsNames:
+  - autobrr.swifthomelab.net
