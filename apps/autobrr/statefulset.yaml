@@ -27,12 +27,6 @@ spec:
         app.kubernetes.io/part-of: autobrr
     spec:
       restartPolicy: Always
-      resources:
-        requests:
-          cpu: 150m
-          memory: 75Mi
-        # limits:
-        #   memory: nil
       securityContext:
         fsGroup: 65534
         fsGroupChangePolicy: OnRootMismatch
@@ -49,6 +43,12 @@ spec:
           runAsGroup: 65534
           runAsUser: 65534
           runAsNonRoot: true
+        resources:
+          requests:
+            cpu: 150m
+            memory: 75Mi
+          # limits:
+          #   memory: nil
         ports:
         - name: http
           containerPort: 7474
