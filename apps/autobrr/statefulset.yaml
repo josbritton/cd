@@ -8,6 +8,8 @@ metadata:
     app.kubernetes.io/name: autobrr
     app.kubernetes.io/instance: autobrr
     app.kubernetes.io/part-of: autobrr
+  annotations:
+    argocd.argoproj.io/sync-options: ServerSideApply=true
 spec:
   revisionHistoryLimit: 3
   serviceName: autobrr
@@ -57,10 +59,12 @@ spec:
         env:
         - name: TZ
           value: America/Vancouver
+        - name: UMASK
+          value: "0022"
         - name: AUTOBRR__PORT
           value: "7474"
         - name: AUTOBRR__LOG_LEVEL
-          value: INFO
+          value: DEBUG
         - name: AUTOBRR__DATABASE_TYPE
           value: postgres
         - name: AUTOBRR__DATABASE_DSN
