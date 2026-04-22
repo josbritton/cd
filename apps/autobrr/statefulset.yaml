@@ -82,8 +82,6 @@ spec:
         volumeMounts:
         - mountPath: /config
           name: config
-        - mountPath: /mnt/media
-          name: media
         - name: tmp
           mountPath: /tmp
         - name: logs
@@ -95,10 +93,6 @@ spec:
         readinessProbe: *probe
         startupProbe: *probe
       volumes:
-      - name: media
-        nfs:
-          path: /mnt/artemis/data/media
-          server: nas1.private.swifthomelab.net
       - name: tmp
         emptyDir: {}
       - name: logs
