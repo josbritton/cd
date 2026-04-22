@@ -64,7 +64,7 @@ spec:
         - name: AUTOBRR__PORT
           value: "7474"
         - name: AUTOBRR__LOG_LEVEL
-          value: DEBUG
+          value: INFO
         - name: AUTOBRR__DATABASE_TYPE
           value: postgres
         - name: AUTOBRR__DATABASE_DSN
