@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/projectcontour.io/httpproxy_v1.json
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: qui-ingress
+  namespace: qui
+  labels:
+    app.kubernetes.io/name: qui
+    app.kubernetes.io/instance: qui
+    app.kubernetes.io/part-of: qui
+spec:
+  virtualhost:
+    fqdn: qui.swifthomelab.net
+    tls:
+      secretName: cert-manager/qui-swifthomelab-net
+  routes:
+  - services:
+    - name: qui
+      port: 7476
+    timeoutPolicy:
+      response: 600s  # if NULL, uses 15s (envoy default)

@@ -1,0 +1,114 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/statefulset.json
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: qui
+  namespace: qui
+  labels:
+    app.kubernetes.io/name: qui
+    app.kubernetes.io/instance: qui
+    app.kubernetes.io/part-of: qui
+  annotations:
+    argocd.argoproj.io/sync-options: ServerSideApply=true
+spec:
+  revisionHistoryLimit: 3
+  serviceName: qui
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: qui
+      app.kubernetes.io/instance: qui
+  replicas: 1
+  podManagementPolicy: Parallel
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: qui
+        app.kubernetes.io/instance: qui
+        app.kubernetes.io/part-of: qui
+    spec:
+      restartPolicy: Always
+      securityContext:
+        fsGroup: 65534
+        fsGroupChangePolicy: OnRootMismatch
+        runAsGroup: 65534
+        runAsUser: 65534
+        runAsNonRoot: true
+      containers:
+      - name: qui
+        image: ghcr.io/autobrr/qui:latest@sha256:2e768c8509831afd1f606d27d9aa8e5f3fc722fac4ea88acfdc4fa3b0e9b13ae
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsGroup: 65534
+          runAsUser: 65534
+          runAsNonRoot: true
+        resources:
+          requests:
+            cpu: 150m
+            memory: 75Mi
+          # limits:
+          #   memory: nil
+        ports:
+        - name: http
+          containerPort: 7476
+          protocol: TCP
+        - name: metrics
+          containerPort: 9074
+          protocol: TCP
+        env:
+        - name: TZ
+          value: America/Vancouver
+        - name: UMASK
+          value: "0022"
+        - name: QUI__METRICS_ENABLED
+          value: "true"
+        - name: QUI__METRICS_HOST
+          value: 0.0.0.0
+        - name: QUI__METRICS_PORT
+          value: "9074"
+        - name: QUI__PORT
+          value: "7476"
+        - name: QUI__LOG_LEVEL
+          value: INFO
+        - name: QUI__DATABASE_ENGINE
+          value: postgres
+        - name: QUI__DATABASE_DSN
+          valueFrom:
+            secretKeyRef:
+              name: qui-dsn
+              key: connection-string
+              optional: false
+        volumeMounts:
+        - mountPath: /config
+          name: config
+        - name: tmp
+          mountPath: /tmp
+        - name: logs
+          mountPath: /var/logs
+        livenessProbe: &probe
+          httpGet:
+            port: 7476
+            path: /
+        readinessProbe: *probe
+        startupProbe: *probe
+      volumes:
+      - name: tmp
+        emptyDir: {}
+      - name: logs
+        emptyDir: {}
+  volumeClaimTemplates:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: config
+      labels:
+        app.kubernetes.io/name: qui
+        app.kubernetes.io/part-of: qui
+      namespace: qui
+    spec:
+      storageClassName: csi-rbd-sc
+      accessModes: [ReadWriteOncePod]
+      resources:
+        requests:
+          storage: 2048Mi

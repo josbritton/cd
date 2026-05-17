@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/service-v1.json
+apiVersion: v1
+kind: Service
+metadata:
+  name: qui
+  namespace: qui
+  labels:
+    app.kubernetes.io/name: qui
+    app.kubernetes.io/instance: qui
+    app.kubernetes.io/part-of: qui
+spec:
+  type: ClusterIP
+  publishNotReadyAddresses: false
+  ports:
+  - name: http
+    port: 7476
+    protocol: TCP
+    targetPort: 7476
+  - name: metrics
+    port: 9074
+    protocol: TCP
+    targetPort: 9074
+  selector:
+    app.kubernetes.io/name: qui
+    app.kubernetes.io/instance: qui
+    app.kubernetes.io/part-of: qui
+    statefulset.kubernetes.io/pod-name: qui-0
