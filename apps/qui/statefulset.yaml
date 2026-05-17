@@ -86,6 +86,8 @@ spec:
           mountPath: /tmp
         - name: logs
           mountPath: /var/logs
+        - name: media
+          mountPath: /mnt/media
         livenessProbe: &probe
           httpGet:
             port: 7476
@@ -97,6 +99,10 @@ spec:
         emptyDir: {}
       - name: logs
         emptyDir: {}
+      - name: media
+        nfs:
+          path: /mnt/artemis/data/media
+          server: nas1.private.swifthomelab.net
   volumeClaimTemplates:
   - apiVersion: v1
     kind: PersistentVolumeClaim
