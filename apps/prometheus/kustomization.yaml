@@ -22,23 +22,43 @@ resources:
 - ./resources/ceph-rules.yaml
 # yamllint disable-line rule:comments
 - github.com/dotdc/grafana-dashboards-kubernetes?ref=a5ce3d43e0c970f464cada289ec1a691426c7eaf # tag=v3.0.6
-generatorOptions:
-  disableNameSuffixHash: true
-  labels:
-    grafana_dashboard: "1"
 configMapGenerator:
 - name: argocd-dashboard-cm
   files: [files/argocd-dashboard.json]
+  options:
+    disableNameSuffixHash: true
+    labels:
+      grafana_dashboard: "1"
 - name: proxmox-dashboard-cm
   files: [files/proxmox-cluster-dashboard.json]
+  options:
+    disableNameSuffixHash: true
+    labels:
+      grafana_dashboard: "1"
 - name: bind9-resolver-dashboard-cm
   files: [files/bind9-resolver.json]
+  options:
+    disableNameSuffixHash: true
+    labels:
+      grafana_dashboard: "1"
 - name: overview-dashboard-cm
   files: [files/overview-dashboard.json]
+  options:
+    disableNameSuffixHash: true
+    labels:
+      grafana_dashboard: "1"
 - name: airgradient-dashboard-cm
   files: [files/airgradient-dashboard.json]
+  options:
+    disableNameSuffixHash: true
+    labels:
+      grafana_dashboard: "1"
 - name: graphite-mapping-cm
   files: [files/graphite_mapping.conf]
+  options:
+    disableNameSuffixHash: true
+    labels:
+      grafana_dashboard: "1"
 patches:
 - path: overlays/prometheus-crds-annotations.yaml
   target:
