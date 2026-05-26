@@ -59,6 +59,37 @@ configMapGenerator:
     disableNameSuffixHash: true
     labels:
       grafana_dashboard: "1"
+- name: ceph-cluster-dashboard-cm
+  files:
+  # - ceph-application-overview.json=https://raw.githubusercontent.com/ceph/ceph/refs/tags/v20.2.1/monitoring/ceph-mixin/dashboards_out/ceph-application-overview.json
+  # - ceph-cluster-advanced.json=https://raw.githubusercontent.com/ceph/ceph/refs/tags/v20.2.1/monitoring/ceph-mixin/dashboards_out/ceph-cluster-advanced.json
+  - ceph-cluster.json=https://raw.githubusercontent.com/ceph/ceph/refs/tags/v20.2.1/monitoring/ceph-mixin/dashboards_out/ceph-cluster.json
+  # - ceph-nvmeof-performance.json=https://raw.githubusercontent.com/ceph/ceph/refs/tags/v20.2.1/monitoring/ceph-mixin/dashboards_out/ceph-nvmeof-performance.json
+  # - ceph-nvmeof.json=https://raw.githubusercontent.com/ceph/ceph/refs/tags/v20.2.1/monitoring/ceph-mixin/dashboards_out/ceph-nvmeof.json
+  # - cephfs-subvolume.json=https://raw.githubusercontent.com/ceph/ceph/refs/tags/v20.2.1/monitoring/ceph-mixin/dashboards_out/cephfs-subvolume.json
+  # - cephfsdashboard.json=https://raw.githubusercontent.com/ceph/ceph/refs/tags/v20.2.1/monitoring/ceph-mixin/dashboards_out/cephfsdashboard.json
+  - host-details.json=https://raw.githubusercontent.com/ceph/ceph/refs/tags/v20.2.1/monitoring/ceph-mixin/dashboards_out/host-details.json
+  - hosts-overview.json=https://raw.githubusercontent.com/ceph/ceph/refs/tags/v20.2.1/monitoring/ceph-mixin/dashboards_out/hosts-overview.json
+  # - multi-cluster-overview.json=https://raw.githubusercontent.com/ceph/ceph/refs/tags/v20.2.1/monitoring/ceph-mixin/dashboards_out/multi-cluster-overview.json
+  # - node-exporter.json=https://raw.githubusercontent.com/ceph/ceph/refs/tags/v20.2.1/monitoring/ceph-mixin/dashboards_out/node-exporter.json
+  - osd-device-details.json=https://raw.githubusercontent.com/ceph/ceph/refs/tags/v20.2.1/monitoring/ceph-mixin/dashboards_out/osd-device-details.json
+  - osds-overview.json=https://raw.githubusercontent.com/ceph/ceph/refs/tags/v20.2.1/monitoring/ceph-mixin/dashboards_out/osds-overview.json
+  - pool-detail.json=https://raw.githubusercontent.com/ceph/ceph/refs/tags/v20.2.1/monitoring/ceph-mixin/dashboards_out/pool-detail.json
+  - pool-overview.json=https://raw.githubusercontent.com/ceph/ceph/refs/tags/v20.2.1/monitoring/ceph-mixin/dashboards_out/pool-overview.json
+  # - radosgw-detail.json=https://raw.githubusercontent.com/ceph/ceph/refs/tags/v20.2.1/monitoring/ceph-mixin/dashboards_out/radosgw-detail.json
+  # - radosgw-overview.json=https://raw.githubusercontent.com/ceph/ceph/refs/tags/v20.2.1/monitoring/ceph-mixin/dashboards_out/radosgw-overview.json
+  # - radosgw-sync-overview.json=https://raw.githubusercontent.com/ceph/ceph/refs/tags/v20.2.1/monitoring/ceph-mixin/dashboards_out/radosgw-sync-overview.json
+  - rbd-details.json=https://raw.githubusercontent.com/ceph/ceph/refs/tags/v20.2.1/monitoring/ceph-mixin/dashboards_out/rbd-details.json
+  - rbd-overview.json=https://raw.githubusercontent.com/ceph/ceph/refs/tags/v20.2.1/monitoring/ceph-mixin/dashboards_out/rbd-overview.json
+  # - rgw-s3-analytics.json=https://raw.githubusercontent.com/ceph/ceph/refs/tags/v20.2.1/monitoring/ceph-mixin/dashboards_out/rgw-s3-analytics.json
+  # - smb-overview.json=https://raw.githubusercontent.com/ceph/ceph/refs/tags/v20.2.1/monitoring/ceph-mixin/dashboards_out/smb-overview.json
+  options:
+    disableNameSuffixHash: true
+    labels:
+      grafana_dashboard: "1"
+    annotations:
+      grafana_folder: Ceph
+      argocd.argoproj.io/sync-options: ServerSideApply=true
 patches:
 - path: overlays/prometheus-crds-annotations.yaml
   target:
