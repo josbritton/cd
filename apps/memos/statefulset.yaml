@@ -25,7 +25,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
       - name: memos
-        image: neosmemo/memos:stable@sha256:3eefcc231141369accbd2f42bdc1a4c1e3b291fb6e288ff0deb60afa1b5d4727
+        image: neosmemo/memos:0.29.0@sha256:471bd5dab62d59944644e177c366a44a6639584bffa7cacd72ca4d16f53f9a6d
         imagePullPolicy: IfNotPresent
         env:
         - name: MEMOS_PORT
