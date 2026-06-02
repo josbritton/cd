@@ -52,7 +52,7 @@ spec:
             memory: 32Mi
       containers:
       - name: tdarr
-        image: ghcr.io/haveagitgat/tdarr:2.66.01@sha256:4dc9c77364f7b83228b5a29b7409156991452ae8241d250679b59f75e61bf720
+        image: ghcr.io/haveagitgat/tdarr:2.77.01@sha256:e317124469a2f500add53733e2c501be5e23ca0a4a18e9606f4f80cb3d63370d
         imagePullPolicy: IfNotPresent
         env:
         - name: S6_READ_ONLY_ROOT
