@@ -47,7 +47,7 @@ spec:
       terminationGracePeriodSeconds: 90
       containers:
       - name: navidrome
-        image: deluan/navidrome:develop@sha256:6ce68027da3bde17f63751d1bce66e5a92a50959699df5e70a4d0dc56da1429f
+        image: deluan/navidrome:latest@sha256:9fa40b3d8dec43ceb2213d1fa551da3dcfef6ac6d19c2e534efb92527c2bafd2
         ports:
         - containerPort: 4533
           name: http
@@ -68,16 +68,6 @@ spec:
             secretKeyRef:
               key: secret
               name: lastfm-api
-        - name: ND_SPOTIFY_ID
-          valueFrom:
-            secretKeyRef:
-              key: id
-              name: spotify-api
-        - name: ND_SPOTIFY_SECRET
-          valueFrom:
-            secretKeyRef:
-              key: secret
-              name: spotify-api
         # resources:
         #   requests:
         #     cpu: 1500m

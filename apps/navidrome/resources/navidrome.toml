@@ -7,6 +7,9 @@ CacheFolder = "/cache"
 CoverArtPriority = "cover.*"  # strict
 SessionTimeout = "6552h" # 9 months
 UISearchDebounceMs = 300
+DevArtworkMaxRequests = 4 # should not exceed the number of cpu cores on host hardware
+MaxImageUploadSize = "150MB"
+# EnableWebPEncoding = true
 
 [Backup]
 Path = "/backup"
