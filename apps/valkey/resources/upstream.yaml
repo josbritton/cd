@@ -9,8 +9,8 @@ metadata:
     app.kubernetes.io/instance: valkey
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: valkey
-    app.kubernetes.io/version: 9.0.3
-    helm.sh/chart: valkey-5.4.8
+    app.kubernetes.io/version: 9.1.0
+    helm.sh/chart: valkey-6.1.0
     app.kubernetes.io/part-of: valkey
 spec:
   podSelector:
@@ -37,8 +37,8 @@ metadata:
     app.kubernetes.io/instance: valkey
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: valkey
-    app.kubernetes.io/version: 9.0.3
-    helm.sh/chart: valkey-5.4.8
+    app.kubernetes.io/version: 9.1.0
+    helm.sh/chart: valkey-6.1.0
     app.kubernetes.io/component: primary
 spec:
   maxUnavailable: 1
@@ -58,8 +58,8 @@ metadata:
     app.kubernetes.io/instance: valkey
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: valkey
-    app.kubernetes.io/version: 9.0.3
-    helm.sh/chart: valkey-5.4.8
+    app.kubernetes.io/version: 9.1.0
+    helm.sh/chart: valkey-6.1.0
     app.kubernetes.io/component: replica
 spec:
   maxUnavailable: 1
@@ -80,8 +80,8 @@ metadata:
     app.kubernetes.io/instance: valkey
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: valkey
-    app.kubernetes.io/version: 9.0.3
-    helm.sh/chart: valkey-5.4.8
+    app.kubernetes.io/version: 9.1.0
+    helm.sh/chart: valkey-6.1.0
     app.kubernetes.io/part-of: valkey
 ---
 # Source: valkey/charts/valkey/templates/replicas/serviceaccount.yaml
@@ -95,8 +95,8 @@ metadata:
     app.kubernetes.io/instance: valkey
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: valkey
-    app.kubernetes.io/version: 9.0.3
-    helm.sh/chart: valkey-5.4.8
+    app.kubernetes.io/version: 9.1.0
+    helm.sh/chart: valkey-6.1.0
     app.kubernetes.io/part-of: valkey
 ---
 # Source: valkey/charts/valkey/templates/configmap.yaml
@@ -109,8 +109,8 @@ metadata:
     app.kubernetes.io/instance: valkey
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: valkey
-    app.kubernetes.io/version: 9.0.3
-    helm.sh/chart: valkey-5.4.8
+    app.kubernetes.io/version: 9.1.0
+    helm.sh/chart: valkey-6.1.0
     app.kubernetes.io/part-of: valkey
 data:
   valkey.conf: |-
@@ -143,8 +143,8 @@ metadata:
     app.kubernetes.io/instance: valkey
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: valkey
-    app.kubernetes.io/version: 9.0.3
-    helm.sh/chart: valkey-5.4.8
+    app.kubernetes.io/version: 9.1.0
+    helm.sh/chart: valkey-6.1.0
 data:
   ping_readiness_local.sh: |-
     #!/bin/bash
@@ -251,8 +251,8 @@ metadata:
     app.kubernetes.io/instance: valkey
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: valkey
-    app.kubernetes.io/version: 9.0.3
-    helm.sh/chart: valkey-5.4.8
+    app.kubernetes.io/version: 9.1.0
+    helm.sh/chart: valkey-6.1.0
     app.kubernetes.io/part-of: valkey
 data:
   start-primary.sh: |
@@ -266,8 +266,10 @@ data:
         cp /opt/bitnami/valkey/mounted-etc/valkey.conf /opt/bitnami/valkey/etc/valkey.conf
     fi
     ARGS=("--port" "${VALKEY_PORT}")
-    ARGS+=("--requirepass" "${VALKEY_PASSWORD}")
-    ARGS+=("--primaryauth" "${VALKEY_PASSWORD}")
+    VALKEY_AUTH_CONF="$(mktemp /tmp/valkey-auth-XXXXXX.conf)"
+    chmod 600 "${VALKEY_AUTH_CONF}"
+    printf "requirepass %s\nprimaryauth %s\n" "${VALKEY_PASSWORD}" "${VALKEY_PASSWORD}" > "${VALKEY_AUTH_CONF}"
+    ARGS+=("--include" "${VALKEY_AUTH_CONF}")
     ARGS+=("--include" "/opt/bitnami/valkey/etc/valkey.conf")
     ARGS+=("--include" "/opt/bitnami/valkey/etc/primary.conf")
     exec valkey-server "${ARGS[@]}"
@@ -318,8 +320,10 @@ data:
     echo "replica-announce-ip $(get_full_hostname "$HOSTNAME")" >> /opt/bitnami/valkey/etc/replica.conf
     ARGS=("--port" "${VALKEY_PORT}")
     ARGS+=("--replicaof" "${VALKEY_PRIMARY_HOST}" "${VALKEY_PRIMARY_PORT_NUMBER}")
-    ARGS+=("--requirepass" "${VALKEY_PASSWORD}")
-    ARGS+=("--primaryauth" "${VALKEY_PRIMARY_PASSWORD}")
+    VALKEY_AUTH_CONF="$(mktemp /tmp/valkey-auth-XXXXXX.conf)"
+    chmod 600 "${VALKEY_AUTH_CONF}"
+    printf "requirepass %s\nprimaryauth %s\n" "${VALKEY_PASSWORD}" "${VALKEY_PRIMARY_PASSWORD}" > "${VALKEY_AUTH_CONF}"
+    ARGS+=("--include" "${VALKEY_AUTH_CONF}")
     ARGS+=("--include" "/opt/bitnami/valkey/etc/valkey.conf")
     ARGS+=("--include" "/opt/bitnami/valkey/etc/replica.conf")
     exec valkey-server "${ARGS[@]}"
@@ -334,8 +338,8 @@ metadata:
     app.kubernetes.io/instance: valkey
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: valkey
-    app.kubernetes.io/version: 9.0.3
-    helm.sh/chart: valkey-5.4.8
+    app.kubernetes.io/version: 9.1.0
+    helm.sh/chart: valkey-6.1.0
     app.kubernetes.io/part-of: valkey
 spec:
   type: ClusterIP
@@ -358,8 +362,8 @@ metadata:
     app.kubernetes.io/instance: valkey
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: valkey
-    app.kubernetes.io/version: 9.0.3
-    helm.sh/chart: valkey-5.4.8
+    app.kubernetes.io/version: 9.1.0
+    helm.sh/chart: valkey-6.1.0
     app.kubernetes.io/component: primary
     app.kubernetes.io/part-of: valkey
 spec:
@@ -385,8 +389,8 @@ metadata:
     app.kubernetes.io/instance: valkey
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: valkey
-    app.kubernetes.io/version: 9.0.3
-    helm.sh/chart: valkey-5.4.8
+    app.kubernetes.io/version: 9.1.0
+    helm.sh/chart: valkey-6.1.0
     app.kubernetes.io/component: replica
     app.kubernetes.io/part-of: valkey
 spec:
@@ -412,8 +416,8 @@ metadata:
     app.kubernetes.io/instance: valkey
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: valkey
-    app.kubernetes.io/version: 9.0.3
-    helm.sh/chart: valkey-5.4.8
+    app.kubernetes.io/version: 9.1.0
+    helm.sh/chart: valkey-6.1.0
     app.kubernetes.io/component: primary
     app.kubernetes.io/part-of: valkey
 spec:
@@ -432,14 +436,13 @@ spec:
         app.kubernetes.io/instance: valkey
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: valkey
-        app.kubernetes.io/version: 9.0.3
-        helm.sh/chart: valkey-5.4.8
+        app.kubernetes.io/version: 9.1.0
+        helm.sh/chart: valkey-6.1.0
         app.kubernetes.io/component: primary
       annotations:
         checksum/configmap: c8cdc0c4c772ac3192446a08bf401c29f1e39f33614657d36e4bb1692e34b39f
         checksum/health: 30ef46e920ea5e36fb842c2ed1175c90b698bdb5a18a244ee061ab6fad0deb34
-        checksum/scripts: 133e5ada7ad912b57422868062f3c6914beb9e097fbf3a9ebbf1252d5d64c876
-        checksum/secret: 44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a
+        checksum/scripts: 86dbabd53ed48c58e0fa992395bcbbc8c5ab4d9b93496d2f395220422b61e5e0
     spec:
       
       securityContext:
@@ -601,8 +604,8 @@ metadata:
     app.kubernetes.io/instance: valkey
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: valkey
-    app.kubernetes.io/version: 9.0.3
-    helm.sh/chart: valkey-5.4.8
+    app.kubernetes.io/version: 9.1.0
+    helm.sh/chart: valkey-6.1.0
     app.kubernetes.io/component: replica
     app.kubernetes.io/part-of: valkey
 spec:
@@ -621,14 +624,13 @@ spec:
         app.kubernetes.io/instance: valkey
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: valkey
-        app.kubernetes.io/version: 9.0.3
-        helm.sh/chart: valkey-5.4.8
+        app.kubernetes.io/version: 9.1.0
+        helm.sh/chart: valkey-6.1.0
         app.kubernetes.io/component: replica
       annotations:
         checksum/configmap: c8cdc0c4c772ac3192446a08bf401c29f1e39f33614657d36e4bb1692e34b39f
         checksum/health: 30ef46e920ea5e36fb842c2ed1175c90b698bdb5a18a244ee061ab6fad0deb34
-        checksum/scripts: 133e5ada7ad912b57422868062f3c6914beb9e097fbf3a9ebbf1252d5d64c876
-        checksum/secret: 44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a
+        checksum/scripts: 86dbabd53ed48c58e0fa992395bcbbc8c5ab4d9b93496d2f395220422b61e5e0
     spec:
       
       securityContext:
