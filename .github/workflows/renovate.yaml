@@ -14,10 +14,6 @@ on: # yamllint disable-line rule:truthy
         description: Log Level
         default: debug
         required: false
-      version:
-        description: Renovate Version
-        default: latest
-        required: false
   schedule:
   - cron: 0,30 * * * *  # every 30 minutes
   push:
@@ -35,7 +31,7 @@ env:
   RENOVATE_PLATFORM: github
   RENOVATE_PLATFORM_COMMIT: true
   RENOVATE_ALLOWED_POST_UPGRADE_COMMANDS: ^make build$
-  WORKFLOW_RENOVATE_VERSION: ${{ inputs.version || '38.142.7' }}
+  RENOVATE_VERSION: 43.200.0 # renovate: datasource=docker depName=ghcr.io/renovatebot/renovate
 
 jobs:
   renovate:
@@ -61,4 +57,4 @@ jobs:
         docker-user: root
         configurationFile: .github/renovate.json5
         token: ${{ steps.app-token.outputs.token }}
-        renovate-version: ${{ env.WORKFLOW_RENOVATE_VERSION }}
+        renovate-version: ${{ env.RENOVATE_VERSION }}
