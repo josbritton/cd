@@ -1,7 +1,7 @@
 influxdb2:
   image:
     repository: influxdb
-    tag: 2.8.0-alpine@sha256:f15dfc604753f53b180364a331b46c2f4bc5c08a665d025982b301efa69bc2f7
+    tag: 2.8.0-alpine@sha256:41dd20908d395acc7b839b64e4350e2b5f41a368beb2a1368ca52e8c76c94b3d
     pullPolicy: IfNotPresent
   livenessProbe:
     path: /health
