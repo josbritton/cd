@@ -6,12 +6,12 @@ metadata:
   name: gitea-inline-config
   namespace: gitea
   labels:
-    helm.sh/chart: gitea-12.5.0
+    helm.sh/chart: gitea-12.6.0
     app: gitea
     app.kubernetes.io/name: gitea
     app.kubernetes.io/instance: gitea
-    app.kubernetes.io/version: "1.25.4"
-    version: "1.25.4"
+    app.kubernetes.io/version: "1.26.1"
+    version: "1.26.1"
     app.kubernetes.io/managed-by: Helm
 type: Opaque
 stringData:
@@ -48,12 +48,12 @@ metadata:
   name: gitea
   namespace: gitea
   labels:
-    helm.sh/chart: gitea-12.5.0
+    helm.sh/chart: gitea-12.6.0
     app: gitea
     app.kubernetes.io/name: gitea
     app.kubernetes.io/instance: gitea
-    app.kubernetes.io/version: "1.25.4"
-    version: "1.25.4"
+    app.kubernetes.io/version: "1.26.1"
+    version: "1.26.1"
     app.kubernetes.io/managed-by: Helm
 type: Opaque
 stringData:
@@ -138,7 +138,6 @@ stringData:
       rm $TMP_EXISTING_ENVS_FILE
     }
   
-  
     function env2ini::process_config_file() {
       local config_file="${1}"
       local section="$(basename "${config_file}")"
@@ -211,7 +210,7 @@ stringData:
       unset GITEA__SERVER__LFS_JWT_SECRET
     fi
   
-    environment-to-ini -o $GITEA_APP_INI
+    gitea config edit-ini --apply-env --config "$GITEA_APP_INI" --out "$GITEA_APP_INI"
   assertions: |
 ---
 # Source: gitea/charts/gitea/templates/gitea/init.yaml
@@ -221,12 +220,12 @@ metadata:
   name: gitea-init
   namespace: gitea
   labels:
-    helm.sh/chart: gitea-12.5.0
+    helm.sh/chart: gitea-12.6.0
     app: gitea
     app.kubernetes.io/name: gitea
     app.kubernetes.io/instance: gitea
-    app.kubernetes.io/version: "1.25.4"
-    version: "1.25.4"
+    app.kubernetes.io/version: "1.26.1"
+    version: "1.26.1"
     app.kubernetes.io/managed-by: Helm
 type: Opaque
 stringData:
@@ -305,7 +304,7 @@ stringData:
           #   should add it to prevent requiring frequent admin password resets.
           local -a change_args
           change_args=(--username "${GITEA_ADMIN_USERNAME}" --password "${GITEA_ADMIN_PASSWORD}")
-          if gitea admin user change-password --help | grep -qF -- '--must-change-password'; then
+          if gitea admin user change-password --help | grep -F -- '--must-change-password' >/dev/null; then
             change_args+=(--must-change-password=false)
           fi
           gitea admin user change-password "${change_args[@]}"
@@ -359,12 +358,12 @@ metadata:
   name: gitea-http
   namespace: gitea
   labels:
-    helm.sh/chart: gitea-12.5.0
+    helm.sh/chart: gitea-12.6.0
     app: gitea
     app.kubernetes.io/name: gitea
     app.kubernetes.io/instance: gitea
-    app.kubernetes.io/version: "1.25.4"
-    version: "1.25.4"
+    app.kubernetes.io/version: "1.26.1"
+    version: "1.26.1"
     app.kubernetes.io/managed-by: Helm
   annotations:
     {}
@@ -386,12 +385,12 @@ metadata:
   name: gitea-ssh
   namespace: gitea
   labels:
-    helm.sh/chart: gitea-12.5.0
+    helm.sh/chart: gitea-12.6.0
     app: gitea
     app.kubernetes.io/name: gitea
     app.kubernetes.io/instance: gitea
-    app.kubernetes.io/version: "1.25.4"
-    version: "1.25.4"
+    app.kubernetes.io/version: "1.26.1"
+    version: "1.26.1"
     app.kubernetes.io/managed-by: Helm
   annotations:
     {}
@@ -415,12 +414,12 @@ metadata:
   namespace: gitea
   annotations:
   labels:
-    helm.sh/chart: gitea-12.5.0
+    helm.sh/chart: gitea-12.6.0
     app: gitea
     app.kubernetes.io/name: gitea
     app.kubernetes.io/instance: gitea
-    app.kubernetes.io/version: "1.25.4"
-    version: "1.25.4"
+    app.kubernetes.io/version: "1.26.1"
+    version: "1.26.1"
     app.kubernetes.io/managed-by: Helm
 spec:
   replicas: 1
@@ -433,14 +432,14 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 058e1e8d216a4c63eff484201e904837470e8b8aa1971bb036e9582df2193ee3
+        checksum/config: d46d2af7531b2f8eadb15401e3fcd37a65de9098fc5c2720fc721dbbe535b4d6
       labels:
-        helm.sh/chart: gitea-12.5.0
+        helm.sh/chart: gitea-12.6.0
         app: gitea
         app.kubernetes.io/name: gitea
         app.kubernetes.io/instance: gitea
-        app.kubernetes.io/version: "1.25.4"
-        version: "1.25.4"
+        app.kubernetes.io/version: "1.26.1"
+        version: "1.26.1"
         app.kubernetes.io/managed-by: Helm
     spec:
       
@@ -448,7 +447,7 @@ spec:
         fsGroup: 65534
       initContainers:
         - name: init-directories
-          image: "docker.gitea.com/gitea:1.25.4-rootless"
+          image: "docker.gitea.com/gitea:1.26.1-rootless"
           imagePullPolicy: IfNotPresent
           command:
             - "/usr/sbinx/init_directory_structure.sh"
@@ -487,7 +486,7 @@ spec:
               cpu: 100m
               memory: 128Mi
         - name: init-app-ini
-          image: "docker.gitea.com/gitea:1.25.4-rootless"
+          image: "docker.gitea.com/gitea:1.26.1-rootless"
           imagePullPolicy: IfNotPresent
           command:
           - "/usr/sbinx/config_environment.sh"
@@ -536,7 +535,7 @@ spec:
               cpu: 100m
               memory: 128Mi
         - name: configure-gitea
-          image: "docker.gitea.com/gitea:1.25.4-rootless"
+          image: "docker.gitea.com/gitea:1.26.1-rootless"
           command:
           - "/usr/sbinx/configure_gitea.sh"
           imagePullPolicy: IfNotPresent
@@ -591,7 +590,7 @@ spec:
       terminationGracePeriodSeconds: 60
       containers:
         - name: gitea
-          image: "docker.gitea.com/gitea:1.25.4-rootless"
+          image: "docker.gitea.com/gitea:1.26.1-rootless"
           imagePullPolicy: IfNotPresent
           env:
             # SSH Port values have to be set here as well for openssh configuration
@@ -687,12 +686,12 @@ metadata:
   name: gitea
   namespace: gitea
   labels:
-    helm.sh/chart: gitea-12.5.0
+    helm.sh/chart: gitea-12.6.0
     app: gitea
     app.kubernetes.io/name: gitea
     app.kubernetes.io/instance: gitea
-    app.kubernetes.io/version: "1.25.4"
-    version: "1.25.4"
+    app.kubernetes.io/version: "1.26.1"
+    version: "1.26.1"
     app.kubernetes.io/managed-by: Helm
 spec:
   selector:
@@ -710,12 +709,12 @@ metadata:
   namespace: gitea
   labels:
 
-    helm.sh/chart: gitea-12.5.0
+    helm.sh/chart: gitea-12.6.0
     app: gitea
     app.kubernetes.io/name: gitea
     app.kubernetes.io/instance: gitea
-    app.kubernetes.io/version: "1.25.4"
-    version: "1.25.4"
+    app.kubernetes.io/version: "1.26.1"
+    version: "1.26.1"
     app.kubernetes.io/managed-by: Helm
   annotations:
     "helm.sh/hook": test-success
