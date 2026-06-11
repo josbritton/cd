@@ -1,0 +1,10 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reloader-reloader
+spec:
+  template:
+    spec:
+      containers:
+      - name: reloader-reloader
+        image: ghcr.io/stakater/reloader:v1.1.0@sha256:a6d34801a2b7d38f38a93c72cf8a6a16ceedd510df6c4d25b269bf52b789450a

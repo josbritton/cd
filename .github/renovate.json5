@@ -186,6 +186,10 @@
             "matchFileNames": ["apps/ceph-csi-rbd/**", "apps/ceph-csi-rbd/resources/**"],
             "matchPackageNames": ["registry.k8s.io/sig-storage/**"],
             "groupName": "all-sig-storage-csi"
+        },
+        {
+            "matchFileNames": ["apps/reloader/**"],
+            "groupName": "all-reloader"
         }
     ],
     "customManagers": [
