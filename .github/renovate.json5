@@ -192,6 +192,14 @@
                 "- github\\.com\\/(?<depName>[^/]+?\\/[^/]*?)(\\/.*)*\\?ref=(?<currentDigest>[a-f0-9]{40}) # tag=(?<currentValue>.*)"
             ],
             "datasourceTemplate": "github-tags"
+        },
+        {
+            "customType": "regex",
+            "description": "Process github workflow annotations",
+            "managerFilePatterns": ['/\\.github/workflows/[^/]+\\.ya?ml$/'],
+            "matchStrings": [
+                "\\w+: (?<currentValue>[^\\s]+) # renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>[^\\s]+)"
+            ]
         }
     ]
 }
