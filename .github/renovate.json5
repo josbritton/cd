@@ -16,7 +16,7 @@
         "enabled": true
     },
     "kubernetes": {
-        "fileMatch": ["(^|/).+\\.ya?ml(?:\\.j2)?$"]
+        "managerFilePatterns": ['/(^|/).+\\.ya?ml(?:\\.j2)?$/'],
     },
     "commitMessageTopic": "{{depName}}",
     "commitMessageExtra": "to {{newVersion}}",
@@ -187,7 +187,7 @@
         {
             "customType": "regex",
             "description": ["Process kustomize resouces"],
-            "fileMatch": ["(^|/)kustomization\\.ya?ml$"],
+            "managerFilePatterns": ['/(^|/)kustomization\\.ya?ml$/'],
             "matchStrings": [
                 "- github\\.com\\/(?<depName>[^/]+?\\/[^/]*?)(\\/.*)*\\?ref=(?<currentDigest>[a-f0-9]{40}) # tag=(?<currentValue>.*)"
             ],
