@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: Secret
-$patch: delete
-metadata:
-  name: gitea-init
-  namespace: gitea

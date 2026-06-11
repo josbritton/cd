@@ -3,7 +3,6 @@ gitea:
   replicaCount: 1
   image:
     rootless: true
-    fullOverride: docker.io/gitea/gitea:latest-rootless@sha256:be0b89adf2fc8657df508303d919c3be33e6413605882919f702177d62960c9a
   strategy:
     type: Recreate
   gitea:

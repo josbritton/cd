@@ -19,3 +19,4 @@ patches:
     - op: replace
       path: /spec/revisionHistoryLimit
       value: 2
+- path: ./overlays/image.yaml
