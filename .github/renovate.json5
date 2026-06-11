@@ -192,6 +192,10 @@
             "matchPackageNames": ["ghcr.io/stakater/reloader", "stakater/Reloader"],
             "groupName": "reloader"
         },
+        {
+            "matchPackageNames": ["docker.io/gitea/**", "docker.gitea.com/**"],
+            "groupName": "gitea"
+        },
     ],
     "customManagers": [
         {
