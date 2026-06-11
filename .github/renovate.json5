@@ -193,6 +193,11 @@
             "matchPackageNames": ["ghcr.io/stakater/reloader"],
             "groupName": "reloader"
         },
+        {
+            "matchFileNames": ["apps/gitea/**", "apps/gitea/resources/**", "apps/gitea/overlays/**"],
+            "matchPackageNames": ["docker.io/gitea/**", "docker.gitea.com/**"],
+            "groupName": "gitea"
+        },
     ],
     "customManagers": [
         {
