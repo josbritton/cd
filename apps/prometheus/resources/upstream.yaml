@@ -75084,7 +75084,7 @@ metadata:
   name: blackbox-exporter
   namespace: prometheus-operator
   labels:
-    helm.sh/chart: prometheus-blackbox-exporter-11.8.0
+    helm.sh/chart: prometheus-blackbox-exporter-11.10.0
     app.kubernetes.io/name: prometheus-blackbox-exporter
     app.kubernetes.io/instance: prometheus-operator
     app.kubernetes.io/version: "v0.28.0"
@@ -75853,7 +75853,7 @@ metadata:
   name: blackbox-exporter
   namespace: prometheus-operator
   labels:
-    helm.sh/chart: prometheus-blackbox-exporter-11.8.0
+    helm.sh/chart: prometheus-blackbox-exporter-11.10.0
     app.kubernetes.io/name: prometheus-blackbox-exporter
     app.kubernetes.io/instance: prometheus-operator
     app.kubernetes.io/version: "v0.28.0"
@@ -76645,7 +76645,7 @@ metadata:
   name: blackbox-exporter
   namespace: prometheus-operator
   labels:
-    helm.sh/chart: prometheus-blackbox-exporter-11.8.0
+    helm.sh/chart: prometheus-blackbox-exporter-11.10.0
     app.kubernetes.io/name: prometheus-blackbox-exporter
     app.kubernetes.io/instance: prometheus-operator
     app.kubernetes.io/version: "v0.28.0"
@@ -77008,7 +77008,7 @@ metadata:
   name: blackbox-exporter
   namespace: prometheus-operator
   labels:
-    helm.sh/chart: prometheus-blackbox-exporter-11.8.0
+    helm.sh/chart: prometheus-blackbox-exporter-11.10.0
     app.kubernetes.io/name: prometheus-blackbox-exporter
     app.kubernetes.io/instance: prometheus-operator
     app.kubernetes.io/version: "v0.28.0"
@@ -77029,7 +77029,7 @@ spec:
   template:
     metadata:
       labels:
-        helm.sh/chart: prometheus-blackbox-exporter-11.8.0
+        helm.sh/chart: prometheus-blackbox-exporter-11.10.0
         app.kubernetes.io/name: prometheus-blackbox-exporter
         app.kubernetes.io/instance: prometheus-operator
         app.kubernetes.io/version: "v0.28.0"
@@ -81159,7 +81159,7 @@ kind: PrometheusRule
 metadata:
   name: blackbox-exporter
   labels:
-    helm.sh/chart: prometheus-blackbox-exporter-11.8.0
+    helm.sh/chart: prometheus-blackbox-exporter-11.10.0
     app.kubernetes.io/name: prometheus-blackbox-exporter
     app.kubernetes.io/instance: prometheus-operator
     app.kubernetes.io/version: "v0.28.0"
