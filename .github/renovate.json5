@@ -186,7 +186,12 @@
             "matchFileNames": ["apps/ceph-csi-rbd/**", "apps/ceph-csi-rbd/resources/**"],
             "matchPackageNames": ["registry.k8s.io/sig-storage/**"],
             "groupName": "all-sig-storage-csi"
-        }
+        },
+        // chart -> image updates must be coordinated
+        {
+            "matchPackageNames": ["ghcr.io/stakater/reloader", "stakater/Reloader"],
+            "groupName": "reloader"
+        },
     ],
     "customManagers": [
         {
