@@ -49,6 +49,16 @@
             "matchFileNames": ["**/upstream.yaml", "**/upstream.yml"],
             "enabled": false,
         },
+        // do not pin renovate updates
+        {
+            "matchPackageNames": ["ghcr.io/renovatebot/renovate"],
+            "pinDigests": false
+        },
+        // ignore private/self-hosted
+        {
+            "matchPackageNames": ["git.swifthomelab.net/**"],
+            "enabled": false
+        },
         // commit message topics
         {
             "matchDatasources": ["helm"],
@@ -176,11 +186,6 @@
             "matchFileNames": ["apps/ceph-csi-rbd/**", "apps/ceph-csi-rbd/resources/**"],
             "matchPackageNames": ["registry.k8s.io/sig-storage/**"],
             "groupName": "all-sig-storage-csi"
-        },
-        // ignore private/self-hosted
-        {
-            "matchPackageNames": ["git.swifthomelab.net/**"],
-            "enabled": false
         }
     ],
     "customManagers": [
