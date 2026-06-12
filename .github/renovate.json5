@@ -332,12 +332,14 @@
       "groupName": "gitea"
     },
     {
-      // GHCR does not provide release timestamps (https://github.com/renovatebot/renovate/issues/39064).
+      // many container repositories currently do not support timestamp metadata, and will perpetually fail stability checks
+      //   ghcr: https://github.com/renovatebot/renovate/issues/39064
       "matchDatasources": [
         "docker"
       ],
       "matchPackagePatterns": [
-        "^ghcr\\.io/"
+        "/^ghcr\\.io//",
+        "/^registry\\.k8s\\.io//"
       ],
       "minimumReleaseAge": ""
     }
