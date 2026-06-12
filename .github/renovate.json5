@@ -1,233 +1,380 @@
 {
-    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": [
-        "config:best-practices",
-        "docker:enableMajor",
-        ":disableRateLimiting",
-        ":semanticCommits",
-        "replacements:k8s-registry-move",
-    ],
-    "dependencyDashboard": true,
-    "suppressNotifications": ["prEditedNotification", "prIgnoreNotification"],
-    "kustomize": {
-        "enabled": false
-    },
-    "pre-commit": {
-        "enabled": true
-    },
-    "kubernetes": {
-        "managerFilePatterns": ['/(^|/).+\\.ya?ml(?:\\.j2)?$/'],
-    },
-    "commitMessageTopic": "{{depName}}",
-    "commitMessageExtra": "to {{newVersion}}",
-    "commitMessageSuffix": "",
-    "minimumReleaseAge": "7 days",
-    "packageRules": [
-        // run post-upgrade build task for helm templates
-        {
-            "matchManagers": ["helm-values", "helmv3"],
-            "postUpgradeTasks": {
-                "commands": ["make build"],
-                "fileFilters": ["**/resources/upstream.yaml", "**/resources/upstream.yml"],
-            }
-        },
-        // disable helm value file pinning
-        {
-            "matchDatasources": ["docker"],
-            "matchManagers": ["helm-values"],
-            "pinDigests": false
-        },
-        // disable helm chart pinning
-        {
-            "matchManagers": ["helmv3"],
-            "pinDigests": false
-        },
-        // disable helm-generated resource updates
-        {
-            "matchManagers": ["kubernetes"],
-            // "matchUpdateTypes": ["major", "minor", "patch"],
-            "matchFileNames": ["**/upstream.yaml", "**/upstream.yml"],
-            "enabled": false,
-        },
-        // do not pin renovate updates
-        {
-            "matchPackageNames": ["ghcr.io/renovatebot/renovate"],
-            "pinDigests": false
-        },
-        // ignore private/self-hosted
-        {
-            "matchPackageNames": ["git.swifthomelab.net/**"],
-            "enabled": false
-        },
-        // commit message topics
-        {
-            "matchDatasources": ["helm"],
-            "commitMessageTopic": "chart {{depName}}"
-        },
-        {
-            "matchDatasources": ["docker"],
-            "commitMessageTopic": "image {{depName}}"
-        },
-        // commit messages
-        {
-            "matchDatasources": ["docker"],
-            "matchUpdateTypes": ["major"],
-            "commitMessagePrefix": "feat(container)!: "
-        },
-        {
-            "matchDatasources": ["docker"],
-            "matchUpdateTypes": ["minor"],
-            "semanticCommitType": "feat",
-            "semanticCommitScope": "container"
-        },
-        {
-            "matchDatasources": ["docker"],
-            "matchUpdateTypes": ["patch"],
-            "semanticCommitType": "fix",
-            "semanticCommitScope": "container"
-        },
-        {
-            "matchDatasources": ["docker"],
-            "matchUpdateTypes": ["digest"],
-            "semanticCommitType": "chore",
-            "semanticCommitScope": "container"
-        },
-        {
-            "matchDatasources": ["helm"],
-            "matchUpdateTypes": ["major"],
-            "commitMessagePrefix": "feat(helm)!: "
-        },
-        {
-            "matchDatasources": ["helm"],
-            "matchUpdateTypes": ["minor"],
-            "semanticCommitType": "feat",
-            "semanticCommitScope": "helm"
-        },
-        {
-            "matchDatasources": ["helm"],
-            "matchUpdateTypes": ["patch"],
-            "semanticCommitType": "fix",
-            "semanticCommitScope": "helm"
-        },
-        {
-            "matchDatasources": ["github-releases", "github-tags"],
-            "matchUpdateTypes": ["major"],
-            "commitMessagePrefix": "feat(github-release)!: "
-        },
-        {
-            "matchDatasources": ["github-releases", "github-tags"],
-            "matchUpdateTypes": ["minor"],
-            "semanticCommitType": "feat",
-            "semanticCommitScope": "github-release"
-        },
-        {
-            "matchDatasources": ["github-releases", "github-tags"],
-            "matchUpdateTypes": ["patch"],
-            "semanticCommitType": "fix",
-            "semanticCommitScope": "github-release"
-        },
-        {
-            "matchManagers": ["github-actions"],
-            "matchUpdateTypes": ["major"],
-            "commitMessagePrefix": "feat(github-action)!: "
-        },
-        {
-            "matchManagers": ["github-actions"],
-            "matchUpdateTypes": ["minor"],
-            "semanticCommitType": "feat",
-            "semanticCommitScope": "github-action"
-        },
-        {
-            "matchManagers": ["github-actions"],
-            "matchUpdateTypes": ["patch"],
-            "semanticCommitType": "fix",
-            "semanticCommitScope": "github-action"
-        },
-        // labels
-        {
-            "matchUpdateTypes": ["major"],
-            "labels": ["type/major"]
-        },
-        {
-            "matchUpdateTypes": ["minor"],
-            "labels": ["type/minor"]
-        },
-        {
-            "matchUpdateTypes": ["patch"],
-            "labels": ["type/patch"]
-        },
-        {
-            "matchDatasources": ["docker"],
-            "addLabels": ["renovate/container"]
-        },
-        {
-            "matchDatasources": ["helm"],
-            "addLabels": ["renovate/helm"]
-        },
-        {
-            "matchDatasources": ["github-releases", "github-tags"],
-            "addLabels": ["renovate/github-release"]
-        },
-        {
-            "matchManagers": ["github-actions"],
-            "addLabels": ["renovate/github-action"]
-        },
-        {
-            "matchDatasources": ["docker"],
-            "matchFileNames": ["apps/tdarr/**"],
-            "matchPackageNames": ["ghcr.io/haveagitgat/**"],
-            "groupName": "all-tdarr"
-        },
-        {
-            "matchFileNames": ["apps/dashboard/**"],
-            "groupName": "all-dashboard"
-        },
-        {
-            "matchFileNames": ["apps/ceph-csi-rbd/**", "apps/ceph-csi-rbd/resources/**"],
-            "matchPackageNames": ["registry.k8s.io/sig-storage/**"],
-            "groupName": "all-sig-storage-csi"
-        },
-        // chart -> image updates must be coordinated
-        {
-            "matchPackageNames": ["ghcr.io/stakater/reloader", "stakater/Reloader"],
-            "groupName": "reloader"
-        },
-        {
-            "matchPackageNames": ["docker.io/gitea/**", "docker.gitea.com/**"],
-            "groupName": "gitea"
-        },
-        {
-            // GHCR does not provide release timestamps (https://github.com/renovatebot/renovate/issues/39064).
-            matchDatasources: ["docker"],
-            matchPackagePatterns: ["^ghcr\\.io/"],
-            minimumReleaseAge: "",
-        },
-    ],
-    "customManagers": [
-        {
-            "customType": "regex",
-            "description": ["Process kustomize resouces"],
-            "managerFilePatterns": ['/(^|/)kustomization\\.ya?ml$/'],
-            "matchStrings": [
-                "- github\\.com\\/(?<depName>[^/]+?\\/[^/]*?)(\\/.*)*\\?ref=(?<currentDigest>[a-f0-9]{40}) # tag=(?<currentValue>.*)"
-            ],
-            "datasourceTemplate": "github-tags"
-        },
-        {
-            "customType": "regex",
-            "description": "Process github workflow annotations",
-            "managerFilePatterns": ['/\\.github/workflows/[^/]+\\.ya?ml$/'],
-            "matchStrings": [
-                "\\w+: (?<currentValue>[^\\s]+) # renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>[^\\s]+)"
-            ]
-        },
-        {
-            "customType": "regex",
-            "description": "Process renovate entrypoint annotations",
-            "managerFilePatterns": ['/\\.github/renovate/entrypoint$/'],
-            "matchStrings": [
-                "\\w+=(?<currentValue>[^\\s]+) # renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>[^\\s]+)"
-            ]
-        },
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:best-practices",
+    "docker:enableMajor",
+    ":disableRateLimiting",
+    ":semanticCommits",
+    "replacements:k8s-registry-move"
+  ],
+  "dependencyDashboard": true,
+  "suppressNotifications": [
+    "prEditedNotification",
+    "prIgnoreNotification"
+  ],
+  "kustomize": {
+    "enabled": false
+  },
+  "pre-commit": {
+    "enabled": true
+  },
+  "kubernetes": {
+    "managerFilePatterns": [
+      "/(^|/).+\\.ya?ml(?:\\.j2)?$/"
     ]
+  },
+  "commitMessageTopic": "{{depName}}",
+  "commitMessageExtra": "to {{newVersion}}",
+  "commitMessageSuffix": "",
+  "minimumReleaseAge": "7 days",
+  "packageRules": [
+    // run post-upgrade build task for helm templates
+    {
+      "matchManagers": [
+        "helm-values",
+        "helmv3"
+      ],
+      "postUpgradeTasks": {
+        "commands": [
+          "make build"
+        ],
+        "fileFilters": [
+          "**/resources/upstream.yaml",
+          "**/resources/upstream.yml"
+        ]
+      }
+    },
+    // disable helm value file pinning
+    {
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchManagers": [
+        "helm-values"
+      ],
+      "pinDigests": false
+    },
+    // disable helm chart pinning
+    {
+      "matchManagers": [
+        "helmv3"
+      ],
+      "pinDigests": false
+    },
+    // disable helm-generated resource updates
+    {
+      "matchManagers": [
+        "kubernetes"
+      ],
+      // "matchUpdateTypes": ["major", "minor", "patch"],
+      "matchFileNames": [
+        "**/upstream.yaml",
+        "**/upstream.yml"
+      ],
+      "enabled": false
+    },
+    // do not pin renovate updates
+    {
+      "matchPackageNames": [
+        "ghcr.io/renovatebot/renovate"
+      ],
+      "pinDigests": false
+    },
+    // ignore private/self-hosted
+    {
+      "matchPackageNames": [
+        "git.swifthomelab.net/**"
+      ],
+      "enabled": false
+    },
+    // commit message topics
+    {
+      "matchDatasources": [
+        "helm"
+      ],
+      "commitMessageTopic": "chart {{depName}}"
+    },
+    {
+      "matchDatasources": [
+        "docker"
+      ],
+      "commitMessageTopic": "image {{depName}}"
+    },
+    // commit messages
+    {
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "commitMessagePrefix": "feat(container)!: "
+    },
+    {
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchUpdateTypes": [
+        "minor"
+      ],
+      "semanticCommitType": "feat",
+      "semanticCommitScope": "container"
+    },
+    {
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchUpdateTypes": [
+        "patch"
+      ],
+      "semanticCommitType": "fix",
+      "semanticCommitScope": "container"
+    },
+    {
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchUpdateTypes": [
+        "digest"
+      ],
+      "semanticCommitType": "chore",
+      "semanticCommitScope": "container"
+    },
+    {
+      "matchDatasources": [
+        "helm"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "commitMessagePrefix": "feat(helm)!: "
+    },
+    {
+      "matchDatasources": [
+        "helm"
+      ],
+      "matchUpdateTypes": [
+        "minor"
+      ],
+      "semanticCommitType": "feat",
+      "semanticCommitScope": "helm"
+    },
+    {
+      "matchDatasources": [
+        "helm"
+      ],
+      "matchUpdateTypes": [
+        "patch"
+      ],
+      "semanticCommitType": "fix",
+      "semanticCommitScope": "helm"
+    },
+    {
+      "matchDatasources": [
+        "github-releases",
+        "github-tags"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "commitMessagePrefix": "feat(github-release)!: "
+    },
+    {
+      "matchDatasources": [
+        "github-releases",
+        "github-tags"
+      ],
+      "matchUpdateTypes": [
+        "minor"
+      ],
+      "semanticCommitType": "feat",
+      "semanticCommitScope": "github-release"
+    },
+    {
+      "matchDatasources": [
+        "github-releases",
+        "github-tags"
+      ],
+      "matchUpdateTypes": [
+        "patch"
+      ],
+      "semanticCommitType": "fix",
+      "semanticCommitScope": "github-release"
+    },
+    {
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "commitMessagePrefix": "feat(github-action)!: "
+    },
+    {
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchUpdateTypes": [
+        "minor"
+      ],
+      "semanticCommitType": "feat",
+      "semanticCommitScope": "github-action"
+    },
+    {
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchUpdateTypes": [
+        "patch"
+      ],
+      "semanticCommitType": "fix",
+      "semanticCommitScope": "github-action"
+    },
+    // labels
+    {
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "labels": [
+        "type/major"
+      ]
+    },
+    {
+      "matchUpdateTypes": [
+        "minor"
+      ],
+      "labels": [
+        "type/minor"
+      ]
+    },
+    {
+      "matchUpdateTypes": [
+        "patch"
+      ],
+      "labels": [
+        "type/patch"
+      ]
+    },
+    {
+      "matchDatasources": [
+        "docker"
+      ],
+      "addLabels": [
+        "renovate/container"
+      ]
+    },
+    {
+      "matchDatasources": [
+        "helm"
+      ],
+      "addLabels": [
+        "renovate/helm"
+      ]
+    },
+    {
+      "matchDatasources": [
+        "github-releases",
+        "github-tags"
+      ],
+      "addLabels": [
+        "renovate/github-release"
+      ]
+    },
+    {
+      "matchManagers": [
+        "github-actions"
+      ],
+      "addLabels": [
+        "renovate/github-action"
+      ]
+    },
+    {
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchFileNames": [
+        "apps/tdarr/**"
+      ],
+      "matchPackageNames": [
+        "ghcr.io/haveagitgat/**"
+      ],
+      "groupName": "all-tdarr"
+    },
+    {
+      "matchFileNames": [
+        "apps/dashboard/**"
+      ],
+      "groupName": "all-dashboard"
+    },
+    {
+      "matchFileNames": [
+        "apps/ceph-csi-rbd/**",
+        "apps/ceph-csi-rbd/resources/**"
+      ],
+      "matchPackageNames": [
+        "registry.k8s.io/sig-storage/**"
+      ],
+      "groupName": "all-sig-storage-csi"
+    },
+    // chart -> image updates must be coordinated
+    {
+      "matchPackageNames": [
+        "ghcr.io/stakater/reloader",
+        "stakater/Reloader"
+      ],
+      "groupName": "reloader"
+    },
+    {
+      "matchPackageNames": [
+        "docker.io/gitea/**",
+        "docker.gitea.com/**"
+      ],
+      "groupName": "gitea"
+    },
+    {
+      // GHCR does not provide release timestamps (https://github.com/renovatebot/renovate/issues/39064).
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackagePatterns": [
+        "^ghcr\\.io/"
+      ],
+      "minimumReleaseAge": ""
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": [
+        "Process kustomize resouces"
+      ],
+      "managerFilePatterns": [
+        "/(^|/)kustomization\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "- github\\.com\\/(?<depName>[^/]+?\\/[^/]*?)(\\/.*)*\\?ref=(?<currentDigest>[a-f0-9]{40}) # tag=(?<currentValue>.*)"
+      ],
+      "datasourceTemplate": "github-tags"
+    },
+    {
+      "customType": "regex",
+      "description": "Process github workflow annotations",
+      "managerFilePatterns": [
+        "/\\.github/workflows/[^/]+\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "\\w+: (?<currentValue>[^\\s]+) # renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>[^\\s]+)"
+      ]
+    },
+    {
+      "customType": "regex",
+      "description": "Process renovate entrypoint annotations",
+      "managerFilePatterns": [
+        "/\\.github/renovate/entrypoint$/"
+      ],
+      "matchStrings": [
+        "\\w+=(?<currentValue>[^\\s]+) # renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>[^\\s]+)"
+      ]
+    }
+  ]
 }
