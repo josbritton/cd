@@ -214,6 +214,14 @@
             "matchStrings": [
                 "\\w+: (?<currentValue>[^\\s]+) # renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>[^\\s]+)"
             ]
-        }
+        },
+        {
+            "customType": "regex",
+            "description": "Process renovate entrypoint annotations",
+            "managerFilePatterns": ['/\\.github/renovate/entrypoint$/'],
+            "matchStrings": [
+                "\\w+=(?<currentValue>[^\\s]+) # renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>[^\\s]+)"
+            ]
+        },
     ]
 }

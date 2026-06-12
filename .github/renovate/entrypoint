@@ -1,0 +1,5 @@
+#!/bin/bash
+
+export DESIRED_VERSION=v4.1.4 # renovate: datasource=github-releases depName=helm/helm
+curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash
+runuser -u ubuntu renovate
