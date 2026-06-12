@@ -196,6 +196,12 @@
             "matchPackageNames": ["docker.io/gitea/**", "docker.gitea.com/**"],
             "groupName": "gitea"
         },
+        {
+            // GHCR does not provide release timestamps (https://github.com/renovatebot/renovate/issues/39064).
+            matchDatasources: ["docker"],
+            matchPackagePatterns: ["^ghcr\\.io/"],
+            minimumReleaseAge: "",
+        },
     ],
     "customManagers": [
         {
