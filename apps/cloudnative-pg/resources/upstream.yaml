@@ -6,7 +6,7 @@ metadata:
   name: cloudnative-pg
   namespace: cloudnative-pg
   labels:
-    helm.sh/chart: cloudnative-pg-0.28.2
+    helm.sh/chart: cloudnative-pg-0.28.3
     app.kubernetes.io/name: cloudnative-pg
     app.kubernetes.io/instance: cloudnative-pg
     app.kubernetes.io/version: "1.29.1"
@@ -37,7 +37,7 @@ metadata:
   name: cnpg-controller-manager-config
   namespace: cloudnative-pg
   labels:
-    helm.sh/chart: cloudnative-pg-0.28.2
+    helm.sh/chart: cloudnative-pg-0.28.3
     app.kubernetes.io/name: cloudnative-pg
     app.kubernetes.io/instance: cloudnative-pg
     app.kubernetes.io/version: "1.29.1"
@@ -52,7 +52,7 @@ metadata:
   name: cnpg-default-monitoring
   namespace: cloudnative-pg
   labels:
-    helm.sh/chart: cloudnative-pg-0.28.2
+    helm.sh/chart: cloudnative-pg-0.28.3
     app.kubernetes.io/name: cloudnative-pg
     app.kubernetes.io/instance: cloudnative-pg
     app.kubernetes.io/version: "1.29.1"
@@ -19505,7 +19505,7 @@ kind: ClusterRole
 metadata:
   name: cloudnative-pg
   labels:
-    helm.sh/chart: cloudnative-pg-0.28.2
+    helm.sh/chart: cloudnative-pg-0.28.3
     app.kubernetes.io/name: cloudnative-pg
     app.kubernetes.io/instance: cloudnative-pg
     app.kubernetes.io/version: "1.29.1"
@@ -19745,7 +19745,7 @@ kind: ClusterRole
 metadata:
   name: cloudnative-pg-view
   labels:
-    helm.sh/chart: cloudnative-pg-0.28.2
+    helm.sh/chart: cloudnative-pg-0.28.3
     app.kubernetes.io/name: cloudnative-pg
     app.kubernetes.io/instance: cloudnative-pg
     app.kubernetes.io/version: "1.29.1"
@@ -19776,7 +19776,7 @@ kind: ClusterRole
 metadata:
   name: cloudnative-pg-edit
   labels:
-    helm.sh/chart: cloudnative-pg-0.28.2
+    helm.sh/chart: cloudnative-pg-0.28.3
     app.kubernetes.io/name: cloudnative-pg
     app.kubernetes.io/instance: cloudnative-pg
     app.kubernetes.io/version: "1.29.1"
@@ -19809,7 +19809,7 @@ kind: ClusterRoleBinding
 metadata:
   name: cloudnative-pg
   labels:
-    helm.sh/chart: cloudnative-pg-0.28.2
+    helm.sh/chart: cloudnative-pg-0.28.3
     app.kubernetes.io/name: cloudnative-pg
     app.kubernetes.io/instance: cloudnative-pg
     app.kubernetes.io/version: "1.29.1"
@@ -19830,7 +19830,7 @@ metadata:
   name: cnpg-webhook-service
   namespace: cloudnative-pg
   labels:
-    helm.sh/chart: cloudnative-pg-0.28.2
+    helm.sh/chart: cloudnative-pg-0.28.3
     app.kubernetes.io/name: cloudnative-pg
     app.kubernetes.io/instance: cloudnative-pg
     app.kubernetes.io/version: "1.29.1"
@@ -19852,7 +19852,7 @@ metadata:
   name: cloudnative-pg
   namespace: cloudnative-pg
   labels:
-    helm.sh/chart: cloudnative-pg-0.28.2
+    helm.sh/chart: cloudnative-pg-0.28.3
     app.kubernetes.io/name: cloudnative-pg
     app.kubernetes.io/instance: cloudnative-pg
     app.kubernetes.io/version: "1.29.1"
@@ -19866,9 +19866,9 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/rbac: de1893fe73cb4a732a34dfc9010586666d3cbb25ccdce87bfe27a05faebd1051
-        checksum/config: 230f2a9e55a5dbc43268219ac9eea0ba30ad92b72a29234d99665ccba35e2287
-        checksum/monitoring-config: e029fcb861f94835e364ba9142e66dc421d16d528da505386c7ec1df19152215
+        checksum/rbac: 36f291379137ba9f88d586ed39a71f4720953d3b85579a28394848128fca9332
+        checksum/config: d75a0774651c082a08280084561ccfc2570e3d5b95414a527c533d1840fe0f4e
+        checksum/monitoring-config: f35648d8441d814fd107be92a271524828756d88415394048eb3fb537576c820
       labels:
         app.kubernetes.io/name: cloudnative-pg
         app.kubernetes.io/instance: cloudnative-pg
@@ -19958,7 +19958,7 @@ kind: MutatingWebhookConfiguration
 metadata:
   name: cnpg-mutating-webhook-configuration
   labels:
-    helm.sh/chart: cloudnative-pg-0.28.2
+    helm.sh/chart: cloudnative-pg-0.28.3
     app.kubernetes.io/name: cloudnative-pg
     app.kubernetes.io/instance: cloudnative-pg
     app.kubernetes.io/version: "1.29.1"
@@ -20055,7 +20055,7 @@ kind: ValidatingWebhookConfiguration
 metadata:
   name: cnpg-validating-webhook-configuration
   labels:
-    helm.sh/chart: cloudnative-pg-0.28.2
+    helm.sh/chart: cloudnative-pg-0.28.3
     app.kubernetes.io/name: cloudnative-pg
     app.kubernetes.io/instance: cloudnative-pg
     app.kubernetes.io/version: "1.29.1"
