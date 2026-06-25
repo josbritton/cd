@@ -9,6 +9,8 @@ metadata:
     app.kubernetes.io/component: home-assistant
     app.kubernetes.io/part-of: home-assistant
   namespace: home-assistant
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"  # needs certs, delegation, services, etc.
 spec:
   virtualhost:
     fqdn: ha.swifthomelab.net

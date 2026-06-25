@@ -4,6 +4,8 @@ kind: TLSCertificateDelegation
 metadata:
   name: sonarr-swifthomelab-net
   namespace: cert-manager
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"  # needs cert
 spec:
   delegations:
   - secretName: sonarr-swifthomelab-net
@@ -16,6 +18,8 @@ kind: TLSCertificateDelegation
 metadata:
   name: sonalt-swifthomelab-net
   namespace: cert-manager
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"  # needs cert
 spec:
   delegations:
   - secretName: sonalt-swifthomelab-net
@@ -28,6 +32,8 @@ kind: TLSCertificateDelegation
 metadata:
   name: sonref-swifthomelab-net
   namespace: cert-manager
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"  # needs cert
 spec:
   delegations:
   - secretName: sonref-swifthomelab-net

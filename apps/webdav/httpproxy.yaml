@@ -7,6 +7,8 @@ metadata:
   labels:
     app.kubernetes.io/name: webdav
     app.kubernetes.io/instance: webdav
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"  # needs certs, delegation, services, etc.
 spec:
   virtualhost:
     fqdn: webdav.swifthomelab.net

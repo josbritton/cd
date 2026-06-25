@@ -5,6 +5,8 @@ metadata:
   creationTimestamp: null
   labels:
     app.kubernetes.io/name: argo-cd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-80"  # before most apps
   name: argo-cd
   namespace: argocd
 spec:

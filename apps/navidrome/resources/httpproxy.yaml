@@ -9,6 +9,8 @@ metadata:
     app.kubernetes.io/component: music-server
     app.kubernetes.io/part-of: navidrome
   namespace: navidrome
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"  # needs certs, delegation, services, etc.
 spec:
   virtualhost:
     fqdn: nd.swifthomelab.net

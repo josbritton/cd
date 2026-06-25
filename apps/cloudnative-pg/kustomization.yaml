@@ -15,4 +15,4 @@ patches:
     - op: add
       path: /metadata/annotations
       value:
-        argocd.argoproj.io/sync-wave: "2"
+        argocd.argoproj.io/sync-wave: "-3"

@@ -8,6 +8,8 @@ metadata:
     app.kubernetes.io/name: qui
     app.kubernetes.io/instance: qui
     app.kubernetes.io/part-of: qui
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"  # needs cert
 spec:
   delegations:
   - secretName: qui-swifthomelab-net

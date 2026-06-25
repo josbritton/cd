@@ -4,6 +4,8 @@ kind: TLSCertificateDelegation
 metadata:
   name: webdav-swifthomelab-net
   namespace: cert-manager
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"  # needs cert
 spec:
   delegations:
   - secretName: webdav-swifthomelab-net

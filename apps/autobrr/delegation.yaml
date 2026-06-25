@@ -8,6 +8,8 @@ metadata:
     app.kubernetes.io/name: autobrr
     app.kubernetes.io/instance: autobrr
     app.kubernetes.io/part-of: autobrr
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"  # needs cert
 spec:
   delegations:
   - secretName: autobrr-swifthomelab-net

@@ -4,6 +4,8 @@ kind: HTTPProxy
 metadata:
   name: vaultwarden-ingress
   namespace: vaultwarden
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"  # needs certs, delegation, services, etc.
 spec:
   virtualhost:
     fqdn: vault.swifthomelab.net

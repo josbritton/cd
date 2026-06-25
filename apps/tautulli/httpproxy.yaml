@@ -4,6 +4,8 @@ kind: HTTPProxy
 metadata:
   name: tautulli-ingress
   namespace: tautulli
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"  # needs certs, delegation, services, etc.
 spec:
   virtualhost:
     fqdn: tautulli.swifthomelab.net

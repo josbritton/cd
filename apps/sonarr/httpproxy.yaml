@@ -4,6 +4,8 @@ kind: HTTPProxy
 metadata:
   name: sonarr-ingress
   namespace: sonarr
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"  # needs certs, delegation, services, etc.
 spec:
   virtualhost:
     fqdn: sonarr.swifthomelab.net
@@ -22,6 +24,8 @@ kind: HTTPProxy
 metadata:
   name: sonalt-ingress
   namespace: sonarr
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"  # needs certs, delegation, services, etc.
 spec:
   virtualhost:
     fqdn: sonalt.swifthomelab.net
@@ -40,6 +44,8 @@ kind: HTTPProxy
 metadata:
   name: sonref-ingress
   namespace: sonarr
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"  # needs certs, delegation, services, etc.
 spec:
   virtualhost:
     fqdn: sonref.swifthomelab.net

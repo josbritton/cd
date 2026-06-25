@@ -9,6 +9,8 @@ metadata:
     app.kubernetes.io/component: home-assistant
     app.kubernetes.io/part-of: home-assistant
   namespace: cert-manager
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"  # needs cert
 spec:
   delegations:
   - secretName: ha-swifthomelab-net

@@ -4,6 +4,8 @@ kind: HTTPProxy
 metadata:
   name: prometheus-proxy
   namespace: prometheus-operator
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"  # needs certs, delegation, services, etc.
 spec:
   virtualhost:
     fqdn: prometheus.swifthomelab.net

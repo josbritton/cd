@@ -6,8 +6,6 @@ metadata:
   labels:
     role: alert-rules
   namespace: cloudnative-pg
-  annotations:
-    argocd.argoproj.io/sync-wave: "3"
 spec:
   groups:
   - name: cloudnative-pg.rules

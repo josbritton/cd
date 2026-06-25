@@ -4,6 +4,8 @@ kind: HTTPProxy
 metadata:
   name: radarr-ingress
   namespace: radarr
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"  # needs certs, delegation, services, etc.
 spec:
   virtualhost:
     fqdn: radarr.swifthomelab.net
@@ -22,6 +24,8 @@ kind: HTTPProxy
 metadata:
   name: radalt-ingress
   namespace: radarr
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"  # needs certs, delegation, services, etc.
 spec:
   virtualhost:
     fqdn: radalt.swifthomelab.net

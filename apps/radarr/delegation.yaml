@@ -4,6 +4,8 @@ kind: TLSCertificateDelegation
 metadata:
   name: radarr-swifthomelab-net
   namespace: cert-manager
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"  # needs cert
 spec:
   delegations:
   - secretName: radarr-swifthomelab-net
@@ -16,6 +18,8 @@ kind: TLSCertificateDelegation
 metadata:
   name: radalt-swifthomelab-net
   namespace: cert-manager
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"  # needs cert
 spec:
   delegations:
   - secretName: radalt-swifthomelab-net

@@ -4,6 +4,8 @@ kind: HTTPProxy
 metadata:
   name: tdarr-ingress
   namespace: tdarr
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"  # needs certs, delegation, services, etc.
 spec:
   virtualhost:
     fqdn: tdarr.swifthomelab.net

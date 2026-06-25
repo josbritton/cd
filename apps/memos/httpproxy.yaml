@@ -4,6 +4,8 @@ kind: HTTPProxy
 metadata:
   name: memos-ingress
   namespace: memos
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"  # needs certs, delegation, services, etc.
 spec:
   virtualhost:
     fqdn: memos.swifthomelab.net

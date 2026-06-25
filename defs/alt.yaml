@@ -4,6 +4,8 @@ kind: Application
 metadata:
   name: alt
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-90"  # before apps
   labels:
     app.kubernetes.io/name: alt
   finalizers:

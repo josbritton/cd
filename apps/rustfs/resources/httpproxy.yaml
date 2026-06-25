@@ -4,6 +4,8 @@ kind: HTTPProxy
 metadata:
   name: rustfs-ingress
   namespace: rustfs
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"  # needs certs, delegation, services, etc.
 spec:
   virtualhost:
     fqdn: s3.swifthomelab.net

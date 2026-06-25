@@ -8,6 +8,8 @@ metadata:
     app.kubernetes.io/instance: mirror
     app.kubernetes.io/component: proxy
     app.kubernetes.io/part-of: web-mirror
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"  # needs certs, delegation, services, etc.
   namespace: web-mirror
 spec:
   virtualhost:

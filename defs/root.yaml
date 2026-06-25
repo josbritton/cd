@@ -3,6 +3,8 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   creationTimestamp: null
+  annotations:
+    argocd.argoproj.io/sync-wave: "-90"  # before apps
   finalizers:
   - resources-finalizer.argocd.argoproj.io
   labels:

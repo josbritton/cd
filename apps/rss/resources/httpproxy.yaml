@@ -8,6 +8,8 @@ metadata:
     app.kubernetes.io/name: miniflux
     app.kubernetes.io/component: reader
     app.kubernetes.io/part-of: rss
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"  # needs certs, delegation, services, etc.
 spec:
   virtualhost:
     fqdn: rss.swifthomelab.net

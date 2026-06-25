@@ -4,6 +4,8 @@ kind: TLSCertificateDelegation
 metadata:
   name: tautulli-swifthomelab-net
   namespace: cert-manager
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"  # needs cert
 spec:
   delegations:
   - secretName: tautulli-swifthomelab-net

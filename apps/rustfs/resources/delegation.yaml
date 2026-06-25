@@ -4,6 +4,8 @@ kind: TLSCertificateDelegation
 metadata:
   name: s3-swifthomelab-net
   namespace: cert-manager
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"  # needs cert
 spec:
   delegations:
   - secretName: s3-swifthomelab-net

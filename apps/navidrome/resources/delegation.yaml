@@ -9,6 +9,8 @@ metadata:
     app.kubernetes.io/component: music-server
     app.kubernetes.io/part-of: navidrome
   namespace: cert-manager
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"  # needs cert
 spec:
   delegations:
   - secretName: navidrome-swifthomelab-net
