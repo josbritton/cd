@@ -1,0 +1,118 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/statefulset.json
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: rss-bridge
+  namespace: rss
+  labels:
+    app.kubernetes.io/name: rss-bridge
+    app.kubernetes.io/component: feed-aggregator
+    app.kubernetes.io/part-of: rss
+  annotations:
+    argocd.argoproj.io/sync-options: ServerSideApply=true
+spec:
+  revisionHistoryLimit: 3
+  serviceName: rss-bridge
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: rss-bridge
+      app.kubernetes.io/component: feed-aggregator
+      app.kubernetes.io/part-of: rss
+  replicas: 1
+  podManagementPolicy: Parallel
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: rss-bridge
+        app.kubernetes.io/component: feed-aggregator
+        app.kubernetes.io/part-of: rss
+    spec:
+      securityContext:
+        fsGroupChangePolicy: OnRootMismatch
+        runAsNonRoot: true
+        # 33 is www-data on debian
+        fsGroup: 33
+        runAsGroup: 33
+        runAsUser: 33
+        sysctls:
+        - name: net.ipv4.ip_unprivileged_port_start
+          value: "80"
+      containers:
+      - name: rss-bridge
+        image: docker.io/rssbridge/rss-bridge:latest@sha256:f0001b47d029a61bc894a2547fbf306ce08ecce6dc5555c26b8afe7f2e518c4a
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          runAsGroup: 33
+          runAsUser: 33
+          runAsNonRoot: true
+          capabilities:
+            drop: [ALL]
+            # add: [NET_BIND_SERVICE]
+        # resources:
+        #   requests:
+        #     cpu: ...
+        #     memory: ...
+        #   limits:
+        #     memory: nil
+        ports:
+        - name: http
+          containerPort: 80
+          protocol: TCP
+        # - name: metrics
+        #   containerPort: ...
+        #   protocol: TCP
+        env:
+        - name: TZ
+          value: America/Vancouver
+        - name: UMASK
+          value: "0022"
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        - name: tmp
+          mountPath: /tmp
+        - name: php-run
+          mountPath: /run/php
+        - name: run
+          mountPath: /run
+        - name: nginx
+          mountPath: /var/lib/nginx
+        - name: logs
+          mountPath: /var/logs
+        livenessProbe: &probe
+          httpGet:
+            port: 80
+            path: /
+        readinessProbe: *probe
+        startupProbe: *probe
+      volumes:
+      - name: run
+        emptyDir:
+          medium: Memory
+      - name: php-run
+        emptyDir:
+          medium: Memory
+      - name: tmp
+        emptyDir:
+          medium: Memory
+      - name: logs
+        emptyDir: {}
+      - name: nginx
+        emptyDir: {}
+  volumeClaimTemplates:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: config
+      namespace: rss
+      labels:
+        app.kubernetes.io/name: rss-bridge
+        app.kubernetes.io/component: feed-aggregator
+        app.kubernetes.io/part-of: rss
+    spec:
+      storageClassName: csi-rbd-sc
+      accessModes: [ReadWriteOncePod]
+      resources:
+        requests:
+          storage: 512Mi

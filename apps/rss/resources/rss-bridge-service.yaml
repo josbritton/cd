@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/service-v1.json
+apiVersion: v1
+kind: Service
+metadata:
+  name: rss-bridge
+  namespace: rss
+  labels:
+    app.kubernetes.io/name: rss-bridge
+    app.kubernetes.io/instance: rss-bridge-0
+    app.kubernetes.io/component: feed-aggregator
+    app.kubernetes.io/part-of: rss
+spec:
+  type: ClusterIP
+  publishNotReadyAddresses: false
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  # - name: metrics
+  #   port: ...
+  #   protocol: TCP
+  #   targetPort: ...
+  selector:
+    app.kubernetes.io/name: rss-bridge
+    app.kubernetes.io/component: feed-aggregator
+    app.kubernetes.io/part-of: rss
+    statefulset.kubernetes.io/pod-name: rss-bridge-0
