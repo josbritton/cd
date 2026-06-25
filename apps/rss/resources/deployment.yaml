@@ -1,0 +1,74 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/deployment-apps-v1.json
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: miniflux
+    app.kubernetes.io/component: reader
+    app.kubernetes.io/part-of: rss
+  name: miniflux
+  namespace: rss
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: miniflux
+      app.kubernetes.io/component: reader
+      app.kubernetes.io/part-of: rss
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: miniflux
+        app.kubernetes.io/component: reader
+        app.kubernetes.io/part-of: rss
+    spec:
+      containers:
+      - name: miniflux
+        image: docker.io/miniflux/miniflux:2.3.1@sha256:42f14382a035e9d9bbc33910ca53f72d47177f75c3c638d2c5a85adf5582d538
+        env:
+        - name: ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: miniflux-admin
+              key: passwd
+              optional: false
+        - name: ADMIN_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: miniflux-admin
+              key: user
+              optional: false
+        - name: CREATE_ADMIN
+          value: "1"
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: miniflux-dsn
+              key: connection-string
+              optional: false
+          # value: postgres://miniflux:secret@db/miniflux?sslmode=disable
+        - name: DEBUG
+          value: "1"
+        - name: RUN_MIGRATIONS
+          value: "1"
+        - name: BASE_URL
+          value: https://rss.swifthomelab.net
+        - name: FETCHER_ALLOW_PRIVATE_NETWORKS  # needed for rss-bridge on rss-bridge.rss.svc.cluster.local
+          value: "1"
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        # - name: metrics
+        #   ...
+        livenessProbe: &probe
+          exec:
+            command: [/usr/bin/miniflux, -healthcheck, auto]
+        readinessProbe: *probe
+        startupProbe: *probe
+        # resources:
+        #   requests:
+        #     cpu: ...
+        #     memory: ...
+        #   limits:
+        #     memory: ...
