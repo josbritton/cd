@@ -37,6 +37,8 @@ spec:
         emptyDir: {}
       - name: tmp
         emptyDir: {}
+      - name: cache
+        emptyDir: {}
       - name: music
         nfs:
           path: /mnt/artemis/data/media/music
@@ -103,7 +105,9 @@ spec:
         readinessProbe: *probe
         startupProbe: *probe
   volumeClaimTemplates:
-  - metadata:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
       name: data
     spec:
       accessModes: [ReadWriteOnce]
@@ -111,16 +115,10 @@ spec:
       resources:
         requests:
           storage: 20Gi
-  - metadata:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
       name: backups
-    spec:
-      accessModes: [ReadWriteOnce]
-      storageClassName: csi-rbd-sc
-      resources:
-        requests:
-          storage: 10Gi
-  - metadata:
-      name: cache
     spec:
       accessModes: [ReadWriteOnce]
       storageClassName: csi-rbd-sc
