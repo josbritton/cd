@@ -71,6 +71,8 @@ spec:
             secretKeyRef:
               key: secret
               name: lastfm-api
+        - name: ND_ENABLEWEBPENCODING
+          value: "false"
         # resources:
         #   requests:
         #     cpu: 1500m
