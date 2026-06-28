@@ -5,6 +5,7 @@ metadata:
   name: navidrome
   annotations:
     reloader.stakater.com/auto: "true"
+    argocd.argoproj.io/sync-options: ServerSideApply=true
   labels:
     app.kubernetes.io/name: navidrome
     app.kubernetes.io/instance: navidrome
