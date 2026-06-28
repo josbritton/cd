@@ -11,6 +11,8 @@ DevArtworkMaxRequests = 4 # should not exceed the number of cpu cores on host ha
 MaxImageUploadSize = "150MB"
 # EnableWebPEncoding = true
 EnforceNonRootUser = true
+EnableArtworkPrecache = false
+ImageCacheSize = 0
 
 [Matcher]
 PreferStarred = true
