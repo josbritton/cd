@@ -377,6 +377,18 @@
       "matchStrings": [
         "\\w+=(?<currentValue>[^\\s]+) # renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>[^\\s]+)"
       ]
+    },
+    {
+      "customType": "regex",
+      "description": "Process cloudnative-pg cluster resources",
+      "managerFilePatterns": [
+        "/(^|/)pgcluster\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "\\s*imageName: (?<depName>\\S+):(?<currentValue>[^\\s@]+)(?:@(?<currentDigest>sha256:\\S+))?"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "docker"
     }
   ]
 }
