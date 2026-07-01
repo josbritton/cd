@@ -6,10 +6,10 @@ metadata:
   name: rustfs
   namespace: rustfs
   labels:
-    helm.sh/chart: rustfs-0.0.93
+    helm.sh/chart: rustfs-0.8.0
     app.kubernetes.io/name: rustfs
     app.kubernetes.io/instance: rustfs
-    app.kubernetes.io/version: "1.0.0-alpha.93"
+    app.kubernetes.io/version: "1.0.0-beta.8"
     app.kubernetes.io/managed-by: Helm
 automountServiceAccountToken: true
 ---
@@ -75,10 +75,10 @@ metadata:
   name: rustfs-svc
   namespace: rustfs
   labels:
-    helm.sh/chart: rustfs-0.0.93
+    helm.sh/chart: rustfs-0.8.0
     app.kubernetes.io/name: rustfs
     app.kubernetes.io/instance: rustfs
-    app.kubernetes.io/version: "1.0.0-alpha.93"
+    app.kubernetes.io/version: "1.0.0-beta.8"
     app.kubernetes.io/managed-by: Helm
 spec:
   type: ClusterIP
@@ -100,18 +100,18 @@ metadata:
   name: rustfs
   namespace: rustfs
   labels:
-    helm.sh/chart: rustfs-0.0.93
+    helm.sh/chart: rustfs-0.8.0
     app.kubernetes.io/name: rustfs
     app.kubernetes.io/instance: rustfs
-    app.kubernetes.io/version: "1.0.0-alpha.93"
+    app.kubernetes.io/version: "1.0.0-beta.8"
     app.kubernetes.io/managed-by: Helm
 spec:
   replicas: 1
   strategy:
+    type: RollingUpdate
     rollingUpdate:
       maxSurge: 0
       maxUnavailable: 1
-    type: RollingUpdate
   selector:
     matchLabels:
       app.kubernetes.io/name: rustfs
@@ -125,6 +125,7 @@ spec:
       imagePullSecrets:
         []
       affinity:
+      priorityClassName: 
       securityContext:
         fsGroup: 10001
         runAsGroup: 10001
@@ -144,7 +145,8 @@ spec:
             - sh
             - -c
             - |
-              mkdir -p /data /mnt/rustfs/logs
+              mkdir -p /data
+              mkdir -p /mnt/rustfs/logs
               chmod 755 /mnt/rustfs/logs
           volumeMounts:
             - name: data
@@ -153,7 +155,7 @@ spec:
               mountPath: /mnt/rustfs
       containers:
         - name: rustfs
-          image: "rustfs/rustfs:1.0.0-alpha.93"
+          image: "rustfs/rustfs:1.0.0-beta.8"
           command: ["/usr/bin/rustfs"]
           imagePullPolicy: IfNotPresent
           securityContext:
@@ -175,24 +177,27 @@ spec:
                 name: rustfs-secret
           resources:
             {}
+          
           livenessProbe:
-            failureThreshold: 3
             httpGet:
               path: /health
-              port: endpoint
-            initialDelaySeconds: 10
-            periodSeconds: 5
-            successThreshold: 1
-            timeoutSeconds: 3
-          readinessProbe:
-            failureThreshold: 3
-            httpGet:
-              path: /health/ready
-              port: endpoint
+              port: 9000
+              scheme: HTTP
             initialDelaySeconds: 30
             periodSeconds: 5
-            successThreshold: 1
             timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: 9000
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 3
           volumeMounts:
             - name: logs
               mountPath: /logs
@@ -214,10 +219,10 @@ metadata:
   name: "rustfs-test-connection"
   namespace: rustfs
   labels:
-    helm.sh/chart: rustfs-0.0.93
+    helm.sh/chart: rustfs-0.8.0
     app.kubernetes.io/name: rustfs
     app.kubernetes.io/instance: rustfs
-    app.kubernetes.io/version: "1.0.0-alpha.93"
+    app.kubernetes.io/version: "1.0.0-beta.8"
     app.kubernetes.io/managed-by: Helm
   annotations:
     "helm.sh/hook": test
