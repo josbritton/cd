@@ -33,5 +33,3 @@ contour:
       limits:
         ephemeral-storage: 2Gi
         memory: 180Mi
-  defaultBackend:
-    enabled: false
