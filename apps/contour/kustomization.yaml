@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
 - ./resources/upstream.yaml
 - ./resources/envoy-headless-service.yaml
+- ./resources/dashboards.yaml
 patches:
 - target:
     group: apps

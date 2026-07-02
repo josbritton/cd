@@ -33,3 +33,50 @@ contour:
       limits:
         ephemeral-storage: 2Gi
         memory: 180Mi
+  metrics:
+    enabled: true  # error in chart
+    serviceMonitor:
+      enabled: true
+      interval: 10s
+      labels:
+        release: prometheus-operator
+    prometheusRule:
+      enabled: true
+      rules:
+      - alert: ContourHTTPProxyInvalid
+        expr: |
+          contour_httpproxy_invalid_total > 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: Invalid HTTPProxy objects detected
+          description: "{{`{{ $value }}`}} HTTPProxy objects are in Invalid state"
+      - alert: ContourEnvoyHighErrorRate
+        expr: |
+          rate(envoy_cluster_upstream_rq_5xx[5m]) /
+          rate(envoy_cluster_upstream_rq_total[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: High 5xx error rate on cluster {{`{{ $labels.envoy_cluster_name }}`}}
+      - alert: ContourEnvoyHighP99Latency
+        expr: |
+          histogram_quantile(0.99,
+            sum by (le) (rate(envoy_http_downstream_rq_time_bucket[1m]))
+          ) > 2000
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: |
+            1m p99 latency above 2s on {{`{{ $labels.envoy_http_conn_manager_prefix }}`}}
+      - alert: ContourEnvoyPendingRequests
+        expr: |
+          envoy_cluster_upstream_rq_pending_active > 100
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: High pending request queue on {{`{{ $labels.envoy_cluster_name }}`}}
