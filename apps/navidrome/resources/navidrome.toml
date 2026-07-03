@@ -1,7 +1,8 @@
 LogLevel = "INFO"
 ArtistArtPriority = "artist.*, folder.*, album/artist.*, external"  # compatibility with Jellyfin convention
 AutoImportPlaylists = false
-# ImageCacheSize = "1024MB"
+ImageCacheSize = "0"
+EnableArtworkPrecache = false
 # TranscodingCacheSize = "100MB"
 CacheFolder = "/cache"
 CoverArtPriority = "cover.*"  # strict
