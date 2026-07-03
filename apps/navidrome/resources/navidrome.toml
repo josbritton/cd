@@ -1,5 +1,5 @@
 LogLevel = "INFO"
-ArtistArtPriority = "artist.*, folder.*, album/artist.*, external"  # compatibility with Jellyfin convention
+ArtistArtPriority = "artist.*, folder.*, external"  # compatibility with Jellyfin convention
 AutoImportPlaylists = false
 ImageCacheSize = "0"
 EnableArtworkPrecache = false
