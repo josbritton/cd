@@ -9,6 +9,7 @@ metadata:
     app.kubernetes.io/component: feed-aggregator
     app.kubernetes.io/part-of: rss
   annotations:
+    reloader.stakater.com/auto: "true"
     argocd.argoproj.io/sync-options: ServerSideApply=true
 spec:
   revisionHistoryLimit: 3
@@ -80,6 +81,10 @@ spec:
           mountPath: /var/lib/nginx
         - name: logs
           mountPath: /var/logs
+        - name: config-ini
+          mountPath: /app/config.ini.php
+          subPath: config.ini.php
+          readOnly: true
         livenessProbe: &probe
           httpGet:
             port: 80
@@ -100,6 +105,13 @@ spec:
         emptyDir: {}
       - name: nginx
         emptyDir: {}
+      - name: config-ini
+        configMap:
+          name: rss-bridge-config-ini
+          items:
+          - key: config.ini.php
+            path: config.ini.php
+            mode: 0o550
   volumeClaimTemplates:
   - apiVersion: v1
     kind: PersistentVolumeClaim
