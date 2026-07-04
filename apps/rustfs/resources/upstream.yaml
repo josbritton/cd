@@ -25,13 +25,10 @@ data:
   RUSTFS_ADDRESS: ":9000"
   RUSTFS_CONSOLE_ADDRESS: ":9001"
   RUSTFS_CONSOLE_ENABLE: "true"
-  RUSTFS_OBS_LOG_DIRECTORY: "/logs"
+  RUSTFS_OBS_LOG_DIRECTORY: ""
   RUSTFS_OBS_LOGGER_LEVEL: "info"
   RUSTFS_OBS_ENVIRONMENT: "development"
   RUSTFS_REGION: "us-east-1"
-  RUSTFS_OBS_LOG_ROTATION_SIZE_MB: "20"
-  RUSTFS_OBS_LOG_ROTATION_TIME: "hour"
-  RUSTFS_OBS_LOG_KEEP_FILES: "10"
   RUSTFS_VOLUMES: "/data"
 ---
 # Source: rustfs/charts/rustfs/templates/pvc.yaml
@@ -50,23 +47,6 @@ spec:
   resources:
     requests:
       storage: 4096Mi
----
-# Source: rustfs/charts/rustfs/templates/pvc.yaml
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  annotations:
-    helm.sh/resource-policy: keep
-  name: rustfs-logs
-  namespace: rustfs
-  labels:
-    {}
-spec:
-  accessModes: [ ReadWriteOnce ]
-  storageClassName: csi-rbd-sc
-  resources:
-    requests:
-      storage: 512Mi
 ---
 # Source: rustfs/charts/rustfs/templates/service.yaml
 apiVersion: v1
@@ -146,13 +126,9 @@ spec:
             - -c
             - |
               mkdir -p /data
-              mkdir -p /mnt/rustfs/logs
-              chmod 755 /mnt/rustfs/logs
           volumeMounts:
             - name: data
               mountPath: /data
-            - name: logs
-              mountPath: /mnt/rustfs
       containers:
         - name: rustfs
           image: "rustfs/rustfs:1.0.0-beta.8"
@@ -199,15 +175,9 @@ spec:
             successThreshold: 1
             failureThreshold: 3
           volumeMounts:
-            - name: logs
-              mountPath: /logs
-              subPath: logs
             - name: data
               mountPath: /data
       volumes:
-        - name: logs
-          persistentVolumeClaim:
-            claimName: rustfs-logs
         - name: data
           persistentVolumeClaim:
             claimName: rustfs-data
