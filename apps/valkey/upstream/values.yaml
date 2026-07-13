@@ -1,17 +1,112 @@
 valkey:
   auth:
-    existingSecret: valkey
-  global:
-    defaultStorageClass: csi-rbd-sc
+    enabled: true
+    usersExistingSecret: valkey-users
+    aclUsers:
+      default:
+        permissions: ~* &* +@all
+        passwordKey: default
+      read-only:
+        permissions: ~* -@all +@read +ping +info
+        passwordKey: read-only
+  dataStorage:  # used for standalone mode
+    enabled: false
   replica:
-    replicaCount: 1
-    resources: &resources
-      limits:
-        ephemeral-storage: 2Gi
-        memory: 192Mi
-      requests:
-        cpu: 100m
-        ephemeral-storage: 50Mi
-        memory: 128Mi
-  primary:
-    resources: *resources
+    enabled: true
+    replicas: 1
+    minReplicasToWrite: 1
+    replicationUser: default
+    persistence:
+      storageClass: csi-rbd-sc
+      size: 8Gi
+  podDisruptionBudget:
+    enabled: true
+    minAvailable: 1
+    maxUnavailable: null
+  podSecurityContext:
+    fsGroup: 65534
+    fsGroupChangePolicy: OnRootMismatch
+    runAsUser: 65534
+    runAsGroup: 65534
+    # runAsNonRoot: true
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 65534
+    runAsGroup: 65534
+    capabilities:
+      drop: [ALL]
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    # privileged: false
+  resources:
+    limits:
+      memory: 256Mi
+    requests:
+      memory: 256Mi
+      cpu: 150m
+  initResources:
+    limits:
+      memory: 128Mi
+    requests:
+      memory: 128Mi
+      cpu: 150m
+  metrics:
+    enabled: true
+    exporter:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        capabilities:
+          drop: [ALL]
+        readOnlyRootFilesystem: true
+        # allowPrivilegeEscalation: false
+        # privileged: false
+      resources:
+        limits:
+          memory: 128Mi
+        requests:
+          memory: 128Mi
+          cpu: 150m
+    prometheusRule:
+      enabled: true
+      extraLabels:
+        release: prometheus-operator
+      rules:
+      - alert: ValkeyDown
+        annotations:
+          summary: Valkey instance {{ "{{ $labels.instance }}" }} down
+          description: Valkey instance {{ "{{ $labels.instance }}" }} is down.
+        expr: |
+          redis_up{service="{{ include "valkey.fullname" . }}-metrics"} == 0
+        for: 2m
+        labels:
+          severity: error
+      - alert: ValkeyMemoryHigh
+        annotations:
+          summary: Valkey instance {{ "{{ $labels.instance }}" }} is using too much memory
+          description: |
+             Valkey instance {{ "{{ $labels.instance }}" }} is using {{ "{{ $value }}" }}% of its available memory.
+        expr: |
+           redis_memory_used_bytes{service="{{ include "valkey.fullname" . }}-metrics"} * 100
+           /
+           redis_memory_max_bytes{service="{{ include "valkey.fullname" . }}-metrics"}
+           > 90 <= 100
+        for: 2m
+        labels:
+          severity: error
+      - alert: ValkeyKeyEviction
+        annotations:
+          summary: Valkey instance {{ "{{ $labels.instance }}" }} has evicted keys
+          description: |
+             Valkey instance {{ "{{ $labels.instance }}" }} has evicted {{ "{{ $value }}" }} keys in the last 5 minutes.
+        expr: |
+          increase(redis_evicted_keys_total{service="{{ include "valkey.fullname" . }}-metrics"}[5m]) > 0
+        for: 1s
+        labels:
+          severity: error
+    serviceMonitor:
+      enabled: true
+      extraLabels:
+        release: prometheus-operator
+      interval: 10s
