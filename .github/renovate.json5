@@ -27,6 +27,7 @@
   "commitMessageExtra": "to {{newVersion}}",
   "commitMessageSuffix": "",
   "minimumReleaseAge": "7 days",
+  "minimumReleaseAgeBehaviour": "timestamp-optional",  // do not block updates
   "packageRules": [
     // run post-upgrade build task for helm templates
     {
@@ -341,7 +342,7 @@
         "/^ghcr\\.io//",
         "/^registry\\.k8s\\.io//"
       ],
-      "minimumReleaseAge": ""
+      "minimumReleaseAge": null
     }
   ],
   "customManagers": [
