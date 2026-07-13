@@ -317,14 +317,6 @@
       ],
       "groupName": "all-sig-storage-csi"
     },
-    // chart -> image updates must be coordinated
-    {
-      "matchPackageNames": [
-        "ghcr.io/stakater/reloader",
-        "stakater/Reloader"
-      ],
-      "groupName": "reloader"
-    },
     {
       "matchPackageNames": [
         "docker.io/gitea/**",
@@ -342,6 +334,16 @@
         "/^ghcr\\.io//",
         "/^registry\\.k8s\\.io//"
       ],
+      "minimumReleaseAge": null
+    },
+    // chart -> image updates must be coordinated
+    // as the image is on ghcr, both in group must have unset min release age
+    {
+      "matchPackageNames": [
+        "ghcr.io/stakater/reloader",
+        "stakater/Reloader"
+      ],
+      "groupName": "reloader",
       "minimumReleaseAge": null
     }
   ],
