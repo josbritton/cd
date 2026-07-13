@@ -25,7 +25,7 @@ spec:
           name: graphite-mapping-cm
       containers:
       - name: graphite-exporter
-        image: prom/graphite-exporter:latest@sha256:e54bca6645ea8a9e8c52312a8540de98ad08819d38476c021d77a0eae75bc797
+        image: prom/graphite-exporter:latest@sha256:c1a266f63a84fd11048ab6ad1552a4c497b14522d02823925247698e41eeac2b
         args: [--graphite.mapping-config=/tmp/graphite/graphite_mapping.conf]
         volumeMounts:
         - mountPath: /tmp/graphite
