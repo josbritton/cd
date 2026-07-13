@@ -6,10 +6,10 @@ metadata:
   name: fluent-bit
   namespace: fluent-bit
   labels:
-    helm.sh/chart: fluent-bit-0.57.6
+    helm.sh/chart: fluent-bit-0.57.9
     app.kubernetes.io/name: fluent-bit
     app.kubernetes.io/instance: fluent-bit
-    app.kubernetes.io/version: "5.0.6"
+    app.kubernetes.io/version: "5.0.9"
     app.kubernetes.io/managed-by: Helm
 ---
 # Source: fluent-bit/charts/fluent-bit/templates/configmap-dashboards.yaml
@@ -19,10 +19,10 @@ metadata:
   name: fluent-bit-dashboard-fluent-bit
   namespace: fluent-bit
   labels:
-    helm.sh/chart: fluent-bit-0.57.6
+    helm.sh/chart: fluent-bit-0.57.9
     app.kubernetes.io/name: fluent-bit
     app.kubernetes.io/instance: fluent-bit
-    app.kubernetes.io/version: "5.0.6"
+    app.kubernetes.io/version: "5.0.9"
     app.kubernetes.io/managed-by: Helm
     grafana_dashboard: "1"
 data:
@@ -1600,10 +1600,10 @@ metadata:
   name: fluent-bit
   namespace: fluent-bit
   labels:
-    helm.sh/chart: fluent-bit-0.57.6
+    helm.sh/chart: fluent-bit-0.57.9
     app.kubernetes.io/name: fluent-bit
     app.kubernetes.io/instance: fluent-bit
-    app.kubernetes.io/version: "5.0.6"
+    app.kubernetes.io/version: "5.0.9"
     app.kubernetes.io/managed-by: Helm
 data:
   custom_parsers.conf: |
@@ -1679,10 +1679,10 @@ kind: ClusterRole
 metadata:
   name: fluent-bit
   labels:
-    helm.sh/chart: fluent-bit-0.57.6
+    helm.sh/chart: fluent-bit-0.57.9
     app.kubernetes.io/name: fluent-bit
     app.kubernetes.io/instance: fluent-bit
-    app.kubernetes.io/version: "5.0.6"
+    app.kubernetes.io/version: "5.0.9"
     app.kubernetes.io/managed-by: Helm
 rules:
   - apiGroups:
@@ -1701,10 +1701,10 @@ kind: ClusterRoleBinding
 metadata:
   name: fluent-bit
   labels:
-    helm.sh/chart: fluent-bit-0.57.6
+    helm.sh/chart: fluent-bit-0.57.9
     app.kubernetes.io/name: fluent-bit
     app.kubernetes.io/instance: fluent-bit
-    app.kubernetes.io/version: "5.0.6"
+    app.kubernetes.io/version: "5.0.9"
     app.kubernetes.io/managed-by: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -1722,10 +1722,10 @@ metadata:
   name: fluent-bit
   namespace: fluent-bit
   labels:
-    helm.sh/chart: fluent-bit-0.57.6
+    helm.sh/chart: fluent-bit-0.57.9
     app.kubernetes.io/name: fluent-bit
     app.kubernetes.io/instance: fluent-bit
-    app.kubernetes.io/version: "5.0.6"
+    app.kubernetes.io/version: "5.0.9"
     app.kubernetes.io/managed-by: Helm
 spec:
   type: ClusterIP
@@ -1745,10 +1745,10 @@ metadata:
   name: fluent-bit
   namespace: fluent-bit
   labels:
-    helm.sh/chart: fluent-bit-0.57.6
+    helm.sh/chart: fluent-bit-0.57.9
     app.kubernetes.io/name: fluent-bit
     app.kubernetes.io/instance: fluent-bit
-    app.kubernetes.io/version: "5.0.6"
+    app.kubernetes.io/version: "5.0.9"
     app.kubernetes.io/managed-by: Helm
 spec:
   selector:
@@ -1761,7 +1761,7 @@ spec:
         app.kubernetes.io/name: fluent-bit
         app.kubernetes.io/instance: fluent-bit
       annotations:
-        checksum/config: 7a3c24b1a46d2b187b522ca6ab8863d28ec417cfdcfc1d756d705d4c5f97db95
+        checksum/config: 7f805da26e88e2389f985476cbed0113b1f8651382fb8e4869df9433350ae698
     spec:
       
       serviceAccountName: fluent-bit
@@ -1769,7 +1769,7 @@ spec:
       dnsPolicy: ClusterFirst
       containers:
         - name: fluent-bit
-          image: "cr.fluentbit.io/fluent/fluent-bit:5.0.6"
+          image: "cr.fluentbit.io/fluent/fluent-bit:5.0.9"
           imagePullPolicy: IfNotPresent
           command:
             - /fluent-bit/bin/fluent-bit
@@ -1821,8 +1821,8 @@ metadata:
   name: "fluent-bit-test-connection"
   namespace: fluent-bit
   labels:
-    helm.sh/chart: fluent-bit-0.57.6
-    app.kubernetes.io/version: "5.0.6"
+    helm.sh/chart: fluent-bit-0.57.9
+    app.kubernetes.io/version: "5.0.9"
     app.kubernetes.io/managed-by: Helm
   annotations:
     helm.sh/hook: test
