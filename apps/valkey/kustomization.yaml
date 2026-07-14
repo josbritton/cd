@@ -6,9 +6,9 @@ resources:
 patches:
 - target:
     name: .*
-    namespace: valkey
     kind: StatefulSet
   patch: |-
     - op: add
       path: /metadata/annotations/argocd.argoproj.io~1sync-options
       value: ServerSideApply=true
+- path: ./overlays/image.yaml
