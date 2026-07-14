@@ -25,7 +25,7 @@ CHARTS := $(shell find apps/ -regex ".*/upstream/Chart.ya?ml")
 	    --include-crds \
 	    --namespace "$$NAMESPACE" \
 	    "$$CHART" \
-	    "$*/upstream" > "$@"
+	    "$*/upstream" | NAMESPACE="$$NAMESPACE" ./scripts/process-ns.in > "$@"
 
 RENDERS := $(foreach c,$(CHARTS),$(shell dirname $(shell dirname $(c)))/resources/upstream.yaml)
 

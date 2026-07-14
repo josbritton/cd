@@ -50,13 +50,13 @@ metadata:
     app.kubernetes.io/managed-by: Helm
 rules:
   - apiGroups:
-    - ""
+      - ""
     resources:
-    - nodes/metrics
+      - nodes/metrics
     verbs:
-    - get
+      - get
   - apiGroups:
-    - ""
+      - ""
     resources:
       - pods
       - nodes
@@ -186,7 +186,7 @@ spec:
             allowPrivilegeEscalation: false
             capabilities:
               drop:
-              - ALL
+                - ALL
             readOnlyRootFilesystem: true
             runAsNonRoot: true
             runAsUser: 1000
@@ -205,9 +205,9 @@ spec:
             - --tls-cert-file=/tmp/tls-certs/tls.crt
             - --tls-private-key-file=/tmp/tls-certs/tls.key
           ports:
-          - name: https
-            protocol: TCP
-            containerPort: 10250
+            - name: https
+              protocol: TCP
+              containerPort: 10250
           livenessProbe:
             failureThreshold: 3
             httpGet:

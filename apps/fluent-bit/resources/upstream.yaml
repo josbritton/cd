@@ -1641,21 +1641,21 @@ data:
       k8s-logging.exclude on
       namespace_labels off
       annotations off
-    
+
     [FILTER]
       name nest
       match kubernetes.*
       operation lift
       nested_under kubernetes
       add_prefix k_
-    
+
     [FILTER]
       name nest
       match kubernetes.*
       operation lift
       nested_under k_labels
       add_prefix k_labels_
-    
+
     [FILTER]
       name modify
       match kubernetes.*
@@ -1763,7 +1763,6 @@ spec:
       annotations:
         checksum/config: 7a3c24b1a46d2b187b522ca6ab8863d28ec417cfdcfc1d756d705d4c5f97db95
     spec:
-      
       serviceAccountName: fluent-bit
       hostNetwork: false
       dnsPolicy: ClusterFirst
