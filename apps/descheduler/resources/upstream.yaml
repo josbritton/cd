@@ -91,30 +91,30 @@ metadata:
     app.kubernetes.io/version: "0.36.0"
     app.kubernetes.io/managed-by: Helm
 rules:
-- apiGroups: ["events.k8s.io"]
-  resources: ["events"]
-  verbs: ["create", "update"]
-- apiGroups: [""]
-  resources: ["nodes"]
-  verbs: ["get", "watch", "list"]
-- apiGroups: [""]
-  resources: ["namespaces"]
-  verbs: ["get", "watch", "list"]
-- apiGroups: [""]
-  resources: ["pods"]
-  verbs: ["get", "watch", "list", "delete"]
-- apiGroups: [""]
-  resources: ["pods/eviction"]
-  verbs: ["create"]
-- apiGroups: ["scheduling.k8s.io"]
-  resources: ["priorityclasses"]
-  verbs: ["get", "watch", "list"]
-- apiGroups: ["policy"]
-  resources: ["poddisruptionbudgets"]
-  verbs: ["get", "watch", "list"]
-- apiGroups: [""]
-  resources: ["persistentvolumeclaims"]
-  verbs: ["get", "watch", "list"]
+  - apiGroups: ["events.k8s.io"]
+    resources: ["events"]
+    verbs: ["create", "update"]
+  - apiGroups: [""]
+    resources: ["nodes"]
+    verbs: ["get", "watch", "list"]
+  - apiGroups: [""]
+    resources: ["namespaces"]
+    verbs: ["get", "watch", "list"]
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "watch", "list", "delete"]
+  - apiGroups: [""]
+    resources: ["pods/eviction"]
+    verbs: ["create"]
+  - apiGroups: ["scheduling.k8s.io"]
+    resources: ["priorityclasses"]
+    verbs: ["get", "watch", "list"]
+  - apiGroups: ["policy"]
+    resources: ["poddisruptionbudgets"]
+    verbs: ["get", "watch", "list"]
+  - apiGroups: [""]
+    resources: ["persistentvolumeclaims"]
+    verbs: ["get", "watch", "list"]
 ---
 # Source: descheduler/charts/descheduler/templates/clusterrolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -197,7 +197,7 @@ spec:
                 allowPrivilegeEscalation: false
                 capabilities:
                   drop:
-                  - ALL
+                    - ALL
                 privileged: false
                 readOnlyRootFilesystem: true
                 runAsNonRoot: true
@@ -206,6 +206,6 @@ spec:
                 - mountPath: /policy-dir
                   name: policy-volume
           volumes:
-          - name: policy-volume
-            configMap:
-              name: descheduler
+            - name: policy-volume
+              configMap:
+                name: descheduler
