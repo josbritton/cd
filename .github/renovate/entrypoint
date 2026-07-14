@@ -2,4 +2,12 @@
 
 export DESIRED_VERSION=v4.1.4 # renovate: datasource=github-releases depName=helm/helm
 curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash
+
+VERSION=v4.53.3 # renovate: datasource=github-releases depName=mikefarah/yq
+PLATFORM=linux_amd64
+
+curl -fsSL "https://github.com/mikefarah/yq/releases/download/$VERSION/yq_$PLATFORM.tar.gz" \
+  | tar xz \
+  && install -o root -g root -m 0755 "yq_$PLATFORM" /usr/local/bin/yq
+
 runuser -u ubuntu renovate

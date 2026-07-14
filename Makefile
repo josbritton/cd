@@ -17,7 +17,12 @@ CHARTS := $(shell find apps/ -regex ".*/upstream/Chart.ya?ml")
 %/upstream/Chart.yaml: %/upstream/values.yaml %/upstream/values.yml
 	@:
 
-%/resources/upstream.yaml: %/upstream/Chart.yaml %/upstream/Chart.yml
+.PHONY: .FORCE
+inventoryns: .FORCE
+	command -v kubectl >/dev/null && \
+		kubectl api-resources --namespaced=true --no-headers | awk '{print $$NF}' | sort -u | paste -sd, - > inventoryns
+
+%/resources/upstream.yaml: %/upstream/Chart.yaml %/upstream/Chart.yml inventoryns
 	. "$*/BUILDARGS" && \
 	[ ! -L "$*/upstream/Chart.lock" ] && \
 	helm dependency update "$*/upstream" && \
@@ -25,7 +30,7 @@ CHARTS := $(shell find apps/ -regex ".*/upstream/Chart.ya?ml")
 	    --include-crds \
 	    --namespace "$$NAMESPACE" \
 	    "$$CHART" \
-	    "$*/upstream" > "$@"
+	    "$*/upstream" | NAMESPACE="$$NAMESPACE" ./scripts/process-ns.in > "$@"
 
 RENDERS := $(foreach c,$(CHARTS),$(shell dirname $(shell dirname $(c)))/resources/upstream.yaml)
 

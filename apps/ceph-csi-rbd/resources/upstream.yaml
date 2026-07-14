@@ -50,7 +50,6 @@ data:
       ms_bind_ipv6 = false
       osd_pool_default_min_size = 2
       osd_pool_default_size = 3
-    
   keyring: ""
 ---
 # Source: ceph-csi-rbd/charts/ceph-csi-rbd/templates/csiplugin-configmap.yaml
@@ -102,20 +101,17 @@ metadata:
 provisioner: rbd.csi.ceph.com
 parameters:
   clusterID: 1f9d6c76-6b11-44c3-bea8-eae281696e98
-  imageFeatures: layering,exclusive-lock,object-map,fast-diff,deep-flatten  
+  imageFeatures: layering,exclusive-lock,object-map,fast-diff,deep-flatten
   pool: ceph_pv
   mkfsOptions: -m0 -Ediscard,lazy_itable_init=1,lazy_journal_init=1
   csi.storage.k8s.io/provisioner-secret-name: csi-rbd-secret
   csi.storage.k8s.io/provisioner-secret-namespace: ceph-csi-rbd
-
   csi.storage.k8s.io/controller-expand-secret-name: csi-rbd-secret
   csi.storage.k8s.io/controller-expand-secret-namespace: ceph-csi-rbd
-
   csi.storage.k8s.io/controller-publish-secret-name: csi-rbd-secret
   csi.storage.k8s.io/controller-publish-secret-namespace: ceph-csi-rbd
   csi.storage.k8s.io/node-stage-secret-name: csi-rbd-secret
   csi.storage.k8s.io/node-stage-secret-namespace: ceph-csi-rbd
-
   csi.storage.k8s.io/fstype: ext4
 reclaimPolicy: Delete
 allowVolumeExpansion: true
@@ -225,7 +221,7 @@ rules:
     verbs: ["update", "patch"]
   - apiGroups: [""]
     resources: ["nodes"]
-    verbs: ["get", "list","watch"]
+    verbs: ["get", "list", "watch"]
   - apiGroups: ["storage.k8s.io"]
     resources: ["csinodes"]
     verbs: ["get", "list", "watch"]
@@ -291,7 +287,7 @@ metadata:
 rules:
   - apiGroups: [""]
     resources: ["configmaps"]
-    verbs: ["get", "list", "watch", "create","update", "delete"]
+    verbs: ["get", "list", "watch", "create", "update", "delete"]
   - apiGroups: ["coordination.k8s.io"]
     resources: ["leases"]
     verbs: ["get", "watch", "list", "delete", "update", "create"]
@@ -398,8 +394,7 @@ spec:
         release: ceph-csi-rbd
         heritage: Helm
     spec:
-      securityContext: 
-        {}
+      securityContext: {}
       serviceAccountName: ceph-csi-rbd-nodeplugin
       hostNetwork: true
       hostPID: true
@@ -480,8 +475,7 @@ spec:
             - name: oidc-token
               mountPath: /run/secrets/tokens
               readOnly: true
-          resources:
-            {}
+          resources: {}
         - name: driver-registrar
           # This is necessary only for systems with SELinux, where
           # non-privileged sidecar containers cannot access unix domain socket
@@ -506,8 +500,7 @@ spec:
               mountPath: /csi
             - name: registration-dir
               mountPath: /registration
-          resources:
-            {}
+          resources: {}
         - name: liveness-prometheus
           securityContext:
             privileged: true
@@ -535,8 +528,7 @@ spec:
           volumeMounts:
             - name: socket-dir
               mountPath: /csi
-          resources:
-            {}
+          resources: {}
       volumes:
         - name: socket-dir
           hostPath:
@@ -580,9 +572,7 @@ spec:
           configMap:
             name: "ceph-csi-encryption-kms-config"
         - name: keys-tmp-dir
-          emptyDir: {
-            medium: "Memory"
-          }
+          emptyDir: {medium: "Memory"}
         - name: oidc-token
           projected:
             sources:
@@ -637,8 +627,7 @@ spec:
                     values:
                       - provisioner
               topologyKey: "kubernetes.io/hostname"
-      securityContext: 
-        {}
+      securityContext: {}
       serviceAccountName: ceph-csi-rbd-provisioner
       hostNetwork: false
       priorityClassName: system-cluster-critical
@@ -702,8 +691,7 @@ spec:
             - name: oidc-token
               mountPath: /run/secrets/tokens
               readOnly: true
-          resources:
-            {}
+          resources: {}
         - name: csi-provisioner
           image: "registry.k8s.io/sig-storage/csi-provisioner:v6.2.0"
           imagePullPolicy: IfNotPresent
@@ -724,8 +712,7 @@ spec:
           volumeMounts:
             - name: socket-dir
               mountPath: /csi
-          resources:
-            {}
+          resources: {}
         - name: csi-resizer
           image: "registry.k8s.io/sig-storage/csi-resizer:v2.1.0"
           imagePullPolicy: IfNotPresent
@@ -744,8 +731,7 @@ spec:
           volumeMounts:
             - name: socket-dir
               mountPath: /csi
-          resources:
-            {}
+          resources: {}
         - name: csi-snapshotter
           image: registry.k8s.io/sig-storage/csi-snapshotter:v8.5.0
           imagePullPolicy: IfNotPresent
@@ -763,8 +749,7 @@ spec:
           volumeMounts:
             - name: socket-dir
               mountPath: /csi
-          resources:
-            {}
+          resources: {}
         - name: csi-attacher
           image: "registry.k8s.io/sig-storage/csi-attacher:v4.11.0"
           imagePullPolicy: IfNotPresent
@@ -781,8 +766,7 @@ spec:
           volumeMounts:
             - name: socket-dir
               mountPath: /csi
-          resources:
-            {}
+          resources: {}
         - name: csi-rbdplugin-controller
           image: "quay.io/cephcsi/cephcsi:v3.17.0"
           imagePullPolicy: IfNotPresent
@@ -806,8 +790,7 @@ spec:
               mountPath: /tmp/csi/keys
             - name: ceph-config
               mountPath: /etc/ceph/
-          resources:
-            {}
+          resources: {}
         - name: liveness-prometheus
           image: "quay.io/cephcsi/cephcsi:v3.17.0"
           imagePullPolicy: IfNotPresent
@@ -832,13 +815,10 @@ spec:
           volumeMounts:
             - name: socket-dir
               mountPath: /csi
-          resources:
-            {}
+          resources: {}
       volumes:
         - name: socket-dir
-          emptyDir: {
-            medium: "Memory"
-          }
+          emptyDir: {medium: "Memory"}
         - name: host-dev
           hostPath:
             path: /dev
@@ -858,9 +838,7 @@ spec:
           configMap:
             name: "ceph-csi-encryption-kms-config"
         - name: keys-tmp-dir
-          emptyDir: {
-            medium: "Memory"
-          }
+          emptyDir: {medium: "Memory"}
         - name: oidc-token
           projected:
             sources:

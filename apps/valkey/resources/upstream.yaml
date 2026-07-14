@@ -346,7 +346,7 @@ spec:
   clusterIP: None
   ports:
     - name: tcp-redis
-      port:  6379
+      port: 6379
       targetPort: redis
   selector:
     app.kubernetes.io/instance: valkey
@@ -444,7 +444,6 @@ spec:
         checksum/health: 30ef46e920ea5e36fb842c2ed1175c90b698bdb5a18a244ee061ab6fad0deb34
         checksum/scripts: 86dbabd53ed48c58e0fa992395bcbbc8c5ab4d9b93496d2f395220422b61e5e0
     spec:
-      
       securityContext:
         fsGroup: 1001
         fsGroupChangePolicy: Always
@@ -454,7 +453,6 @@ spec:
       automountServiceAccountToken: false
       affinity:
         podAffinity:
-          
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
             - podAffinityTerm:
@@ -466,7 +464,6 @@ spec:
                 topologyKey: kubernetes.io/hostname
               weight: 1
         nodeAffinity:
-          
       enableServiceLinks: true
       terminationGracePeriodSeconds: 30
       containers:
@@ -477,7 +474,7 @@ spec:
             allowPrivilegeEscalation: false
             capabilities:
               drop:
-              - ALL
+                - ALL
             readOnlyRootFilesystem: true
             runAsGroup: 1001
             runAsNonRoot: true
@@ -566,12 +563,11 @@ spec:
             name: valkey-health
             defaultMode: 0755
         - name: valkey-password
-          
           secret:
             secretName: valkey
             items:
-            - key: valkey-password
-              path: valkey-password
+              - key: valkey-password
+                path: valkey-password
         - name: config
           configMap:
             name: valkey-configuration
@@ -632,7 +628,6 @@ spec:
         checksum/health: 30ef46e920ea5e36fb842c2ed1175c90b698bdb5a18a244ee061ab6fad0deb34
         checksum/scripts: 86dbabd53ed48c58e0fa992395bcbbc8c5ab4d9b93496d2f395220422b61e5e0
     spec:
-      
       securityContext:
         fsGroup: 1001
         fsGroupChangePolicy: Always
@@ -642,7 +637,6 @@ spec:
       automountServiceAccountToken: false
       affinity:
         podAffinity:
-          
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
             - podAffinityTerm:
@@ -654,7 +648,6 @@ spec:
                 topologyKey: kubernetes.io/hostname
               weight: 1
         nodeAffinity:
-          
       enableServiceLinks: true
       terminationGracePeriodSeconds: 30
       containers:
@@ -665,7 +658,7 @@ spec:
             allowPrivilegeEscalation: false
             capabilities:
               drop:
-              - ALL
+                - ALL
             readOnlyRootFilesystem: true
             runAsGroup: 1001
             runAsNonRoot: true
@@ -767,12 +760,11 @@ spec:
             name: valkey-health
             defaultMode: 0755
         - name: valkey-password
-          
           secret:
             secretName: valkey
             items:
-            - key: valkey-password
-              path: valkey-password
+              - key: valkey-password
+                path: valkey-password
         - name: config
           configMap:
             name: valkey-configuration

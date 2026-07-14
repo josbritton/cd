@@ -60,28 +60,28 @@ stringData:
   config_environment.sh: |
     #!/usr/bin/env bash
     set -euo pipefail
-  
+
     function env2ini::log() {
       printf "${1}\n"
     }
-  
+
     function env2ini::read_config_to_env() {
       local section="${1}"
       local line="${2}"
-  
+
       if [[ -z "${line}" ]]; then
         # skip empty line
         return
       fi
-  
+
       # 'xargs echo -n' trims all leading/trailing whitespaces and a trailing new line
       local setting="$(awk -F '=' '{print $1}' <<< "${line}" | xargs echo -n)"
-  
+
       if [[ -z "${setting}" ]]; then
         env2ini::log '  ! invalid setting'
         exit 1
       fi
-  
+
       local value=''
       local regex="^${setting}(\s*)=(\s*)(.*)"
       if [[ $line =~ $regex ]]; then
@@ -90,37 +90,37 @@ stringData:
         env2ini::log '  ! invalid setting'
         exit 1
       fi
-  
+
       env2ini::log "    + '${setting}'"
-  
+
       if [[ -z "${section}" ]]; then
         export "GITEA____${setting^^}=${value}"                           # '^^' makes the variable content uppercase
         return
       fi
-  
+
       local masked_section="${section//./_0X2E_}"                            # '//' instructs to replace all matches
       masked_section="${masked_section//-/_0X2D_}"
-  
+
       export "GITEA__${masked_section^^}__${setting^^}=${value}"        # '^^' makes the variable content uppercase
     }
-  
+
     function env2ini::reload_preset_envs() {
       env2ini::log "Reloading preset envs..."
-  
+
       while read -r line; do
         if [[ -z "${line}" ]]; then
           # skip empty line
           return
         fi
-  
+
         # 'xargs echo -n' trims all leading/trailing whitespaces and a trailing new line
         local setting="$(awk -F '=' '{print $1}' <<< "${line}" | xargs echo -n)"
-  
+
         if [[ -z "${setting}" ]]; then
           env2ini::log '  ! invalid setting'
           exit 1
         fi
-  
+
         local value=''
         local regex="^${setting}(\s*)=(\s*)(.*)"
         if [[ $line =~ $regex ]]; then
@@ -129,73 +129,73 @@ stringData:
           env2ini::log '  ! invalid setting'
           exit 1
         fi
-  
+
         env2ini::log "  + '${setting}'"
-  
+
         export "${setting^^}=${value}"                           # '^^' makes the variable content uppercase
       done < "$TMP_EXISTING_ENVS_FILE"
-  
+
       rm $TMP_EXISTING_ENVS_FILE
     }
-  
+
     function env2ini::process_config_file() {
       local config_file="${1}"
       local section="$(basename "${config_file}")"
-  
+
       if [[ $section == '_generals_' ]]; then
         env2ini::log "  [ini root]"
         section=''
       else
         env2ini::log "  ${section}"
       fi
-  
+
       while read -r line; do
         env2ini::read_config_to_env "${section}" "${line}"
       done < <(awk 1 "${config_file}")                             # Helm .toYaml trims the trailing new line which breaks line processing; awk 1 ... adds it back while reading
     }
-  
+
     function env2ini::load_config_sources() {
       local path="${1}"
-  
+
       if [[ -d "${path}" ]]; then
         env2ini::log "Processing $(basename "${path}")..."
-  
+
         while read -d '' configFile; do
           env2ini::process_config_file "${configFile}"
         done < <(find "${path}" -type l -not -name '..data' -print0)
-  
+
         env2ini::log "\n"
       fi
     }
-  
+
     function env2ini::generate_initial_secrets() {
       # These environment variables will either be
       #   - overwritten with user defined values,
       #   - initially used to set up Gitea
       # Anyway, they won't harm existing app.ini files
-  
+
       export GITEA__SECURITY__INTERNAL_TOKEN=$(gitea generate secret INTERNAL_TOKEN)
       export GITEA__SECURITY__SECRET_KEY=$(gitea generate secret SECRET_KEY)
       export GITEA__OAUTH2__JWT_SECRET=$(gitea generate secret JWT_SECRET)
       export GITEA__SERVER__LFS_JWT_SECRET=$(gitea generate secret LFS_JWT_SECRET)
-  
+
       env2ini::log "...Initial secrets generated\n"
     }
-  
+
     # save existing envs prior to script execution. Necessary to keep order of preexisting and custom envs
     env | (grep -e '^GITEA__' || [[ $? == 1 ]]) > $TMP_EXISTING_ENVS_FILE
-  
+
     # MUST BE CALLED BEFORE OTHER CONFIGURATION
     env2ini::generate_initial_secrets
-  
+
     env2ini::load_config_sources "$ENV_TO_INI_MOUNT_POINT/inlines/"
     env2ini::load_config_sources "$ENV_TO_INI_MOUNT_POINT/additionals/"
-  
+
     # load existing envs to override auto generated envs
     env2ini::reload_preset_envs
-  
+
     env2ini::log "=== All configuration sources loaded ===\n"
-  
+
     # safety to prevent rewrite of secret keys if an app.ini already exists
     if [ -f ${GITEA_APP_INI} ]; then
       env2ini::log 'An app.ini file already exists. To prevent overwriting secret keys, these settings are dropped and remain unchanged:'
@@ -203,15 +203,15 @@ stringData:
       env2ini::log '  - security.SECRET_KEY'
       env2ini::log '  - oauth2.JWT_SECRET'
       env2ini::log '  - server.LFS_JWT_SECRET'
-  
+
       unset GITEA__SECURITY__INTERNAL_TOKEN
       unset GITEA__SECURITY__SECRET_KEY
       unset GITEA__OAUTH2__JWT_SECRET
       unset GITEA__SERVER__LFS_JWT_SECRET
     fi
-  
+
     gitea config edit-ini --apply-env --config "$GITEA_APP_INI" --out "$GITEA_APP_INI"
-  assertions: |
+  assertions: ""
 ---
 # Source: gitea/charts/gitea/templates/gitea/init.yaml
 apiVersion: v1
@@ -232,7 +232,7 @@ stringData:
   configure_gpg_environment.sh: |
     #!/usr/bin/env bash
     set -eu
-  
+
     gpg --batch --import "$TMP_RAW_GPG_KEY"
   init_directory_structure.sh: |-
     #!/usr/bin/env bash
@@ -245,9 +245,6 @@ stringData:
     # prepare temp directory structure
     mkdir -pv "${GITEA_TEMP}"
     chmod -v ug+rwx "${GITEA_TEMP}"
-
-    
-
   configure_gitea.sh: |-
     #!/usr/bin/env bash
 
@@ -339,13 +336,11 @@ metadata:
   namespace: gitea
   annotations:
     helm.sh/resource-policy: keep
-  labels:
-    {}
+  labels: {}
 spec:
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
-  
   storageClassName: "csi-rbd-sc"
   resources:
     requests:
@@ -365,15 +360,14 @@ metadata:
     app.kubernetes.io/version: "1.26.1"
     version: "1.26.1"
     app.kubernetes.io/managed-by: Helm
-  annotations:
-    {}
+  annotations: {}
 spec:
   type: ClusterIP
   clusterIP: None
   ports:
-  - name: http
-    port: 3000
-    targetPort: 3000
+    - name: http
+      port: 3000
+      targetPort: 3000
   selector:
     app.kubernetes.io/name: gitea
     app.kubernetes.io/instance: gitea
@@ -392,16 +386,15 @@ metadata:
     app.kubernetes.io/version: "1.26.1"
     version: "1.26.1"
     app.kubernetes.io/managed-by: Helm
-  annotations:
-    {}
+  annotations: {}
 spec:
   type: NodePort
   ports:
-  - name: ssh
-    port: 22
-    targetPort: 2222
-    protocol: TCP
-    nodePort: 30022
+    - name: ssh
+      port: 22
+      targetPort: 2222
+      protocol: TCP
+      nodePort: 30022
   selector:
     app.kubernetes.io/name: gitea
     app.kubernetes.io/instance: gitea
@@ -442,7 +435,6 @@ spec:
         version: "1.26.1"
         app.kubernetes.io/managed-by: Helm
     spec:
-      
       securityContext:
         fsGroup: 65534
       initContainers:
@@ -467,14 +459,13 @@ spec:
               mountPath: /tmp
             - name: data
               mountPath: /data
-            
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
               add:
-              - SYS_CHROOT
+                - SYS_CHROOT
               drop:
-              - ALL
+                - ALL
             privileged: false
             readOnlyRootFilesystem: true
             runAsGroup: 65534
@@ -489,7 +480,7 @@ spec:
           image: "docker.gitea.com/gitea:1.26.1-rootless"
           imagePullPolicy: IfNotPresent
           command:
-          - "/usr/sbinx/config_environment.sh"
+            - "/usr/sbinx/config_environment.sh"
           env:
             - name: GITEA_APP_INI
               value: /data/gitea/conf/app.ini
@@ -516,14 +507,13 @@ spec:
               mountPath: "/env-to-ini-mounts/additionals/0/"
             - name: additional-config-sources-1
               mountPath: "/env-to-ini-mounts/additionals/1/"
-            
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
               add:
-              - SYS_CHROOT
+                - SYS_CHROOT
               drop:
-              - ALL
+                - ALL
             privileged: false
             readOnlyRootFilesystem: true
             runAsGroup: 65534
@@ -537,15 +527,15 @@ spec:
         - name: configure-gitea
           image: "docker.gitea.com/gitea:1.26.1-rootless"
           command:
-          - "/usr/sbinx/configure_gitea.sh"
+            - "/usr/sbinx/configure_gitea.sh"
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
               add:
-              - SYS_CHROOT
+                - SYS_CHROOT
               drop:
-              - ALL
+                - ALL
             privileged: false
             readOnlyRootFilesystem: true
             runAsGroup: 65534
@@ -565,12 +555,12 @@ spec:
             - name: GITEA_ADMIN_USERNAME
               valueFrom:
                 secretKeyRef:
-                  key:  username
+                  key: username
                   name: gitea-admin-secret
             - name: GITEA_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key:  password
+                  key: password
                   name: gitea-admin-secret
             - name: GITEA_ADMIN_PASSWORD_MODE
               value: keepUpdated
@@ -581,7 +571,6 @@ spec:
               mountPath: /tmp
             - name: data
               mountPath: /data
-            
           resources:
             limits: {}
             requests:
@@ -631,15 +620,14 @@ spec:
             tcpSocket:
               port: http
             timeoutSeconds: 1
-          resources:
-            {}
+          resources: {}
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
               add:
-              - SYS_CHROOT
+                - SYS_CHROOT
               drop:
-              - ALL
+                - ALL
             privileged: false
             readOnlyRootFilesystem: true
             runAsGroup: 65534
@@ -699,7 +687,7 @@ spec:
       app.kubernetes.io/name: gitea
       app.kubernetes.io/instance: gitea
   endpoints:
-  - port: http
+    - port: http
 ---
 # Source: gitea/charts/gitea/templates/tests/test-http-connection.yaml
 apiVersion: v1
@@ -708,7 +696,6 @@ metadata:
   name: "gitea-test-connection"
   namespace: gitea
   labels:
-
     helm.sh/chart: gitea-12.6.0
     app: gitea
     app.kubernetes.io/name: gitea
@@ -723,5 +710,5 @@ spec:
     - name: wget
       image: "busybox:latest"
       command: ['wget']
-      args:  ['gitea-http:3000']
+      args: ['gitea-http:3000']
   restartPolicy: Never
