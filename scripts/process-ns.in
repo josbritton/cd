@@ -1,0 +1,17 @@
+#!/bin/bash
+# adapted from: https://github.com/helm/helm/issues/3553#issuecomment-3744214711
+
+set -x
+
+[ -z "$NAMESPACE" ] && { echo "No NAMESPACE variable"; exit 1; }
+export NAMESPACE
+
+KINDS="$(kubectl api-resources --namespaced=true --no-headers | awk '{print $NF}' | sort -u | paste -sd, -)"
+export KINDS
+
+# shellcheck disable=SC2016
+yq eval '
+  (env(KINDS) | split(",")) as $kinds
+  | (select((.metadata.namespace == null) and (.kind as $k | $kinds | any_c(. == $k)))
+     | .metadata.namespace) = strenv(NAMESPACE)
+' -
