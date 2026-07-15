@@ -31,7 +31,7 @@ env:
   RENOVATE_PLATFORM: github
   RENOVATE_PLATFORM_COMMIT: true
   RENOVATE_ALLOWED_POST_UPGRADE_COMMANDS: ^make build$
-  RENOVATE_VERSION: 43.200.0 # renovate: datasource=docker depName=ghcr.io/renovatebot/renovate
+  RENOVATE_VERSION: 43.253.0 # renovate: datasource=docker depName=ghcr.io/renovatebot/renovate
 
 jobs:
   renovate:
