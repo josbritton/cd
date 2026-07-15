@@ -290,18 +290,6 @@
       ]
     },
     {
-      "matchDatasources": [
-        "docker"
-      ],
-      "matchFileNames": [
-        "apps/tdarr/**"
-      ],
-      "matchPackageNames": [
-        "ghcr.io/haveagitgat/**"
-      ],
-      "groupName": "all-tdarr"
-    },
-    {
       "matchFileNames": [
         "apps/dashboard/**"
       ],
