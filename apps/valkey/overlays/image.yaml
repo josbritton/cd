@@ -18,7 +18,7 @@ spec:
       - name: valkey
         image: docker.io/valkey/valkey:9.1.0@sha256:4963247afc4cd33c7d3b2d2816b9f7f8eeebab148d29056c2ca4d7cbc966f2d9
       - name: metrics
-        image: ghcr.io/oliver006/redis_exporter:v1.79.0@sha256:67e175f144212fe5796b3134dae1f3db33782b57dc53f7c6f5d938f8f70d9754
+        image: ghcr.io/oliver006/redis_exporter:v1.86.0@sha256:2e9795be900db073e9475fdb9c5124db309b07a3e4e75a1770705cb03be1a1c8
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/pod.json
 apiVersion: v1
