@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export DESIRED_VERSION=v4.1.4 # renovate: datasource=github-releases depName=helm/helm
+export DESIRED_VERSION=v4.2.2 # renovate: datasource=github-releases depName=helm/helm
 curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash
 
 VERSION=v4.53.3 # renovate: datasource=github-releases depName=mikefarah/yq
