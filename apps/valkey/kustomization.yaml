@@ -12,4 +12,15 @@ patches:
     - op: add
       path: /metadata/annotations/argocd.argoproj.io~1sync-options
       value: ServerSideApply=true
+- target:
+    name: valkey
+    namespace: valkey
+    kind: StatefulSet
+  patch: |-
+    - op: add
+      path: /spec/volumeClaimTemplates/0/apiVersion
+      value: v1
+    - op: add
+      path: /spec/volumeClaimTemplates/0/kind
+      value: PersistentVolumeClaim
 - path: ./overlays/image.yaml
