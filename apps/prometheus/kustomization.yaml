@@ -14,9 +14,6 @@ resources:
 - ./resources/stork-agent-endpoints-bind.yaml
 - ./resources/stork-agent-servicemonitor-bind.yaml
 - ./resources/prometheusrule.yaml
-- ./resources/graphite-exporter-deployment.yaml
-- ./resources/graphite-svc-mon.yaml
-- ./resources/graphite-svc.yaml
 - ./resources/prometheus-cert.yaml
 - ./resources/prometheus-httpproxy.yaml
 - ./resources/ceph-rules.yaml
@@ -49,12 +46,6 @@ configMapGenerator:
       grafana_dashboard: "1"
 - name: airgradient-dashboard-cm
   files: [files/airgradient-dashboard.json]
-  options:
-    disableNameSuffixHash: true
-    labels:
-      grafana_dashboard: "1"
-- name: graphite-mapping-cm
-  files: [files/graphite_mapping.conf]
   options:
     disableNameSuffixHash: true
     labels:
