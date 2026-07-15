@@ -16,3 +16,9 @@ patches:
       path: /metadata/annotations
       value:
         argocd.argoproj.io/sync-wave: "-3"
+- target:
+    kind: CustomResourceDefinition
+  patch: |-
+    - op: add
+      path: /metadata/annotations/argocd.argoproj.io~1sync-wave
+      value: "-90"
