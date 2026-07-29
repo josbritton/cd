@@ -5,10 +5,10 @@ kind: PodDisruptionBudget
 metadata:
   name: valkey
   labels:
-    helm.sh/chart: valkey-0.10.0
+    helm.sh/chart: valkey-0.11.0
     app.kubernetes.io/name: valkey
     app.kubernetes.io/instance: valkey
-    app.kubernetes.io/version: "9.1.0"
+    app.kubernetes.io/version: "9.1.1"
     app.kubernetes.io/managed-by: Helm
   namespace: valkey
 spec:
@@ -24,10 +24,10 @@ kind: ServiceAccount
 metadata:
   name: valkey
   labels:
-    helm.sh/chart: valkey-0.10.0
+    helm.sh/chart: valkey-0.11.0
     app.kubernetes.io/name: valkey
     app.kubernetes.io/instance: valkey
-    app.kubernetes.io/version: "9.1.0"
+    app.kubernetes.io/version: "9.1.1"
     app.kubernetes.io/managed-by: Helm
   namespace: valkey
 automountServiceAccountToken: false
@@ -38,10 +38,10 @@ kind: ConfigMap
 metadata:
   name: valkey-init-scripts
   labels:
-    helm.sh/chart: valkey-0.10.0
+    helm.sh/chart: valkey-0.11.0
     app.kubernetes.io/name: valkey
     app.kubernetes.io/instance: valkey
-    app.kubernetes.io/version: "9.1.0"
+    app.kubernetes.io/version: "9.1.1"
     app.kubernetes.io/managed-by: Helm
   namespace: valkey
 data:
@@ -205,10 +205,10 @@ kind: Service
 metadata:
   name: valkey-metrics
   labels:
-    helm.sh/chart: valkey-0.10.0
+    helm.sh/chart: valkey-0.11.0
     app.kubernetes.io/name: valkey
     app.kubernetes.io/instance: valkey
-    app.kubernetes.io/version: "9.1.0"
+    app.kubernetes.io/version: "9.1.1"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: metrics
     app.kubernetes.io/part-of: valkey
@@ -231,10 +231,10 @@ kind: Service
 metadata:
   name: valkey-headless
   labels:
-    helm.sh/chart: valkey-0.10.0
+    helm.sh/chart: valkey-0.11.0
     app.kubernetes.io/name: valkey
     app.kubernetes.io/instance: valkey
-    app.kubernetes.io/version: "9.1.0"
+    app.kubernetes.io/version: "9.1.1"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: headless
   namespace: valkey
@@ -257,10 +257,10 @@ kind: Service
 metadata:
   name: valkey-read
   labels:
-    helm.sh/chart: valkey-0.10.0
+    helm.sh/chart: valkey-0.11.0
     app.kubernetes.io/name: valkey
     app.kubernetes.io/instance: valkey
-    app.kubernetes.io/version: "9.1.0"
+    app.kubernetes.io/version: "9.1.1"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: read
   namespace: valkey
@@ -281,10 +281,10 @@ kind: Service
 metadata:
   name: valkey
   labels:
-    helm.sh/chart: valkey-0.10.0
+    helm.sh/chart: valkey-0.11.0
     app.kubernetes.io/name: valkey
     app.kubernetes.io/instance: valkey
-    app.kubernetes.io/version: "9.1.0"
+    app.kubernetes.io/version: "9.1.1"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: primary
   namespace: valkey
@@ -306,10 +306,10 @@ kind: StatefulSet
 metadata:
   name: valkey
   labels:
-    helm.sh/chart: valkey-0.10.0
+    helm.sh/chart: valkey-0.11.0
     app.kubernetes.io/name: valkey
     app.kubernetes.io/instance: valkey
-    app.kubernetes.io/version: "9.1.0"
+    app.kubernetes.io/version: "9.1.1"
     app.kubernetes.io/managed-by: Helm
   namespace: valkey
 spec:
@@ -321,7 +321,9 @@ spec:
       app.kubernetes.io/name: valkey
       app.kubernetes.io/instance: valkey
   volumeClaimTemplates:
-    - metadata:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
         name: valkey-data
       spec:
         accessModes:
@@ -336,7 +338,7 @@ spec:
         app.kubernetes.io/name: valkey
         app.kubernetes.io/instance: valkey
       annotations:
-        checksum/initconfig: "c3157722031aa3635fa137045d35f750"
+        checksum/initconfig: "f3fd66a373052ee8d993a93f355bcece"
     spec:
       automountServiceAccountToken: false
       serviceAccountName: valkey
@@ -349,7 +351,7 @@ spec:
           type: RuntimeDefault
       initContainers:
         - name: valkey-init
-          image: docker.io/valkey/valkey:9.1.0
+          image: docker.io/valkey/valkey:9.1.1
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false
@@ -384,7 +386,7 @@ spec:
               memory: 128Mi
       containers:
         - name: valkey
-          image: docker.io/valkey/valkey:9.1.0
+          image: docker.io/valkey/valkey:9.1.1
           imagePullPolicy: IfNotPresent
           command: ["valkey-server"]
           args: ["/data/conf/valkey.conf"]
@@ -402,18 +404,30 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.labels['apps.kubernetes.io/pod-index']
-            - name: VALKEY_LOGLEVEL
+            - name: VALKEY_LOG_LEVEL
               value: "notice"
           ports:
             - name: tcp
               containerPort: 6379
               protocol: TCP
-          startupProbe:
-            exec:
-              command: ["sh", "-c", "valkey-cli ping"]
           livenessProbe:
             exec:
-              command: ["sh", "-c", "valkey-cli ping"]
+              command:
+                - valkey-cli
+                - ping
+            failureThreshold: 3
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            timeoutSeconds: 1
+          startupProbe:
+            exec:
+              command:
+                - valkey-cli
+                - ping
+            failureThreshold: 3
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            timeoutSeconds: 1
           resources:
             limits:
               memory: 256Mi
@@ -482,10 +496,10 @@ kind: PrometheusRule
 metadata:
   name: valkey
   labels:
-    helm.sh/chart: valkey-0.10.0
+    helm.sh/chart: valkey-0.11.0
     app.kubernetes.io/name: valkey
     app.kubernetes.io/instance: valkey
-    app.kubernetes.io/version: "9.1.0"
+    app.kubernetes.io/version: "9.1.1"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: valkey
     release: prometheus-operator
@@ -533,10 +547,10 @@ kind: ServiceMonitor
 metadata:
   name: valkey
   labels:
-    helm.sh/chart: valkey-0.10.0
+    helm.sh/chart: valkey-0.11.0
     app.kubernetes.io/name: valkey
     app.kubernetes.io/instance: valkey
-    app.kubernetes.io/version: "9.1.0"
+    app.kubernetes.io/version: "9.1.1"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: valkey
     app.kubernetes.io/component: service-monitor
@@ -561,10 +575,10 @@ kind: Pod
 metadata:
   name: valkey-test-auth-existing
   labels:
-    helm.sh/chart: valkey-0.10.0
+    helm.sh/chart: valkey-0.11.0
     app.kubernetes.io/name: valkey
     app.kubernetes.io/instance: valkey
-    app.kubernetes.io/version: "9.1.0"
+    app.kubernetes.io/version: "9.1.1"
     app.kubernetes.io/managed-by: Helm
   annotations:
     "helm.sh/hook": test
@@ -574,7 +588,7 @@ spec:
   restartPolicy: Never
   containers:
     - name: test-auth
-      image: "docker.io/valkey/valkey:9.1.0"
+      image: "docker.io/valkey/valkey:9.1.1"
       command:
         - sh
         - -c
