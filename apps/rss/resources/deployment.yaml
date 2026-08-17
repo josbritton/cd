@@ -55,6 +55,14 @@ spec:
           value: https://rss.swifthomelab.net
         - name: FETCHER_ALLOW_PRIVATE_NETWORKS  # needed for rss-bridge on rss-bridge.rss.svc.cluster.local
           value: "1"
+        - name: POLLING_FREQUENCY
+          value: "10"
+        - name: POLLING_SCHEDULER
+          value: entry_frequency
+        - name: SCHEDULER_ENTRY_FREQUENCY_MIN_INTERVAL
+          value: "10"
+        - name: SCHEDULER_ENTRY_FREQUENCY_MAX_INTERVAL
+          value: "2880"
         ports:
         - name: http
           containerPort: 8080
