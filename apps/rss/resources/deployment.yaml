@@ -55,6 +55,8 @@ spec:
           value: https://rss.swifthomelab.net
         - name: FETCHER_ALLOW_PRIVATE_NETWORKS  # needed for rss-bridge on rss-bridge.rss.svc.cluster.local
           value: "1"
+        - name: HTTP_CLIENT_TIMEOUT
+          value: "60"
         - name: POLLING_FREQUENCY
           value: "10"
         - name: POLLING_SCHEDULER
