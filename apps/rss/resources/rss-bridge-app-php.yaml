@@ -1,0 +1,46 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/configmap-v1.json
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rss-bridge-app-php
+  namespace: rss
+  labels:
+    app.kubernetes.io/name: rss-bridge
+    app.kubernetes.io/component: feed-aggregator
+    app.kubernetes.io/part-of: rss
+data:
+  config.ini.php: |
+    ; <?php exit; ?> DO NOT REMOVE THIS LINE
+
+    [system]
+    timezone = "America/Vancouver"
+
+    [error]
+    output = "http"
+    report_limit = 1
+
+    [http]
+    timeout = 10
+    retries = 1
+    ; size in MB
+    max_filesize = 20
+  FeedImageBridge.php: |
+    <?php
+    class FeedImageBridge extends FeedExpander {
+        const NAME = 'Feed Image Override';
+        const URI  = '';
+        const PARAMETERS = [[
+            'url'   => ['name' => 'Feed URL',  'required' => true, 'exampleValue' => 'https://…/feed.xml'],
+            'image' => ['name' => 'Image URL', 'required' => true],
+        ]];
+        const CACHE_TIMEOUT = 3600;
+        const MAINTAINER = 'No maintainer';
+
+        public function collectData() {
+            $this->collectExpandableDatas($this->getInput('url'));
+        }
+
+        public function getIcon() {
+            return $this->getInput('image') ?: parent::getIcon();
+        }
+    }

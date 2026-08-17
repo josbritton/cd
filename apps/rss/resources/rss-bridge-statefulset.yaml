@@ -81,9 +81,13 @@ spec:
           mountPath: /var/lib/nginx
         - name: logs
           mountPath: /var/logs
-        - name: config-ini
+        - name: app-php
           mountPath: /app/config.ini.php
           subPath: config.ini.php
+          readOnly: true
+        - name: app-php
+          mountPath: /app/bridges/FeedImageBridge.php
+          subPath: FeedImageBridge.php
           readOnly: true
         livenessProbe: &probe
           httpGet:
@@ -105,13 +109,16 @@ spec:
         emptyDir: {}
       - name: nginx
         emptyDir: {}
-      - name: config-ini
+      - name: app-php
         configMap:
-          name: rss-bridge-config-ini
+          name: rss-bridge-app-php
           items:
           - key: config.ini.php
             path: config.ini.php
             mode: 0o550
+          - key: FeedImageBridge.php
+            path: FeedImageBridge.php
+            mode: 0o644
   volumeClaimTemplates:
   - apiVersion: v1
     kind: PersistentVolumeClaim
