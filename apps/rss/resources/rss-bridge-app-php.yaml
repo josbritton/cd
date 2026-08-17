@@ -19,6 +19,9 @@ data:
     output = "http"
     report_limit = 2
 
+    [cache]
+    custom_timeout = true
+
     [http]
     timeout = 30
     retries = 2
