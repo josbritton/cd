@@ -47,8 +47,8 @@ spec:
               key: connection-string
               optional: false
           # value: postgres://miniflux:secret@db/miniflux?sslmode=disable
-        - name: DEBUG
-          value: "1"
+        - name: LOG_LEVEL
+          value: debug
         - name: RUN_MIGRATIONS
           value: "1"
         - name: BASE_URL
