@@ -17,11 +17,11 @@ data:
 
     [error]
     output = "http"
-    report_limit = 1
+    report_limit = 2
 
     [http]
-    timeout = 10
-    retries = 1
+    timeout = 30
+    retries = 2
     ; size in MB
     max_filesize = 20
   FeedImageBridge.php: |
