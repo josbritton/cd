@@ -1,6 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/statefulset.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/deployment-apps-v1.json
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: rss-bridge
   namespace: rss
@@ -10,17 +10,14 @@ metadata:
     app.kubernetes.io/part-of: rss
   annotations:
     reloader.stakater.com/auto: "true"
-    argocd.argoproj.io/sync-options: ServerSideApply=true
 spec:
   revisionHistoryLimit: 3
-  serviceName: rss-bridge
   selector:
     matchLabels:
       app.kubernetes.io/name: rss-bridge
       app.kubernetes.io/component: feed-aggregator
       app.kubernetes.io/part-of: rss
   replicas: 1
-  podManagementPolicy: Parallel
   template:
     metadata:
       labels:
@@ -69,8 +66,6 @@ spec:
         - name: UMASK
           value: "0022"
         volumeMounts:
-        - name: config
-          mountPath: /config
         - name: tmp
           mountPath: /tmp
         - name: php-run
@@ -119,19 +114,3 @@ spec:
           - key: FeedImageBridge.php
             path: FeedImageBridge.php
             mode: 0o644
-  volumeClaimTemplates:
-  - apiVersion: v1
-    kind: PersistentVolumeClaim
-    metadata:
-      name: config
-      namespace: rss
-      labels:
-        app.kubernetes.io/name: rss-bridge
-        app.kubernetes.io/component: feed-aggregator
-        app.kubernetes.io/part-of: rss
-    spec:
-      storageClassName: csi-rbd-sc
-      accessModes: [ReadWriteOncePod]
-      resources:
-        requests:
-          storage: 512Mi

@@ -7,6 +7,6 @@ resources:
 - ./resources/cert.yaml
 - ./resources/delegation.yaml
 - ./resources/httpproxy.yaml
-- ./resources/rss-bridge-statefulset.yaml
+- ./resources/rss-bridge-deployment.yaml
 - ./resources/rss-bridge-service.yaml
 - ./resources/rss-bridge-app-php.yaml
