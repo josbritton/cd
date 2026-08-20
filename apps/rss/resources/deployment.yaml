@@ -6,10 +6,14 @@ metadata:
     app.kubernetes.io/name: miniflux
     app.kubernetes.io/component: reader
     app.kubernetes.io/part-of: rss
+  annotations:
+    argocd.argoproj.io/sync-options: Replace=true
   name: miniflux
   namespace: rss
 spec:
-  replicas: 1
+  replicas: 2
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app.kubernetes.io/name: miniflux
@@ -22,6 +26,17 @@ spec:
         app.kubernetes.io/component: reader
         app.kubernetes.io/part-of: rss
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - topologyKey: kubernetes.io/hostname
+            namespaces: []
+            namespaceSelector: {}
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: miniflux
+                app.kubernetes.io/component: reader
+                app.kubernetes.io/part-of: rss
       containers:
       - name: miniflux
         image: docker.io/miniflux/miniflux:2.3.2@sha256:cd353a6af9ce663291f405eddef26fa0d567f486b521c5d34e3fb50e41938b9a
