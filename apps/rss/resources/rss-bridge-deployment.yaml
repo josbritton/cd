@@ -10,6 +10,7 @@ metadata:
     app.kubernetes.io/part-of: rss
   annotations:
     reloader.stakater.com/auto: "true"
+    argocd.argoproj.io/sync-options: Replace=true
 spec:
   revisionHistoryLimit: 3
   selector:
@@ -17,7 +18,9 @@ spec:
       app.kubernetes.io/name: rss-bridge
       app.kubernetes.io/component: feed-aggregator
       app.kubernetes.io/part-of: rss
-  replicas: 1
+  replicas: 2
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
@@ -35,6 +38,17 @@ spec:
         sysctls:
         - name: net.ipv4.ip_unprivileged_port_start
           value: "80"
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - topologyKey: kubernetes.io/hostname
+            namespaces: []
+            namespaceSelector: {}
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: rss-bridge
+                app.kubernetes.io/component: feed-aggregator
+                app.kubernetes.io/part-of: rss
       containers:
       - name: rss-bridge
         image: docker.io/rssbridge/rss-bridge:latest@sha256:831c29238554805c66b3f4eae136b138ae2e9fe191c76e7ba8d3956138e19bf5
