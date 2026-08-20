@@ -6,14 +6,15 @@ metadata:
     app.kubernetes.io/name: miniflux
     app.kubernetes.io/component: reader
     app.kubernetes.io/part-of: rss
-  annotations:
-    argocd.argoproj.io/sync-options: Replace=true
   name: miniflux
   namespace: rss
 spec:
   replicas: 2
   strategy:
-    type: Recreate
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
   selector:
     matchLabels:
       app.kubernetes.io/name: miniflux
@@ -37,6 +38,8 @@ spec:
                 app.kubernetes.io/name: miniflux
                 app.kubernetes.io/component: reader
                 app.kubernetes.io/part-of: rss
+            matchLabelKeys:
+            - pod-template-hash
       containers:
       - name: miniflux
         image: docker.io/miniflux/miniflux:2.3.2@sha256:cd353a6af9ce663291f405eddef26fa0d567f486b521c5d34e3fb50e41938b9a

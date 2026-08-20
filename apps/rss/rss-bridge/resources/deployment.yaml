@@ -10,7 +10,6 @@ metadata:
     app.kubernetes.io/part-of: rss
   annotations:
     reloader.stakater.com/auto: "true"
-    argocd.argoproj.io/sync-options: Replace=true
 spec:
   revisionHistoryLimit: 3
   selector:
@@ -20,7 +19,10 @@ spec:
       app.kubernetes.io/part-of: rss
   replicas: 2
   strategy:
-    type: Recreate
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
   template:
     metadata:
       labels:
@@ -49,6 +51,8 @@ spec:
                 app.kubernetes.io/name: rss-bridge
                 app.kubernetes.io/component: feed-aggregator
                 app.kubernetes.io/part-of: rss
+            matchLabelKeys:
+            - pod-template-hash
       containers:
       - name: rss-bridge
         image: docker.io/rssbridge/rss-bridge:latest@sha256:831c29238554805c66b3f4eae136b138ae2e9fe191c76e7ba8d3956138e19bf5
