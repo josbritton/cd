@@ -6,10 +6,10 @@ metadata:
   name: rustfs
   namespace: rustfs
   labels:
-    helm.sh/chart: rustfs-0.8.0
+    helm.sh/chart: rustfs-0.12.0
     app.kubernetes.io/name: rustfs
     app.kubernetes.io/instance: rustfs
-    app.kubernetes.io/version: "1.0.0-beta.8"
+    app.kubernetes.io/version: "1.0.0-beta.12"
     app.kubernetes.io/managed-by: Helm
 automountServiceAccountToken: true
 ---
@@ -53,10 +53,10 @@ metadata:
   name: rustfs-svc
   namespace: rustfs
   labels:
-    helm.sh/chart: rustfs-0.8.0
+    helm.sh/chart: rustfs-0.12.0
     app.kubernetes.io/name: rustfs
     app.kubernetes.io/instance: rustfs
-    app.kubernetes.io/version: "1.0.0-beta.8"
+    app.kubernetes.io/version: "1.0.0-beta.12"
     app.kubernetes.io/managed-by: Helm
 spec:
   type: ClusterIP
@@ -78,10 +78,10 @@ metadata:
   name: rustfs
   namespace: rustfs
   labels:
-    helm.sh/chart: rustfs-0.8.0
+    helm.sh/chart: rustfs-0.12.0
     app.kubernetes.io/name: rustfs
     app.kubernetes.io/instance: rustfs
-    app.kubernetes.io/version: "1.0.0-beta.8"
+    app.kubernetes.io/version: "1.0.0-beta.12"
     app.kubernetes.io/managed-by: Helm
 spec:
   replicas: 1
@@ -100,6 +100,7 @@ spec:
         app.kubernetes.io/name: rustfs
         app.kubernetes.io/instance: rustfs
     spec:
+      serviceAccountName: rustfs
       imagePullSecrets: []
       affinity:
       priorityClassName:
@@ -128,7 +129,7 @@ spec:
               mountPath: /data
       containers:
         - name: rustfs
-          image: "rustfs/rustfs:1.0.0-beta.8"
+          image: "rustfs/rustfs:1.0.0-beta.12"
           command: ["/usr/bin/rustfs"]
           imagePullPolicy: IfNotPresent
           securityContext:
@@ -177,6 +178,10 @@ spec:
           persistentVolumeClaim:
             claimName: rustfs-data
 ---
+
+---
+
+---
 # Source: rustfs/charts/rustfs/templates/tests/test-connection.yaml
 apiVersion: v1
 kind: Pod
@@ -184,10 +189,10 @@ metadata:
   name: "rustfs-test-connection"
   namespace: rustfs
   labels:
-    helm.sh/chart: rustfs-0.8.0
+    helm.sh/chart: rustfs-0.12.0
     app.kubernetes.io/name: rustfs
     app.kubernetes.io/instance: rustfs
-    app.kubernetes.io/version: "1.0.0-beta.8"
+    app.kubernetes.io/version: "1.0.0-beta.12"
     app.kubernetes.io/managed-by: Helm
   annotations:
     "helm.sh/hook": test
