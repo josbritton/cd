@@ -7,4 +7,4 @@ spec:
     spec:
       containers:
       - name: reloader-reloader
-        image: ghcr.io/stakater/reloader:v1.4.19@sha256:0530cf462fa3ba530fab887372e3b79caf608d0093ffc2fded9fa33bac8b74cd
+        image: ghcr.io/stakater/reloader:v1.4.22@sha256:def2480040adc164b3a57340e77674eadfd88fb7f0593df25e93297f29c7fd7c
