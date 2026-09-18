@@ -3,7 +3,7 @@
 export DESIRED_VERSION=v4.2.2 # renovate: datasource=github-releases depName=helm/helm
 curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash
 
-VERSION=v4.53.3 # renovate: datasource=github-releases depName=mikefarah/yq
+VERSION=v4.53.6 # renovate: datasource=github-releases depName=mikefarah/yq
 PLATFORM=linux_amd64
 
 curl -fsSL "https://github.com/mikefarah/yq/releases/download/$VERSION/yq_$PLATFORM.tar.gz" \
