@@ -9,6 +9,8 @@ spec:
   suspend: false
   # prevent stuck pending job accumulation if image repository is down
   concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 4
+  failedJobsHistoryLimit: 4
   jobTemplate:
     spec:
       activeDeadlineSeconds: 120
