@@ -7,8 +7,11 @@ metadata:
 spec:
   schedule: "*/5 * * * *"  # every 5 minutes
   suspend: false
+  # prevent stuck pending job accumulation if image repository is down
+  concurrencyPolicy: Forbid
   jobTemplate:
     spec:
+      activeDeadlineSeconds: 120
       template:
         spec:
           restartPolicy: OnFailure
