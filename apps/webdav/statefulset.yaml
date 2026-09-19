@@ -108,9 +108,9 @@ spec:
         env:
         # UID/GID: as name or number (prefixed with "#")
         - name: APACHE_RUN_USER
-          value: nobody
+          value: "#65534"
         - name: APACHE_RUN_GROUP
-          value: nogroup  # nogroup (debian), nobody (everything else)
+          value: "#65534"  # nogroup (debian), nobody (everything else)
         - name: APACHE_PRIVATE_SUBNET
           value: 10.233.0.0/17
         - name: LANG
