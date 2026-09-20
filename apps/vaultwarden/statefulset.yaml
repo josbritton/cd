@@ -28,7 +28,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
       - name: vaultwarden
-        image: vaultwarden/server:1.37.1-alpine@sha256:b094afed4ed5ea353821c6efcedca446f30c6654ba2bc441db6089b0c2b94ac8
+        image: vaultwarden/server:1.37.3-alpine@sha256:9a905c5cf5df61bb827da3805e160170741c0b53b0c63bb07e1afd3d2e21b1c8
         imagePullPolicy: IfNotPresent
         env:
         - name: WEBSOCKET_ENABLED
