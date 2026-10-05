@@ -1,0 +1,138 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/deployment-apps-v1.json
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vikunja
+  namespace: vikunja
+  labels:
+    app.kubernetes.io/name: vikunja
+    app.kubernetes.io/instance: vikunja
+    app.kubernetes.io/part-of: vikunja
+spec:
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vikunja
+      app.kubernetes.io/instance: vikunja
+      app.kubernetes.io/part-of: vikunja
+  # vikunja is not safe to scale out: cron jobs (task reminders) run in every
+  # replica without locking, and the event bus/websocket hub are in-process
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: vikunja
+        app.kubernetes.io/instance: vikunja
+        app.kubernetes.io/part-of: vikunja
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsGroup: 65534
+        runAsUser: 65534
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - topologyKey: kubernetes.io/hostname
+            namespaces: []
+            namespaceSelector: {}
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: vikunja
+                app.kubernetes.io/instance: vikunja
+                app.kubernetes.io/part-of: vikunja
+            matchLabelKeys:
+            - pod-template-hash
+      containers:
+      - name: vikunja
+        image: docker.io/vikunja/vikunja:2.6.0@sha256:417ada6f94e81f0267aa2f007d0a811fc82d38dd2aa58351e3ea520ca01c2ea5
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsGroup: 65534
+          runAsUser: 65534
+          runAsNonRoot: true
+          capabilities:
+            drop: [ALL]
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64Mi
+          limits:
+            memory: 512Mi
+        ports:
+        - name: http
+          containerPort: 3456
+          protocol: TCP
+        env:
+        - name: VIKUNJA_SERVICE_TIMEZONE
+          value: America/Vancouver
+        - name: VIKUNJA_SERVICE_PUBLICURL
+          value: https://tasks.swifthomelab.net/
+        - name: VIKUNJA_SERVICE_ENABLEREGISTRATION
+          value: "false"
+        - name: VIKUNJA_SERVICE_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: vikunja-secret
+              key: secret
+              optional: false
+        - name: VIKUNJA_DATABASE_TYPE
+          value: postgres
+        - name: VIKUNJA_DATABASE_HOST
+          value: postgres-lb.cloudnative-pg.svc.cluster.local:5432
+        - name: VIKUNJA_DATABASE_DATABASE
+          value: vikunja
+        - name: VIKUNJA_DATABASE_SSLMODE
+          value: disable
+        - name: VIKUNJA_DATABASE_USER
+          valueFrom:
+            secretKeyRef:
+              name: vikunja-db
+              key: user
+              optional: false
+        - name: VIKUNJA_DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: vikunja-db
+              key: passwd
+              optional: false
+        - name: VIKUNJA_FILES_TYPE
+          value: s3
+        - name: VIKUNJA_FILES_S3_ENDPOINT
+          value: http://rustfs-svc.rustfs.svc.cluster.local:9000
+        - name: VIKUNJA_FILES_S3_BUCKET
+          value: vikunja
+        - name: VIKUNJA_FILES_S3_REGION
+          value: us-east-1
+        - name: VIKUNJA_FILES_S3_USEPATHSTYLE
+          value: "true"
+        - name: VIKUNJA_FILES_S3_ACCESSKEY
+          valueFrom:
+            secretKeyRef:
+              name: vikunja-s3
+              key: accesskey
+              optional: false
+        - name: VIKUNJA_FILES_S3_SECRETKEY
+          valueFrom:
+            secretKeyRef:
+              name: vikunja-s3
+              key: secretkey
+              optional: false
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+        livenessProbe: &probe
+          httpGet:
+            port: 3456
+            path: /health
+        readinessProbe: *probe
+        startupProbe: *probe
+      volumes:
+      - name: tmp
+        emptyDir: {}

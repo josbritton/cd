@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/projectcontour.io/httpproxy_v1.json
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: vikunja-ingress
+  namespace: vikunja
+  labels:
+    app.kubernetes.io/name: vikunja
+    app.kubernetes.io/instance: vikunja
+    app.kubernetes.io/part-of: vikunja
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"  # needs certs, delegation, services, etc.
+spec:
+  virtualhost:
+    fqdn: tasks.swifthomelab.net
+    tls:
+      secretName: cert-manager/tasks-swifthomelab-net
+  routes:
+  - services:
+    - name: vikunja
+      port: 3456
+    conditions:
+    - prefix: /
+    enableWebsockets: true
+    timeoutPolicy:
+      response: 60s  # if NULL, uses 15s (envoy default)

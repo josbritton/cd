@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/service-v1.json
+apiVersion: v1
+kind: Service
+metadata:
+  name: vikunja
+  namespace: vikunja
+  labels:
+    app.kubernetes.io/name: vikunja
+    app.kubernetes.io/instance: vikunja
+    app.kubernetes.io/part-of: vikunja
+spec:
+  type: ClusterIP
+  publishNotReadyAddresses: false
+  ports:
+  - name: http
+    port: 3456
+    protocol: TCP
+    targetPort: 3456
+  selector:
+    app.kubernetes.io/name: vikunja
+    app.kubernetes.io/instance: vikunja
+    app.kubernetes.io/part-of: vikunja
