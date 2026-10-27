@@ -2,7 +2,7 @@
 apiVersion: projectcontour.io/v1
 kind: TLSCertificateDelegation
 metadata:
-  name: webmail-swifthomelab-net
+  name: mail-swifthomelab-net
   namespace: cert-manager
   labels:
     app.kubernetes.io/name: cypht
@@ -12,6 +12,6 @@ metadata:
     argocd.argoproj.io/sync-wave: "20"  # needs cert
 spec:
   delegations:
-  - secretName: webmail-swifthomelab-net
+  - secretName: mail-swifthomelab-net
     targetNamespaces:
     - cypht

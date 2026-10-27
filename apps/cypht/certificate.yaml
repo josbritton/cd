@@ -2,17 +2,17 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: webmail-swifthomelab-net
+  name: mail-swifthomelab-net
   namespace: cert-manager
   labels:
     app.kubernetes.io/name: cypht
     app.kubernetes.io/instance: cypht
     app.kubernetes.io/part-of: cypht
 spec:
-  secretName: webmail-swifthomelab-net
+  secretName: mail-swifthomelab-net
   issuerRef:
     name: swifthomelab-net-issuer
     kind: ClusterIssuer
-  commonName: webmail.swifthomelab.net
+  commonName: mail.swifthomelab.net
   dnsNames:
-  - webmail.swifthomelab.net
+  - mail.swifthomelab.net

@@ -12,9 +12,9 @@ metadata:
     argocd.argoproj.io/sync-wave: "100"  # needs certs, delegation, services, etc.
 spec:
   virtualhost:
-    fqdn: webmail.swifthomelab.net
+    fqdn: mail.swifthomelab.net
     tls:
-      secretName: cert-manager/webmail-swifthomelab-net
+      secretName: cert-manager/mail-swifthomelab-net
   routes:
   - services:
     - name: cypht
