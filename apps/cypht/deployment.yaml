@@ -99,6 +99,18 @@ spec:
               name: cypht-admin
               key: user
               optional: false
+        - name: GMAIL_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: cypht-gmail
+              key: client-id
+              optional: true
+        - name: GMAIL_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: cypht-gmail
+              key: client-secret
+              optional: true
         - name: DB_CONNECTION_TYPE
           value: host
         - name: DB_DRIVER
