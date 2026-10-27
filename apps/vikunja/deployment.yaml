@@ -49,7 +49,7 @@ spec:
             - pod-template-hash
       containers:
       - name: vikunja
-        image: docker.io/vikunja/vikunja:2.6.0@sha256:417ada6f94e81f0267aa2f007d0a811fc82d38dd2aa58351e3ea520ca01c2ea5
+        image: docker.io/vikunja/vikunja:2.7.1@sha256:f7dc8428d10aef17f3075886d3c1c022f566ec456f88985f02c137f4fc534576
         securityContext:
           allowPrivilegeEscalation: false
           privileged: false
