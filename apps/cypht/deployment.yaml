@@ -111,6 +111,8 @@ spec:
               name: cypht-gmail
               key: client-secret
               optional: true
+        - name: GMAIL_CLIENT_URI
+          value: https://mail.swifthomelab.net/?page=home
         - name: DB_CONNECTION_TYPE
           value: host
         - name: DB_DRIVER
