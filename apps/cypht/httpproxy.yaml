@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/projectcontour.io/httpproxy_v1.json
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: cypht-ingress
+  namespace: cypht
+  labels:
+    app.kubernetes.io/name: cypht
+    app.kubernetes.io/instance: cypht
+    app.kubernetes.io/part-of: cypht
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"  # needs certs, delegation, services, etc.
+spec:
+  virtualhost:
+    fqdn: webmail.swifthomelab.net
+    tls:
+      secretName: cert-manager/webmail-swifthomelab-net
+  routes:
+  - services:
+    - name: cypht
+      port: 80
+    conditions:
+    - prefix: /
+    timeoutPolicy:
+      response: 60s  # if NULL, uses 15s (envoy default)
