@@ -173,6 +173,7 @@
     {
       "matchDatasources": [
         "github-releases",
+        "github-release-attachments",
         "github-tags"
       ],
       "matchUpdateTypes": [
@@ -183,6 +184,7 @@
     {
       "matchDatasources": [
         "github-releases",
+        "github-release-attachments",
         "github-tags"
       ],
       "matchUpdateTypes": [
@@ -194,6 +196,7 @@
     {
       "matchDatasources": [
         "github-releases",
+        "github-release-attachments",
         "github-tags"
       ],
       "matchUpdateTypes": [
@@ -275,6 +278,7 @@
     {
       "matchDatasources": [
         "github-releases",
+        "github-release-attachments",
         "github-tags"
       ],
       "addLabels": [
@@ -366,7 +370,8 @@
         "/\\.github/renovate/entrypoint$/"
       ],
       "matchStrings": [
-        "\\w+=(?<currentValue>[^\\s]+) # renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>[^\\s]+)"
+        // optional sha256 on the next line
+        "\\w+=(?<currentValue>[^\\s]+) # renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>[^\\s]+)(?:\\n\\w+=(?<currentDigest>[a-f0-9]{64}))?"
       ]
     }
   ]

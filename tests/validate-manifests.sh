@@ -1,10 +1,12 @@
 #!/bin/sh
-[ -z "$XDG_CACHE_HOME" ] && cache_dir="$HOME/.cache" || cache_dir="$XDG_CACHE_HOME"
-mkdir -p "$cache_dir/kubeconform"
+set -eu
+
+cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/kubeconform"
+mkdir -p "$cache_dir"
 
 kubeconform \
-  -n "$(nproc)" \
-  --cache "$cache_dir/kubeconform" \
+  -n "$(getconf _NPROCESSORS_ONLN)" \
+  --cache "$cache_dir" \
   --skip CustomResourceDefinition \
   --ignore-filename-pattern "apps/.*/upstream/.*\.ya?ml" \
   --ignore-filename-pattern "apps/.*/overlays/.*\.ya?ml" \

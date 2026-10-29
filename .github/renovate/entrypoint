@@ -1,13 +1,35 @@
 #!/bin/bash
+set -euo pipefail
 
-export DESIRED_VERSION=v4.2.2 # renovate: datasource=github-releases depName=helm/helm
-curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash
+HELM_VERSION=v4.2.2 # renovate: datasource=github-releases depName=helm/helm
+# signing keys; bump if a release is signed by a newly added key
+HELM_KEYS_COMMIT=5638c35399464b6432ba81b92a341218991efa5c
 
-VERSION=v4.53.3 # renovate: datasource=github-releases depName=mikefarah/yq
-PLATFORM=linux_amd64
+YQ_VERSION=v4.53.3 # renovate: datasource=github-release-attachments depName=mikefarah/yq
+YQ_SHA256=b4077cab0f9ee5ce8381e602d090daa69a0afb7e57eb9a5b20e9cb416d7f6794
 
-curl -fsSL "https://github.com/mikefarah/yq/releases/download/$VERSION/yq_$PLATFORM.tar.gz" \
-  | tar xz \
-  && install -o root -g root -m 0755 "yq_$PLATFORM" /usr/local/bin/yq
+fetch() {
+  curl -fsSL --proto '=https' --retry 3 "$@"
+}
 
-runuser -u ubuntu renovate
+tmp="$(mktemp -d)"
+trap 'rm -rf "$tmp"' EXIT
+
+helm_tar="helm-$HELM_VERSION-linux-amd64.tar.gz"
+fetch -o "$tmp/$helm_tar" "https://get.helm.sh/$helm_tar"
+fetch -o "$tmp/$helm_tar.asc" "https://github.com/helm/helm/releases/download/$HELM_VERSION/$helm_tar.asc"
+fetch "https://raw.githubusercontent.com/helm/helm/$HELM_KEYS_COMMIT/KEYS" \
+  | gpg --homedir "$tmp" --batch --dearmor > "$tmp/helm-keys.gpg"
+gpgv --homedir "$tmp" --keyring "$tmp/helm-keys.gpg" "$tmp/$helm_tar.asc" "$tmp/$helm_tar"
+tar -xzf "$tmp/$helm_tar" -C "$tmp" linux-amd64/helm
+install -o root -g root -m 0755 "$tmp/linux-amd64/helm" /usr/local/bin/helm
+
+yq_tar=yq_linux_amd64.tar.gz
+fetch -o "$tmp/$yq_tar" "https://github.com/mikefarah/yq/releases/download/$YQ_VERSION/$yq_tar"
+printf '%s  %s\n' "$YQ_SHA256" "$tmp/$yq_tar" | sha256sum -c -
+tar -xzf "$tmp/$yq_tar" -C "$tmp"
+install -o root -g root -m 0755 "$tmp/yq_linux_amd64" /usr/local/bin/yq
+
+rm -rf "$tmp"
+trap - EXIT
+exec runuser -u ubuntu renovate

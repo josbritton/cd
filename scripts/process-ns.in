@@ -1,13 +1,18 @@
 #!/bin/bash
 # adapted from: https://github.com/helm/helm/issues/3553#issuecomment-3744214711
+set -euo pipefail
 
-if [ -z "$NAMESPACE" ]; then
+if [ -z "${NAMESPACE:-}" ]; then
   echo "No NAMESPACE variable" >&2
   exit 1
 fi
 export NAMESPACE
 
-KINDS="$(cat inventoryns)"
+KINDS="$(cat "$(dirname "${BASH_SOURCE[0]}")/../inventoryns")"
+if [ -z "$KINDS" ]; then
+  echo "inventoryns is empty" >&2
+  exit 1
+fi
 export KINDS
 
 # shellcheck disable=SC2016

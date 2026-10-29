@@ -1,6 +1,9 @@
 .SILENT:
 .DEFAULT_GOAL := build
 
+SHELL := bash
+.SHELLFLAGS := -e -o pipefail -c
+
 GIT_DIR := $(shell git rev-parse --git-dir)
 
 CHARTS := $(shell find apps/ -regex ".*/upstream/Chart.ya?ml")
@@ -18,14 +21,21 @@ CHARTS := $(shell find apps/ -regex ".*/upstream/Chart.ya?ml")
 	@:
 
 .PHONY: .FORCE
+# only replace when changed, so an unchanged mtime doesn't force every chart to re-render
 inventoryns: .FORCE
-	@if command -v kubectl >/dev/null; then \
-		kubectl api-resources --namespaced=true --no-headers | awk '{print $$NF}' | sort -u | paste -sd, - > inventoryns; \
-	else \
+	@if ! command -v kubectl >/dev/null; then \
 		echo "kubectl not found, skipping inventoryns" >&2; \
+	elif ! kubectl api-resources --namespaced=true --no-headers | awk '{print $$NF}' | sort -u | paste -sd, - > inventoryns.tmp; then \
+		rm -f inventoryns.tmp; \
+		echo "kubectl failed, inventoryns not updated" >&2; \
+	elif cmp -s inventoryns.tmp inventoryns; then \
+		rm inventoryns.tmp; \
+	else \
+		mv inventoryns.tmp inventoryns; \
 	fi
 
 %/resources/upstream.yaml: %/upstream/Chart.yaml %/upstream/Chart.yml inventoryns
+	trap 'rm -f "$@.tmp"' EXIT && \
 	. "$*/BUILDARGS" && \
 	[ ! -L "$*/upstream/Chart.lock" ] && \
 	helm dependency update "$*/upstream" && \
@@ -33,7 +43,8 @@ inventoryns: .FORCE
 	    --include-crds \
 	    --namespace "$$NAMESPACE" \
 	    "$$CHART" \
-	    "$*/upstream" | NAMESPACE="$$NAMESPACE" ./scripts/process-ns.in > "$@"
+	    "$*/upstream" | NAMESPACE="$$NAMESPACE" ./scripts/process-ns.in > "$@.tmp" && \
+	mv "$@.tmp" "$@"
 
 RENDERS := $(foreach c,$(CHARTS),$(shell dirname $(shell dirname $(c)))/resources/upstream.yaml)
 

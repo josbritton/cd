@@ -5,6 +5,9 @@ on: # yamllint disable-line rule:truthy
   push: {}
 permissions:
   contents: read
+defaults:
+  run:
+    shell: bash  # explicit, so steps also get pipefail
 jobs:
   lint:
     name: Lint yaml
@@ -26,7 +29,8 @@ jobs:
       uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
     - name: Render helm chart templates
       run: |
-        parallel -j0 "helm dependency update "{//}" && helm template --include-crds --namespace testns -- testchart "{//}"" ::: "$(find apps/ -regex ".*/upstream/Chart.ya?ml")"
+        find apps/ -regex ".*/upstream/Chart.ya?ml" -print0 \
+          | parallel -0 -j0 'helm dependency update {//} && helm template --include-crds --namespace testns -- testchart {//}'
 
   kustomize:
     name: Build kustomization files
@@ -36,7 +40,8 @@ jobs:
       uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
     - name: Build kustomize files
       run: |
-        parallel -j0 "kustomize build "{//}"" ::: "$(find apps/ -name kustomization.yaml)" bootstrap/argo-cd/kustomization.yaml
+        { find apps/ -name kustomization.yaml -print0; printf '%s\0' bootstrap/argo-cd/kustomization.yaml; } \
+          | parallel -0 -j0 'kustomize build {//}'
 
   kubeconform:
     name: Validate kubernetes manifests
@@ -54,16 +59,21 @@ jobs:
         go install github.com/yannh/kubeconform/cmd/kubeconform@latest
     - name: Generate cache key
       id: generate-cache-key
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        datree_sha="$(curl -s -H 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-          -H "Accept: application/vnd.github.VERSION.sha" \
-          "${GITHUB_API_URL}/repos/datreeio/CRDs-catalog/commits/main")"
+        head_sha() {
+          curl -fsS --retry 3 \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github.VERSION.sha" \
+            "${GITHUB_API_URL}/repos/$1/commits/$2"
+        }
 
-        schemastore_sha="$(curl -s -H 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-          -H "Accept: application/vnd.github.VERSION.sha" \
-          "${GITHUB_API_URL}/repos/schemastore/schemastore/commits/master")"
+        datree_sha="$(head_sha datreeio/CRDs-catalog main)"
+        schemastore_sha="$(head_sha schemastore/schemastore master)"
 
-        echo "key=$(echo -n "$datree_sha$schemastore_sha" | md5sum | cut -c 1-7)" >> "$GITHUB_OUTPUT"
+        key="$(printf '%s%s' "$datree_sha" "$schemastore_sha" | md5sum | cut -c 1-7)"
+        echo "key=$key" >> "$GITHUB_OUTPUT"
     - name: Restore cached schemas
       id: cache-kubeconform-restore
       uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
