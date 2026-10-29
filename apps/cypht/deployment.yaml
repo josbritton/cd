@@ -51,7 +51,7 @@ spec:
             - pod-template-hash
       containers:
       - name: cypht
-        image: docker.io/cypht/cypht:2.12.2@sha256:e0aecfafa2b1a9ed42603bb6ee33c2f34fb39c48dc39dc3e3986f6dca7623180
+        image: docker.io/cypht/cypht:2.13.0@sha256:52d41a0ebfd347c2e2d33c42a0f8171c8a15564243b42a597694825f0cef3125
         # the entrypoint runs as root (chowns data dirs, generates the site
         # config) then supervisord starts nginx and php-fpm, which drop to
         # www-data; root filesystem must stay writable for the generated config
