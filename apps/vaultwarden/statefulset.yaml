@@ -33,6 +33,10 @@ spec:
         env:
         - name: WEBSOCKET_ENABLED
           value: "true"
+        - name: SIGNUPS_ALLOWED
+          value: "false"
+        - name: INVITATIONS_ALLOWED
+          value: "false"
         ports:
         - containerPort: 80
           name: http
