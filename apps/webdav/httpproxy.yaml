@@ -15,6 +15,15 @@ spec:
     tls:
       secretName: cert-manager/webdav-swifthomelab-net
   routes:
+  # block apache status page
+  - conditions:
+    - exact: /status
+    directResponsePolicy:
+      statusCode: 404
+  - conditions:
+    - prefix: /status/
+    directResponsePolicy:
+      statusCode: 404
   - services:
     - name: webdav
       port: 80

@@ -133,7 +133,6 @@ data:
     <Location /status>
       SetHandler server-status
       Require local
-      Require ip ${APACHE_PRIVATE_SUBNET}
     </Location>
     ExtendedStatus Off
 
