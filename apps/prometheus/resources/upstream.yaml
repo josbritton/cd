@@ -70366,10 +70366,10 @@ metadata:
   name: blackbox-exporter
   namespace: prometheus-operator
   labels:
-    helm.sh/chart: prometheus-blackbox-exporter-11.13.0
+    helm.sh/chart: prometheus-blackbox-exporter-11.20.2
     app.kubernetes.io/name: prometheus-blackbox-exporter
     app.kubernetes.io/instance: prometheus-operator
-    app.kubernetes.io/version: "v0.28.0"
+    app.kubernetes.io/version: "v0.29.1"
     app.kubernetes.io/managed-by: Helm
     release: prometheus-operator
 ---
@@ -71076,10 +71076,10 @@ metadata:
   name: blackbox-exporter
   namespace: prometheus-operator
   labels:
-    helm.sh/chart: prometheus-blackbox-exporter-11.13.0
+    helm.sh/chart: prometheus-blackbox-exporter-11.20.2
     app.kubernetes.io/name: prometheus-blackbox-exporter
     app.kubernetes.io/instance: prometheus-operator
-    app.kubernetes.io/version: "v0.28.0"
+    app.kubernetes.io/version: "v0.29.1"
     app.kubernetes.io/managed-by: Helm
     release: prometheus-operator
 data:
@@ -71827,10 +71827,10 @@ metadata:
   name: blackbox-exporter
   namespace: prometheus-operator
   labels:
-    helm.sh/chart: prometheus-blackbox-exporter-11.13.0
+    helm.sh/chart: prometheus-blackbox-exporter-11.20.2
     app.kubernetes.io/name: prometheus-blackbox-exporter
     app.kubernetes.io/instance: prometheus-operator
-    app.kubernetes.io/version: "v0.28.0"
+    app.kubernetes.io/version: "v0.29.1"
     app.kubernetes.io/managed-by: Helm
     release: prometheus-operator
 spec:
@@ -72185,10 +72185,10 @@ metadata:
   name: blackbox-exporter
   namespace: prometheus-operator
   labels:
-    helm.sh/chart: prometheus-blackbox-exporter-11.13.0
+    helm.sh/chart: prometheus-blackbox-exporter-11.20.2
     app.kubernetes.io/name: prometheus-blackbox-exporter
     app.kubernetes.io/instance: prometheus-operator
-    app.kubernetes.io/version: "v0.28.0"
+    app.kubernetes.io/version: "v0.29.1"
     app.kubernetes.io/managed-by: Helm
     release: prometheus-operator
 spec:
@@ -72206,10 +72206,10 @@ spec:
   template:
     metadata:
       labels:
-        helm.sh/chart: prometheus-blackbox-exporter-11.13.0
+        helm.sh/chart: prometheus-blackbox-exporter-11.20.2
         app.kubernetes.io/name: prometheus-blackbox-exporter
         app.kubernetes.io/instance: prometheus-operator
-        app.kubernetes.io/version: "v0.28.0"
+        app.kubernetes.io/version: "v0.29.1"
         app.kubernetes.io/managed-by: Helm
         release: prometheus-operator
       annotations:
@@ -72222,7 +72222,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: blackbox-exporter
-          image: quay.io/prometheus/blackbox-exporter:v0.28.0
+          image: quay.io/prometheus/blackbox-exporter:v0.29.1
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false
@@ -76312,10 +76312,10 @@ kind: PrometheusRule
 metadata:
   name: blackbox-exporter
   labels:
-    helm.sh/chart: prometheus-blackbox-exporter-11.13.0
+    helm.sh/chart: prometheus-blackbox-exporter-11.20.2
     app.kubernetes.io/name: prometheus-blackbox-exporter
     app.kubernetes.io/instance: prometheus-operator
-    app.kubernetes.io/version: "v0.28.0"
+    app.kubernetes.io/version: "v0.29.1"
     app.kubernetes.io/managed-by: Helm
     release: prometheus-operator
   namespace: prometheus-operator
