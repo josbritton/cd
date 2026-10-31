@@ -37,7 +37,7 @@ spec:
           server: nas1.private.swifthomelab.net
       containers:
       - name: sonarr
-        image: ghcr.io/home-operations/sonarr:5.0.0.2668@sha256:64fc190929b50091a8d6c3d6b5f4a3df7d3b8f98d076735f5cb223f7d77b0cc3
+        image: ghcr.io/home-operations/sonarr:5.0.0.2907@sha256:75866f930b8e49c0acfc965c8ace0429231cdc69e2e4b287eb51443aa3249d86
         ports:
         - name: http
           containerPort: 8989
