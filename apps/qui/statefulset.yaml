@@ -35,7 +35,7 @@ spec:
         runAsNonRoot: true
       containers:
       - name: qui
-        image: ghcr.io/autobrr/qui:v1.32.0@sha256:13a09cb0f27004dd19510f6af37aac140164ba0f9a13333b8698e41bd2d1df4c
+        image: ghcr.io/autobrr/qui:v1.35.0@sha256:a5b2f5faf6388cce257137c88e4b189458fd799cf9119ed476c980e5a69341b2
         securityContext:
           allowPrivilegeEscalation: false
           privileged: false
