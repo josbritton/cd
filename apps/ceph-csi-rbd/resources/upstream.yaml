@@ -7,7 +7,7 @@ metadata:
   namespace: ceph-csi-rbd
   labels:
     app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.17.0
+    chart: ceph-csi-rbd-3.18.1
     component: nodeplugin
     release: ceph-csi-rbd
     heritage: Helm
@@ -20,7 +20,7 @@ metadata:
   namespace: ceph-csi-rbd
   labels:
     app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.17.0
+    chart: ceph-csi-rbd-3.18.1
     component: provisioner
     release: ceph-csi-rbd
     heritage: Helm
@@ -33,7 +33,7 @@ metadata:
   namespace: ceph-csi-rbd
   labels:
     app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.17.0
+    chart: ceph-csi-rbd-3.18.1
     component: nodeplugin
     release: ceph-csi-rbd
     heritage: Helm
@@ -60,7 +60,7 @@ metadata:
   namespace: ceph-csi-rbd
   labels:
     app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.17.0
+    chart: ceph-csi-rbd-3.18.1
     component: nodeplugin
     release: ceph-csi-rbd
     heritage: Helm
@@ -78,7 +78,7 @@ metadata:
   namespace: ceph-csi-rbd
   labels:
     app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.17.0
+    chart: ceph-csi-rbd-3.18.1
     component: nodeplugin
     release: ceph-csi-rbd
     heritage: Helm
@@ -95,7 +95,7 @@ metadata:
     storageclass.kubernetes.io/is-default-class: "true"
   labels:
     app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.17.0
+    chart: ceph-csi-rbd-3.18.1
     release: ceph-csi-rbd
     heritage: Helm
 provisioner: rbd.csi.ceph.com
@@ -125,7 +125,7 @@ metadata:
   name: ceph-csi-rbd-nodeplugin
   labels:
     app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.17.0
+    chart: ceph-csi-rbd-3.18.1
     component: nodeplugin
     release: ceph-csi-rbd
     heritage: Helm
@@ -160,7 +160,7 @@ metadata:
   name: ceph-csi-rbd-provisioner
   labels:
     app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.17.0
+    chart: ceph-csi-rbd-3.18.1
     component: provisioner
     release: ceph-csi-rbd
     heritage: Helm
@@ -239,7 +239,7 @@ metadata:
   name: ceph-csi-rbd-nodeplugin
   labels:
     app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.17.0
+    chart: ceph-csi-rbd-3.18.1
     component: nodeplugin
     release: ceph-csi-rbd
     heritage: Helm
@@ -259,7 +259,7 @@ metadata:
   name: ceph-csi-rbd-provisioner
   labels:
     app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.17.0
+    chart: ceph-csi-rbd-3.18.1
     component: provisioner
     release: ceph-csi-rbd
     heritage: Helm
@@ -280,7 +280,7 @@ metadata:
   namespace: ceph-csi-rbd
   labels:
     app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.17.0
+    chart: ceph-csi-rbd-3.18.1
     component: provisioner
     release: ceph-csi-rbd
     heritage: Helm
@@ -300,7 +300,7 @@ metadata:
   namespace: ceph-csi-rbd
   labels:
     app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.17.0
+    chart: ceph-csi-rbd-3.18.1
     component: provisioner
     release: ceph-csi-rbd
     heritage: Helm
@@ -324,7 +324,7 @@ metadata:
   namespace: ceph-csi-rbd
   labels:
     app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.17.0
+    chart: ceph-csi-rbd-3.18.1
     component: nodeplugin
     release: ceph-csi-rbd
     heritage: Helm
@@ -350,7 +350,7 @@ metadata:
   namespace: ceph-csi-rbd
   labels:
     app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.17.0
+    chart: ceph-csi-rbd-3.18.1
     component: provisioner
     release: ceph-csi-rbd
     heritage: Helm
@@ -373,7 +373,7 @@ metadata:
   namespace: ceph-csi-rbd
   labels:
     app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.17.0
+    chart: ceph-csi-rbd-3.18.1
     component: nodeplugin
     release: ceph-csi-rbd
     heritage: Helm
@@ -389,7 +389,7 @@ spec:
     metadata:
       labels:
         app: ceph-csi-rbd
-        chart: ceph-csi-rbd-3.17.0
+        chart: ceph-csi-rbd-3.18.1
         component: nodeplugin
         release: ceph-csi-rbd
         heritage: Helm
@@ -404,7 +404,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: csi-rbdplugin
-          image: "quay.io/cephcsi/cephcsi:v3.17.0"
+          image: "quay.io/cephcsi/cephcsi:v3.18.1"
           imagePullPolicy: IfNotPresent
           args:
             - "--nodeid=$(NODE_ID)"
@@ -483,7 +483,7 @@ spec:
           securityContext:
             privileged: true
             allowPrivilegeEscalation: true
-          image: "registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.16.0"
+          image: "registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.18.0"
           imagePullPolicy: IfNotPresent
           args:
             - "--v=1"
@@ -505,7 +505,7 @@ spec:
           securityContext:
             privileged: true
             allowPrivilegeEscalation: true
-          image: "quay.io/cephcsi/cephcsi:v3.17.0"
+          image: "quay.io/cephcsi/cephcsi:v3.18.1"
           imagePullPolicy: IfNotPresent
           args:
             - "--type=liveness"
@@ -589,7 +589,7 @@ metadata:
   namespace: ceph-csi-rbd
   labels:
     app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.17.0
+    chart: ceph-csi-rbd-3.18.1
     component: provisioner
     release: ceph-csi-rbd
     heritage: Helm
@@ -608,7 +608,7 @@ spec:
     metadata:
       labels:
         app: ceph-csi-rbd
-        chart: ceph-csi-rbd-3.17.0
+        chart: ceph-csi-rbd-3.18.1
         component: provisioner
         release: ceph-csi-rbd
         heritage: Helm
@@ -633,7 +633,7 @@ spec:
       priorityClassName: system-cluster-critical
       containers:
         - name: csi-rbdplugin
-          image: "quay.io/cephcsi/cephcsi:v3.17.0"
+          image: "quay.io/cephcsi/cephcsi:v3.18.1"
           imagePullPolicy: IfNotPresent
           args:
             - "--nodeid=$(NODE_ID)"
@@ -693,7 +693,7 @@ spec:
               readOnly: true
           resources: {}
         - name: csi-provisioner
-          image: "registry.k8s.io/sig-storage/csi-provisioner:v6.2.0"
+          image: "registry.k8s.io/sig-storage/csi-provisioner:v6.3.0"
           imagePullPolicy: IfNotPresent
           args:
             - "--csi-address=$(ADDRESS)"
@@ -714,7 +714,7 @@ spec:
               mountPath: /csi
           resources: {}
         - name: csi-resizer
-          image: "registry.k8s.io/sig-storage/csi-resizer:v2.1.0"
+          image: "registry.k8s.io/sig-storage/csi-resizer:v2.2.1"
           imagePullPolicy: IfNotPresent
           args:
             - "--v=1"
@@ -733,7 +733,7 @@ spec:
               mountPath: /csi
           resources: {}
         - name: csi-snapshotter
-          image: registry.k8s.io/sig-storage/csi-snapshotter:v8.5.0
+          image: registry.k8s.io/sig-storage/csi-snapshotter:v8.6.0
           imagePullPolicy: IfNotPresent
           args:
             - "--csi-address=$(ADDRESS)"
@@ -751,7 +751,7 @@ spec:
               mountPath: /csi
           resources: {}
         - name: csi-attacher
-          image: "registry.k8s.io/sig-storage/csi-attacher:v4.11.0"
+          image: "registry.k8s.io/sig-storage/csi-attacher:v4.13.0"
           imagePullPolicy: IfNotPresent
           args:
             - "--automaxprocs=true"
@@ -768,7 +768,7 @@ spec:
               mountPath: /csi
           resources: {}
         - name: csi-rbdplugin-controller
-          image: "quay.io/cephcsi/cephcsi:v3.17.0"
+          image: "quay.io/cephcsi/cephcsi:v3.18.1"
           imagePullPolicy: IfNotPresent
           args:
             - "--type=controller"
@@ -792,7 +792,7 @@ spec:
               mountPath: /etc/ceph/
           resources: {}
         - name: liveness-prometheus
-          image: "quay.io/cephcsi/cephcsi:v3.17.0"
+          image: "quay.io/cephcsi/cephcsi:v3.18.1"
           imagePullPolicy: IfNotPresent
           args:
             - "--type=liveness"
@@ -854,7 +854,7 @@ metadata:
   name: rbd.csi.ceph.com
   labels:
     app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.17.0
+    chart: ceph-csi-rbd-3.18.1
     release: ceph-csi-rbd
     heritage: Helm
 spec:
