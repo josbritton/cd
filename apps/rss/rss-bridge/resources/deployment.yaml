@@ -55,7 +55,7 @@ spec:
             - pod-template-hash
       containers:
       - name: rss-bridge
-        image: docker.io/rssbridge/rss-bridge:latest@sha256:fcd6ac6335ef0e4f4688b41244e925735195bd41df70808d27d891910f2c0be8
+        image: docker.io/rssbridge/rss-bridge:latest@sha256:f2764f408d05c3612f608d907aee1938a01f0d1bf243fee39d85c3365761c510
         securityContext:
           allowPrivilegeEscalation: false
           privileged: false
