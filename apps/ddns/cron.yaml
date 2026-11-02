@@ -28,6 +28,8 @@ spec:
           - name: ddns
             image: git.swifthomelab.net/josbritton/ddns:latest@sha256:84cc801b81c0d78272ff015cb00821030c0c613e388822df79d3942dd9c791da
             env:
+            - name: TZ
+              value: America/Vancouver
             - name: APIKEY
               valueFrom:
                 secretKeyRef:

@@ -44,6 +44,8 @@ spec:
       - name: miniflux
         image: docker.io/miniflux/miniflux:2.3.3@sha256:49d7b60987616387c306a8023087b31f2c9b7b21288b523026cb04058e8b6dbb
         env:
+        - name: TZ
+          value: America/Vancouver
         - name: ADMIN_PASSWORD
           valueFrom:
             secretKeyRef:

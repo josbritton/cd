@@ -31,6 +31,8 @@ spec:
         image: vaultwarden/server:1.37.4-alpine@sha256:19ea2b669945d842dadc3d500f2d6a795866a003330f59a47b9634658bae98bb
         imagePullPolicy: IfNotPresent
         env:
+        - name: TZ
+          value: America/Vancouver
         - name: WEBSOCKET_ENABLED
           value: "true"
         - name: SIGNUPS_ALLOWED

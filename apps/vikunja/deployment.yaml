@@ -70,6 +70,8 @@ spec:
           containerPort: 3456
           protocol: TCP
         env:
+        - name: TZ
+          value: America/Vancouver
         - name: VIKUNJA_SERVICE_TIMEZONE
           value: America/Vancouver
         - name: VIKUNJA_SERVICE_PUBLICURL

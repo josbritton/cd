@@ -36,6 +36,9 @@ spec:
         ports:
         - containerPort: 8123
           name: http
+        env:
+        - name: TZ
+          value: America/Vancouver
         resources: {}
         volumeMounts:
         - name: config

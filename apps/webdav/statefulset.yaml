@@ -103,6 +103,8 @@ spec:
           containerPort: 80
           protocol: TCP
         env:
+        - name: TZ
+          value: America/Vancouver
         # UID/GID: as name or number (prefixed with "#")
         - name: APACHE_RUN_USER
           value: "#65534"

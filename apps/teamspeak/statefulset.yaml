@@ -30,6 +30,8 @@ spec:
         image: docker.io/teamspeaksystems/teamspeak6-server:v6.0.0-beta8@sha256:1bed4410f325602975bbf9841b282301d3e9ab158f7d905031f4c8cdc591539e
         imagePullPolicy: IfNotPresent
         env:
+        - name: TZ
+          value: America/Vancouver
         - name: TSSERVER_LICENSE_ACCEPTED
           value: accept
         - name: TSSERVER_VOICE_IP

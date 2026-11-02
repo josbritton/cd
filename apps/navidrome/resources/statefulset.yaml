@@ -55,6 +55,8 @@ spec:
         - containerPort: 4533
           name: http
         env:
+        - name: TZ
+          value: America/Vancouver
         - name: ND_CONFIGFILE
           value: /config/navidrome.toml
         - name: ND_SCANSCHEDULE

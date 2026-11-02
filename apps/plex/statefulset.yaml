@@ -80,7 +80,7 @@ spec:
         - name: PLEX_UID
           value: "1000"
         - name: TZ
-          value: Etc/UTC
+          value: America/Vancouver
         resources:
           requests:
             cpu: 4000m

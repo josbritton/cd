@@ -80,7 +80,7 @@ spec:
         - name: UMASK
           value: "0022"
         - name: TZ
-          value: Etc/UTC
+          value: America/Vancouver
         - name: PROWLARR__PORT
           value: "9696"
   volumeClaimTemplates:
