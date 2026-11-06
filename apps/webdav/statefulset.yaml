@@ -65,7 +65,7 @@ spec:
             drop:
             - ALL
           readOnlyRootFilesystem: true
-        image: docker.io/httpd:alpine@sha256:3440c39d8d6f54fa9ad2549e5a60c19ddd435faadc29c1ad28aa795f71888889
+        image: docker.io/httpd:alpine@sha256:d72968666c0a6961b07036d85fc053bc3cf640583cb1ff8360e1617818f164dc
         command: [sh, -c]
         args:
         - mkdir -p /usr/local/apache2/var/DavLock;
