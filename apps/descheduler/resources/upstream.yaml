@@ -48,7 +48,12 @@ data:
           - DoNotSchedule
           - ScheduleAnyway
         name: RemovePodsViolatingTopologySpreadConstraint
-      - name: RemoveDuplicates
+      - args:
+          namespaces:
+            exclude:
+            - radarr
+            - sonarr
+        name: RemoveDuplicates
       - args:
           includingInitContainers: true
           podRestartThreshold: 100
@@ -157,7 +162,7 @@ spec:
         metadata:
           name: descheduler
           annotations:
-            checksum/config: c46213106606a318b82ec5c0c28e703a926bca8b264a59c49a6821ee75fed4a3
+            checksum/config: 35f4e9bdba8061f6604d5d371d8d8e46d113ce9d33702f00a3bc81c0df6bd398
           labels:
             app.kubernetes.io/name: descheduler
             app.kubernetes.io/instance: descheduler

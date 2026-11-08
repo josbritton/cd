@@ -22,6 +22,11 @@ descheduler:
           - DoNotSchedule
           - ScheduleAnyway
       - name: RemoveDuplicates
+        args:
+          namespaces:
+            exclude:
+            - radarr
+            - sonarr
       - name: RemovePodsHavingTooManyRestarts
         args:
           podRestartThreshold: 100
