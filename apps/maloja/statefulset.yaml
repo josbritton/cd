@@ -1,0 +1,149 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/statefulset.json
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: maloja
+  namespace: maloja
+  labels:
+    app.kubernetes.io/name: maloja
+    app.kubernetes.io/instance: maloja
+    app.kubernetes.io/part-of: maloja
+  annotations:
+    reloader.stakater.com/auto: "true"
+    argocd.argoproj.io/sync-options: ServerSideApply=true
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  serviceName: maloja
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: maloja
+      app.kubernetes.io/instance: maloja
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: Retain
+    whenScaled: Retain
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: maloja
+        app.kubernetes.io/instance: maloja
+        app.kubernetes.io/part-of: maloja
+    spec:
+      # maloja reads every MALOJA_* variable as a setting, and the injected
+      # MALOJA_PORT=tcp://... service link would clobber the port
+      enableServiceLinks: false
+      automountServiceAccountToken: false
+      securityContext:
+        fsGroup: 65534
+        fsGroupChangePolicy: OnRootMismatch
+        runAsGroup: 65534
+        runAsUser: 65534
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: maloja
+        image: docker.io/krateng/maloja:3.2.10@sha256:4c39b5daa893451a379802f267a1d83f2b5d15d8b369e73349e530133cc8fdb6
+        # skips the s6-overlay entrypoint, which must start as root
+        command: [/venv/bin/python, -m, maloja, run]
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsGroup: 65534
+          runAsUser: 65534
+          runAsNonRoot: true
+          capabilities:
+            drop: [ALL]
+        resources:
+          requests:
+            cpu: 10m
+            memory: 128Mi
+          limits:
+            memory: 1Gi
+        ports:
+        - name: http
+          containerPort: 42010
+          protocol: TCP
+        env:
+        - name: TZ
+          value: America/Vancouver
+        - name: MALOJA_LOCATION_TIMEZONE
+          value: America/Vancouver
+        - name: MALOJA_DATA_DIRECTORY
+          value: /data
+        - name: MALOJA_HOST
+          value: 0.0.0.0
+        - name: MALOJA_PORT
+          value: "42010"
+        - name: MALOJA_NAME
+          value: swifthomelab
+        - name: MALOJA_FORCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: maloja-admin
+              key: passwd
+              optional: false
+        - name: MALOJA_SCROBBLE_LASTFM
+          value: "true"
+        - name: MALOJA_LASTFM_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: maloja-lastfm
+              key: apikey
+              optional: false
+        - name: MALOJA_LASTFM_API_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: maloja-lastfm
+              key: secret
+              optional: false
+        - name: MALOJA_LASTFM_API_SK
+          valueFrom:
+            secretKeyRef:
+              name: maloja-lastfm
+              key: sk
+              optional: false
+        - name: MALOJA_AUDIODB_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: maloja-audiodb
+              key: apikey
+              optional: false
+        volumeMounts:
+        - name: data
+          mountPath: /data
+        - name: logs
+          mountPath: /data/logs
+        - name: tmp
+          mountPath: /tmp
+        livenessProbe: &probe
+          httpGet:
+            port: 42010
+            path: /apis/mlj_1/test
+        readinessProbe: *probe
+        startupProbe:
+          httpGet:
+            port: 42010
+            path: /apis/mlj_1/test
+          failureThreshold: 30
+      volumes:
+      - name: logs
+        emptyDir: {}
+      - name: tmp
+        emptyDir: {}
+  volumeClaimTemplates:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: data
+      labels:
+        app.kubernetes.io/name: maloja
+        app.kubernetes.io/part-of: maloja
+      namespace: maloja
+    spec:
+      storageClassName: csi-rbd-sc
+      accessModes: [ReadWriteOncePod]
+      resources:
+        requests:
+          storage: 5Gi

@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/service-v1.json
+apiVersion: v1
+kind: Service
+metadata:
+  name: maloja
+  namespace: maloja
+  labels:
+    app.kubernetes.io/name: maloja
+    app.kubernetes.io/instance: maloja
+    app.kubernetes.io/part-of: maloja
+spec:
+  type: ClusterIP
+  publishNotReadyAddresses: false
+  ports:
+  - name: http
+    port: 42010
+    protocol: TCP
+    targetPort: 42010
+  selector:
+    app.kubernetes.io/name: maloja
+    app.kubernetes.io/instance: maloja
+    app.kubernetes.io/part-of: maloja
+    statefulset.kubernetes.io/pod-name: maloja-0
