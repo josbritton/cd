@@ -63,16 +63,6 @@ spec:
           value: 1h
         - name: ND_BASEURL
           value: ""
-        - name: ND_LASTFM_APIKEY
-          valueFrom:
-            secretKeyRef:
-              key: apikey
-              name: lastfm-api
-        - name: ND_LASTFM_SECRET
-          valueFrom:
-            secretKeyRef:
-              key: secret
-              name: lastfm-api
         - name: ND_ENABLEWEBPENCODING
           value: "false"
         # resources:

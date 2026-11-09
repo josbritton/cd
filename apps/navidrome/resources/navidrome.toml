@@ -14,6 +14,12 @@ MaxImageUploadSize = "150MB"
 # EnableWebPEncoding = true
 EnforceNonRootUser = true
 
+[LastFM]
+Enabled = false  # maloja forwards scrobbles to last.fm
+
+[ListenBrainz]
+BaseURL = "http://maloja.maloja.svc.cluster.local:42010/apis/listenbrainz/1/"
+
 [Matcher]
 PreferStarred = true
 
