@@ -13,10 +13,18 @@ spec:
       secretName: cert-manager/radarr-swifthomelab-net
   routes:
   - services:
-    - name: radarr
+    - &svc-0
+      name: radarr
       port: 7878
     timeoutPolicy:
       response: 600s  # if NULL, uses 15s (envoy default)
+  - conditions:
+    - prefix: /signalr/messages
+    enableWebsockets: true
+    services:
+    - *svc-0
+    timeoutPolicy:
+      response: infinity
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/projectcontour.io/httpproxy_v1.json
 apiVersion: projectcontour.io/v1
@@ -33,7 +41,15 @@ spec:
       secretName: cert-manager/radalt-swifthomelab-net
   routes:
   - services:
-    - name: radalt
+    - &svc-1
+      name: radalt
       port: 7878
     timeoutPolicy:
       response: 600s  # if NULL, uses 15s (envoy default)
+  - conditions:
+    - prefix: /signalr/messages
+    enableWebsockets: true
+    services:
+    - *svc-1
+    timeoutPolicy:
+      response: infinity
