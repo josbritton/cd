@@ -13,10 +13,18 @@ spec:
       secretName: cert-manager/sonarr-swifthomelab-net
   routes:
   - services:
-    - name: sonarr
+    - &svc-0
+      name: sonarr
       port: 8989
     timeoutPolicy:
       response: 600s  # if NULL, uses 15s (envoy default)
+  - conditions:
+    - prefix: /signalr/messages
+    enableWebsockets: true
+    services:
+    - *svc-0
+    timeoutPolicy:
+      response: infinity
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/projectcontour.io/httpproxy_v1.json
 apiVersion: projectcontour.io/v1
@@ -33,10 +41,18 @@ spec:
       secretName: cert-manager/sonalt-swifthomelab-net
   routes:
   - services:
-    - name: sonalt
+    - &svc-1
+      name: sonalt
       port: 8989
     timeoutPolicy:
       response: 600s  # if NULL, uses 15s (envoy default)
+  - conditions:
+    - prefix: /signalr/messages
+    enableWebsockets: true
+    services:
+    - *svc-1
+    timeoutPolicy:
+      response: infinity
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/projectcontour.io/httpproxy_v1.json
 apiVersion: projectcontour.io/v1
@@ -53,7 +69,15 @@ spec:
       secretName: cert-manager/sonref-swifthomelab-net
   routes:
   - services:
-    - name: sonref
+    - &svc-2
+      name: sonref
       port: 8989
     timeoutPolicy:
       response: 600s  # if NULL, uses 15s (envoy default)
+  - conditions:
+    - prefix: /signalr/messages
+    enableWebsockets: true
+    services:
+    - *svc-2
+    timeoutPolicy:
+      response: infinity
