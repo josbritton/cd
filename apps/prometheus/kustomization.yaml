@@ -18,7 +18,7 @@ resources:
 - ./resources/prometheus-httpproxy.yaml
 - ./resources/ceph-rules.yaml
 # yamllint disable-line rule:comments
-- github.com/dotdc/grafana-dashboards-kubernetes?ref=a5ce3d43e0c970f464cada289ec1a691426c7eaf # tag=v3.0.6
+- github.com/dotdc/grafana-dashboards-kubernetes?ref=4b0fbccde66d9e87dcc08827e2b230e95c044f71 # tag=v3.0.9
 configMapGenerator:
 - name: argocd-dashboard-cm
   files: [files/argocd-dashboard.json]
